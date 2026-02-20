@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>레시피 상세 - 자취방 레시피</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" th:href="@{/css/recipe.css}"/>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100 pb-8">
+  <header class="bg-gradient-to-r from-amber-700 to-amber-800 text-white sticky top-0 z-50 shadow-lg">
+    <div class="max-w-4xl mx-auto px-4 py-4">
+      <a th:href="@{/}" href="/" class="flex items-center gap-2 hover:text-amber-200 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+        돌아가기
+      </a>
+    </div>
+  </header>
+
+  <div class="max-w-4xl mx-auto px-4 py-6">
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-6">
+      <div class="aspect-video bg-gray-200 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1600688654899-379ec76aca42?w=800" alt="간단 김치볶음밥" class="w-full h-full object-cover"/>
+      </div>
+    </div>
+
+    <section class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+      <div class="flex items-start justify-between mb-4">
+        <div class="flex-1">
+          <h1 class="text-3xl font-bold mb-2">간단 김치볶음밥</h1>
+          <p class="text-gray-600 mb-4">냉장고 속 김치로 5분 만에 완성하는 든든한 한 끼! 계란 프라이를 올리면 더욱 맛있어요.</p>
+          <div class="flex items-center gap-2 text-sm text-gray-500">
+            <span>by 혼밥왕</span>
+            <span>•</span>
+            <span>2시간 전</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div class="bg-amber-50 p-4 rounded-lg text-center">
+          <div class="flex justify-center mb-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-amber-600"><path d="M6 14c.5.5 1 1 2 1s1.5-.5 2-1"/><path d="M17 20a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-1"/><path d="M6 11V9a2 2 0 0 1 2-2h1"/><path d="M6 20a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1"/><path d="M2 10h20"/></svg>
+          </div>
+          <p class="text-sm text-gray-600">난이도</p>
+          <p class="font-medium">하</p>
+        </div>
+        <div class="bg-blue-50 p-4 rounded-lg text-center">
+          <div class="flex justify-center mb-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <p class="text-sm text-gray-600">조리시간</p>
+          <p class="font-medium">10분</p>
+        </div>
+        <div class="bg-red-50 p-4 rounded-lg text-center">
+          <div class="flex justify-center mb-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-red-500"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+          </div>
+          <p class="text-sm text-gray-600">좋아요</p>
+          <p class="font-medium" id="like-count">245</p>
+        </div>
+        <div class="bg-green-50 p-4 rounded-lg text-center">
+          <div class="flex justify-center mb-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-600"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <p class="text-sm text-gray-600">조회수</p>
+          <p class="font-medium">1203</p>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-2 mb-6">
+        <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">#한식</span>
+        <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">#속세의맛</span>
+        <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">#하</span>
+      </div>
+
+      <div class="grid grid-cols-3 gap-3">
+        <button type="button" id="like-btn" class="py-3 rounded-lg flex items-center justify-center gap-2 transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="like-btn-icon"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+          <span id="like-btn-text">좋아요</span>
+        </button>
+        <button type="button" class="py-3 rounded-lg flex items-center justify-center gap-2 transition-colors bg-gray-100 hover:bg-gray-200 text-gray-700">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          도감에 저장
+        </button>
+        <button type="button" class="py-3 rounded-lg flex items-center justify-center gap-2 transition-colors bg-gray-100 hover:bg-gray-200 text-gray-700">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          공유
+        </button>
+      </div>
+    </section>
+
+    <section class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+      <h2 class="text-2xl font-bold mb-4">재료</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div class="flex items-center justify-between bg-amber-50 p-3 rounded-lg">
+          <span>밥</span>
+          <span class="text-gray-600">1공기</span>
+        </div>
+        <div class="flex items-center justify-between bg-amber-50 p-3 rounded-lg">
+          <span>김치</span>
+          <span class="text-gray-600">100g</span>
+        </div>
+        <div class="flex items-center justify-between bg-amber-50 p-3 rounded-lg">
+          <span>참기름</span>
+          <span class="text-gray-600">1스푼</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+      <h2 class="text-2xl font-bold mb-4">조리 방법</h2>
+      <div class="space-y-4">
+        <div class="flex gap-4">
+          <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-600 text-white rounded-full flex items-center justify-center font-medium">1</div>
+          <div class="flex-1 bg-gray-50 p-4 rounded-lg"><p>김치를 잘게 썰기</p></div>
+        </div>
+        <div class="flex gap-4">
+          <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-600 text-white rounded-full flex items-center justify-center font-medium">2</div>
+          <div class="flex-1 bg-gray-50 p-4 rounded-lg"><p>팬에 김치 볶기</p></div>
+        </div>
+        <div class="flex gap-4">
+          <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-600 text-white rounded-full flex items-center justify-center font-medium">3</div>
+          <div class="flex-1 bg-gray-50 p-4 rounded-lg"><p>밥 넣고 볶기</p></div>
+        </div>
+        <div class="flex gap-4">
+          <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-600 text-white rounded-full flex items-center justify-center font-medium">4</div>
+          <div class="flex-1 bg-gray-50 p-4 rounded-lg"><p>참기름으로 마무리</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white rounded-2xl shadow-lg p-6">
+      <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        댓글 <span class="text-lg font-normal text-gray-500">(<span id="comment-count">2</span>)</span>
+      </h2>
+      <div class="mb-6">
+        <div class="flex flex-col sm:flex-row gap-3">
+          <input type="text" id="new-comment" placeholder="댓글을 입력하세요..."
+                 class="flex-1 px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-amber-500"/>
+          <button type="button" id="comment-submit" class="bg-amber-600 hover:bg-amber-700 text-white px-6 py-3 rounded-lg flex items-center justify-center gap-2 transition-colors shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+            전송
+          </button>
+        </div>
+      </div>
+      <div id="comment-list" class="space-y-4">
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-medium text-amber-700">요리초보</span>
+            <span class="text-sm text-gray-500">2시간 전</span>
+          </div>
+          <p class="text-gray-700">너무 맛있어 보여요! 저도 한번 만들어봐야겠어요 👍</p>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-medium text-amber-700">자취고수</span>
+            <span class="text-sm text-gray-500">30분 전</span>
+          </div>
+          <p class="text-gray-700">이 레시피 완전 꿀팁이네요. 김치 양을 조금 더 넣으면 더 맛있을 것 같아요!</p>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script th:src="@{/js/recipe-detail.js}"></script>
+</body>
+</html>

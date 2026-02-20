@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>식단 가챠 - 자취방 레시피</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" th:href="@{/css/recipe.css}"/>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100 pb-8">
+  <header class="bg-gradient-to-r from-amber-700 to-amber-800 text-white sticky top-0 z-50 shadow-lg">
+    <div class="max-w-4xl mx-auto px-4 py-4">
+      <div class="flex items-center justify-between">
+        <a th:href="@{/}" href="/" class="flex items-center gap-2 hover:text-amber-200 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+          돌아가기
+        </a>
+        <h1 class="text-xl font-bold">🎰 식단 가챠</h1>
+        <div class="w-20"></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="max-w-4xl mx-auto px-4 py-6">
+    <div class="mb-6 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 rounded-2xl p-6 text-white shadow-2xl relative overflow-hidden">
+      <div class="relative z-10">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
+          <div class="flex items-center gap-3">
+            <span class="text-3xl">🎁</span>
+            <div>
+              <h2 class="text-2xl font-bold">🎲 식단 가챠 시스템</h2>
+              <p class="text-sm text-pink-100">재료를 넣고 랜덤 레시피를 뽑아보세요!</p>
+            </div>
+          </div>
+          <div class="text-left sm:text-right">
+            <div class="text-3xl font-bold"><span id="gacha-count">0</span>/3</div>
+            <div class="text-xs text-pink-100">남은 가챠 횟수</div>
+          </div>
+        </div>
+        <div id="gacha-limit-msg" class="hidden bg-red-500/30 border border-red-300 rounded-lg p-3 flex items-center gap-2 mt-3">
+          <span>⚠</span>
+          <span>오늘의 가챠 기회를 모두 사용했어요! 내일 다시 도전하세요</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <section class="bg-white rounded-2xl shadow-lg p-6">
+        <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+          🧊 냉장고 속 재료
+          <span class="text-sm text-gray-500 ml-auto font-normal" id="ingredient-count">0개</span>
+        </h2>
+        <div class="mb-4">
+          <div class="grid grid-cols-3 gap-2 mb-2">
+            <input type="text" id="ingredient-name" placeholder="재료명"
+                   class="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"/>
+            <input type="text" id="ingredient-amount" placeholder="용량"
+                   class="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"/>
+            <select id="ingredient-unit" class="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+              <option value="g">g</option>
+              <option value="ml">ml</option>
+              <option value="개">개</option>
+              <option value="컵">컵</option>
+              <option value="스푼">스푼</option>
+            </select>
+          </div>
+          <button type="button" id="add-ingredient" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-2 rounded-lg flex items-center justify-center gap-2 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            냉장고에 넣기
+          </button>
+        </div>
+        <div id="ingredient-list" class="space-y-2 max-h-64 overflow-y-auto">
+          <p class="text-center text-gray-400 py-8">냉장고가 텅 비었어요</p>
+        </div>
+      </section>
+
+      <section class="bg-white rounded-2xl shadow-lg p-6">
+        <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+          🧴 양념통 (소스)
+          <span class="text-sm text-gray-500 ml-auto font-normal" id="sauce-count">0개</span>
+        </h2>
+        <div class="mb-4">
+          <div class="grid grid-cols-3 gap-2 mb-2">
+            <input type="text" id="sauce-name" placeholder="소스명"
+                   class="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"/>
+            <input type="text" id="sauce-amount" placeholder="용량"
+                   class="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"/>
+            <select id="sauce-unit" class="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+              <option value="ml">ml</option>
+              <option value="g">g</option>
+              <option value="스푼">스푼</option>
+              <option value="티스푼">티스푼</option>
+            </select>
+          </div>
+          <button type="button" id="add-sauce" class="w-full bg-orange-600 hover:bg-orange-700 text-white py-2 rounded-lg flex items-center justify-center gap-2 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            양념통에 넣기
+          </button>
+        </div>
+        <div id="sauce-list" class="space-y-2 max-h-64 overflow-y-auto">
+          <p class="text-center text-gray-400 py-8">양념통이 비었어요 (선택사항)</p>
+        </div>
+      </section>
+    </div>
+
+    <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+      <h2 class="text-xl font-bold mb-6">요리 설정</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <label class="block text-sm font-medium mb-2">어떤 요리?</label>
+          <div class="space-y-2">
+            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="purpose" value="속세의맛" checked/> 속세의맛</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="purpose" value="다이어트"/> 다이어트</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="purpose" value="건강식"/> 건강식</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="purpose" value="술안주"/> 술안주</label>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-2">어느 나라 음식?</label>
+          <div class="space-y-2">
+            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="cuisine" value="상관없음" checked/> 상관없음</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="cuisine" value="한식"/> 한식</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="cuisine" value="일식"/> 일식</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="cuisine" value="중식"/> 중식</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="cuisine" value="양식"/> 양식</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="cuisine" value="동남아"/> 동남아</label>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-2">내 요리 실력은?</label>
+          <div class="space-y-2">
+            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="difficulty" value="상관없음" checked/> 상관없음</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="difficulty" value="하"/> 하</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="difficulty" value="중"/> 중</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="difficulty" value="상"/> 상</label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <button type="button" id="gacha-btn" class="mt-6 w-full bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 hover:from-purple-700 hover:via-pink-700 hover:to-orange-600 text-white py-6 rounded-2xl flex items-center justify-center gap-3 transition-all shadow-2xl text-xl font-bold disabled:opacity-60 disabled:cursor-not-allowed">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="12" height="12" x="2" y="10" rx="2" ry="2"/><path d="m17.92 14 3.5-3.5a2.24 2.24 0 0 0 0-3l-5-4.92a2.24 2.24 0 0 0-3 0L10 6"/></svg>
+      <span id="gacha-btn-text">식단 가챠 돌리기!</span>
+    </button>
+    <p id="gacha-warning" class="hidden text-center text-red-500 mt-3 text-sm font-medium">재료를 1개 이상 추가해주세요!</p>
+
+    <div id="gacha-rolling" class="hidden mt-6 bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl p-12 shadow-2xl">
+      <div class="flex flex-col items-center justify-center text-white">
+        <div class="text-6xl mb-6 animate-dice-wiggle">🎰</div>
+        <h3 class="text-3xl font-bold mb-2">가챠 돌리는 중...</h3>
+        <p class="text-lg text-pink-100">어떤 레시피가 나올까요? 두근두근</p>
+      </div>
+    </div>
+
+    <section id="gacha-result" class="hidden bg-white rounded-2xl shadow-2xl p-6 mt-6 border-4 border-yellow-400 relative overflow-hidden">
+      <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600"></div>
+      <div class="flex items-center gap-2 mb-4">
+        <span class="text-2xl">✨</span>
+        <h2 class="text-2xl font-bold">가챠 결과!</h2>
+      </div>
+      <div class="bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 rounded-xl p-6 relative">
+        <div class="aspect-video bg-gray-200 rounded-lg mb-4 overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1573470571028-a0ca7a723959?w=600" alt="결과" class="w-full h-full object-cover"/>
+        </div>
+        <h3 id="result-title" class="text-2xl font-bold mb-2">김치 볶음</h3>
+        <p id="result-desc" class="text-gray-600 mb-4">재료로 만드는 간단하고 맛있는 요리.</p>
+        <div class="flex items-center gap-3 mb-6">
+          <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">난이도: 중</span>
+          <span class="text-sm text-gray-600 font-medium flex items-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            20분
+          </span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <button type="button" class="bg-white hover:bg-gray-50 border-2 border-purple-400 text-purple-700 py-3 rounded-lg font-medium shadow-md transition-colors flex items-center justify-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            도감에 저장
+          </button>
+          <a th:href="@{/}" href="/" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-3 rounded-lg font-medium shadow-md text-center transition-colors">이웃에게 자랑하기</a>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script th:src="@{/js/recipe-create.js}"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title th:text="${pageTitle} ?: '자취방 레시피'">자취방 레시피</title>
+  <link rel="stylesheet" th:href="@{/css/recipe.css}"/>
+</head>
+<body>
+  <div th:replace="${content}"></div>
+  <script th:src="@{/js/recipe.js}" th:if="${scripts}"></script>
+</body>
+</html>

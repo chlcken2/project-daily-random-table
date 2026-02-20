@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>홈 - 자취방 레시피</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" th:href="@{/css/recipe.css}"/>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100">
+  <div class="min-h-screen pb-20">
+    <!-- 헤더 -->
+    <header class="bg-gradient-to-r from-amber-700 to-amber-800 text-white sticky top-0 z-50 shadow-lg">
+      <div class="max-w-7xl mx-auto px-4 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="bg-amber-600 p-2 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <div>
+              <h1 class="text-xl font-bold">🏠 자취방 레시피</h1>
+              <p class="text-xs text-amber-200">방문자님 어서오세요!</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <a th:href="@{/mypage}" href="/mypage" class="bg-amber-600 hover:bg-amber-500 p-2 rounded-lg transition-colors flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </a>
+            <a th:href="@{/login}" href="/login" class="bg-red-600 hover:bg-red-500 p-2 rounded-lg transition-colors flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 py-6">
+      <!-- 가챠 메인 배너 -->
+      <a th:href="@{/recipe/create}" href="/recipe/create" class="gacha-banner block mb-6 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 rounded-2xl p-6 shadow-2xl cursor-pointer hover:shadow-3xl transition-all duration-300 relative overflow-hidden group animate-fade-in-up">
+        <div class="gacha-banner-overlay absolute inset-0 bg-cover bg-center opacity-10 group-hover:opacity-20 transition-opacity duration-300" style="background-image: url('https://images.unsplash.com/photo-1768501391108-ba094c8a6894?w=1080');"></div>
+        <div class="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <div class="animate-dice-wiggle bg-white/20 backdrop-blur-sm p-4 rounded-xl flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><rect width="12" height="12" x="2" y="10" rx="2" ry="2"/><path d="m17.92 14 3.5-3.5a2.24 2.24 0 0 0 0-3l-5-4.92a2.24 2.24 0 0 0-3 0L10 6"/><path d="M6 18h.01"/><path d="M10 14h.01"/><path d="M15 6h.01"/><path d="M18 9h.01"/></svg>
+            </div>
+            <div class="text-white">
+              <h2 class="text-2xl sm:text-3xl font-bold mb-1">🎰 식단 가챠 도전!</h2>
+              <p class="text-pink-100 text-sm">냉장고 재료로 랜덤 레시피를 뽑아보세요 ✨</p>
+            </div>
+          </div>
+          <span class="gacha-btn bg-white text-purple-600 px-6 py-3 rounded-full font-bold text-base sm:text-lg shadow-lg transition-all duration-300 inline-block">가챠 하러가기 →</span>
+        </div>
+      </a>
+
+      <!-- 오늘의 식탁 + 명예의 식탁 -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <section class="bg-white rounded-2xl shadow-lg p-6">
+          <div class="flex items-center gap-2 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-amber-600"><path d="M6 14c.5.5 1 1 2 1s1.5-.5 2-1"/><path d="M17 20a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-1"/><path d="M6 11V9a2 2 0 0 1 2-2h1"/><path d="M6 20a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1"/><path d="M2 10h20"/></svg>
+            <h2 class="text-xl font-bold">🍳 오늘 뭐 먹지?</h2>
+            <span class="text-sm text-gray-500 ml-auto">실시간 인기 🔥</span>
+          </div>
+          <div class="space-y-3">
+            <a th:href="@{/recipe/detail/1}" href="/recipe/detail/1" class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-amber-50 transition-colors text-left block">
+              <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-lg flex items-center justify-center text-white font-medium">1</div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-medium truncate">간단 김치볶음밥</h3>
+                <div class="flex items-center gap-3 text-xs text-gray-500">
+                  <span>❤ 245</span>
+                  <span>💬 32</span><span>👀 1203</span>
+                </div>
+              </div>
+            </a>
+            <a th:href="@{/recipe/detail/2}" href="/recipe/detail/2" class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-amber-50 transition-colors text-left block">
+              <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-lg flex items-center justify-center text-white font-medium">2</div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-medium truncate">영양 가득 비빔밥</h3>
+                <div class="flex items-center gap-3 text-xs text-gray-500">
+                  <span>❤ 189</span><span>💬 24</span><span>👀 892</span>
+                </div>
+              </div>
+            </a>
+            <a th:href="@{/recipe/detail/3}" href="/recipe/detail/3" class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-amber-50 transition-colors text-left block">
+              <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-lg flex items-center justify-center text-white font-medium">3</div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-medium truncate">매콤 라면볶이</h3>
+                <div class="flex items-center gap-3 text-xs text-gray-500">
+                  <span>❤ 312</span><span>💬 45</span><span>👀 1567</span>
+                </div>
+              </div>
+            </a>
+            <a th:href="@{/recipe/detail/4}" href="/recipe/detail/4" class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-amber-50 transition-colors text-left block">
+              <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-lg flex items-center justify-center text-white font-medium">4</div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-medium truncate">치즈 김밥</h3>
+                <div class="flex items-center gap-3 text-xs text-gray-500">
+                  <span>❤ 278</span><span>💬 38</span><span>👀 1345</span>
+                </div>
+              </div>
+            </a>
+            <a th:href="@{/recipe/detail/5}" href="/recipe/detail/5" class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-amber-50 transition-colors text-left block">
+              <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-lg flex items-center justify-center text-white font-medium">5</div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-medium truncate">된장찌개</h3>
+                <div class="flex items-center gap-3 text-xs text-gray-500">
+                  <span>❤ 156</span><span>💬 19</span><span>👀 734</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </section>
+
+        <section class="bg-white rounded-2xl shadow-lg p-6">
+          <div class="flex items-center gap-2 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-amber-600"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+            <h2 class="text-xl font-bold">🏆 전설의 맛집</h2>
+            <span class="text-sm text-gray-500 ml-auto">역대 베스트 👑</span>
+          </div>
+          <div class="space-y-3">
+            <a th:href="@{/recipe/detail/3}" href="/recipe/detail/3" class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-yellow-50 transition-colors text-left block">
+              <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center text-white font-medium">1</div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-medium truncate">매콤 라면볶이</h3>
+                <div class="flex items-center gap-3 text-xs text-gray-500">
+                  <span>❤ 312</span><span>매운맛러버</span>
+                </div>
+              </div>
+            </a>
+            <a th:href="@{/recipe/detail/4}" href="/recipe/detail/4" class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-yellow-50 transition-colors text-left block">
+              <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-gray-300 to-gray-500 rounded-lg flex items-center justify-center text-white font-medium">2</div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-medium truncate">치즈 김밥</h3>
+                <div class="flex items-center gap-3 text-xs text-gray-500">
+                  <span>❤ 278</span><span>김밥마스터</span>
+                </div>
+              </div>
+            </a>
+            <a th:href="@{/recipe/detail/1}" href="/recipe/detail/1" class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-yellow-50 transition-colors text-left block">
+              <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-amber-600 to-amber-800 rounded-lg flex items-center justify-center text-white font-medium">3</div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-medium truncate">간단 김치볶음밥</h3>
+                <div class="flex items-center gap-3 text-xs text-gray-500">
+                  <span>❤ 245</span><span>혼밥왕</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </section>
+      </div>
+
+      <!-- 탭 네비게이션 -->
+      <div class="bg-white rounded-t-2xl shadow-lg">
+        <div class="flex border-b border-gray-200">
+          <button type="button" data-tab="all" class="tab-btn flex-1 flex items-center justify-center gap-2 py-4 transition-colors tab-active">
+            🌐 이웃 식탁 구경
+          </button>
+          <button type="button" data-tab="my" class="tab-btn flex-1 flex items-center justify-center gap-2 py-4 transition-colors tab-inactive">
+            🍳 내 냉장고
+          </button>
+        </div>
+
+        <div class="p-6">
+          <!-- 레시피 그리드 - 전체 -->
+          <div id="tab-all" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 tab-content">
+            <a th:href="@{/recipe/detail/1}" href="/recipe/detail/1" class="recipe-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow text-left block border border-gray-100">
+              <div class="aspect-video bg-gray-200 overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1600688654899-379ec76aca42?w=400" alt="간단 김치볶음밥" class="w-full h-full object-cover"/>
+              </div>
+              <div class="p-4">
+                <h3 class="font-medium mb-2">간단 김치볶음밥</h3>
+                <p class="text-sm text-gray-600 line-clamp-2 mb-3">냉장고 속 김치로 5분 만에 완성하는 든든한 한 끼!</p>
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded">🔪 하</span>
+                  <span class="text-xs text-gray-500">⏱ 10분</span>
+                </div>
+                <div class="flex items-center justify-between text-sm text-gray-500">
+                  <span>❤ 245</span><span>💬 32</span><span>👀 1203</span>
+                </div>
+              </div>
+            </a>
+            <a th:href="@{/recipe/detail/2}" href="/recipe/detail/2" class="recipe-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow text-left block border border-gray-100">
+              <div class="aspect-video bg-gray-200 overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1741295017668-c8132acd6fc0?w=400" alt="영양 가득 비빔밥" class="w-full h-full object-cover"/>
+              </div>
+              <div class="p-4">
+                <h3 class="font-medium mb-2">영양 가득 비빔밥</h3>
+                <p class="text-sm text-gray-600 line-clamp-2 mb-3">각종 나물과 고추장으로 만드는 건강한 비빔밥.</p>
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded">🔪 중</span>
+                  <span class="text-xs text-gray-500">⏱ 20분</span>
+                </div>
+                <div class="flex items-center justify-between text-sm text-gray-500">
+                  <span>❤ 189</span><span>💬 24</span><span>👀 892</span>
+                </div>
+              </div>
+            </a>
+            <a th:href="@{/recipe/detail/3}" href="/recipe/detail/3" class="recipe-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow text-left block border border-gray-100">
+              <div class="aspect-video bg-gray-200 overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1653697469316-955d5ebe5994?w=400" alt="매콤 라면볶이" class="w-full h-full object-cover"/>
+              </div>
+              <div class="p-4">
+                <h3 class="font-medium mb-2">매콤 라면볶이</h3>
+                <p class="text-sm text-gray-600 line-clamp-2 mb-3">라면을 국물 없이 볶아서 더 맛있게!</p>
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded">🔪 하</span>
+                  <span class="text-xs text-gray-500">⏱ 15분</span>
+                </div>
+                <div class="flex items-center justify-between text-sm text-gray-500">
+                  <span>❤ 312</span><span>💬 45</span><span>👀 1567</span>
+                </div>
+              </div>
+            </a>
+            <a th:href="@{/recipe/detail/4}" href="/recipe/detail/4" class="recipe-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow text-left block border border-gray-100">
+              <div class="aspect-video bg-gray-200 overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1628532429788-c35922b5e6c1?w=400" alt="치즈 김밥" class="w-full h-full object-cover"/>
+              </div>
+              <div class="p-4">
+                <h3 class="font-medium mb-2">치즈 김밥</h3>
+                <p class="text-sm text-gray-600 line-clamp-2 mb-3">속재료에 치즈를 듬뿍 넣은 든든한 김밥.</p>
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded">🔪 중</span>
+                  <span class="text-xs text-gray-500">⏱ 25분</span>
+                </div>
+                <div class="flex items-center justify-between text-sm text-gray-500">
+                  <span>❤ 278</span><span>💬 38</span><span>👀 1345</span>
+                </div>
+              </div>
+            </a>
+            <a th:href="@{/recipe/detail/5}" href="/recipe/detail/5" class="recipe-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow text-left block border border-gray-100">
+              <div class="aspect-video bg-gray-200 overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1573470571028-a0ca7a723959?w=400" alt="된장찌개" class="w-full h-full object-cover"/>
+              </div>
+              <div class="p-4">
+                <h3 class="font-medium mb-2">된장찌개</h3>
+                <p class="text-sm text-gray-600 line-clamp-2 mb-3">구수한 된장에 두부와 야채를 넣은 따뜻한 국물 요리.</p>
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded">🔪 하</span>
+                  <span class="text-xs text-gray-500">⏱ 15분</span>
+                </div>
+                <div class="flex items-center justify-between text-sm text-gray-500">
+                  <span>❤ 156</span><span>💬 19</span><span>👀 734</span>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <!-- 레시피 그리드 - 내 냉장고 -->
+          <div id="tab-my" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 tab-content hidden">
+            <a th:href="@{/recipe/detail/1}" href="/recipe/detail/1" class="recipe-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow text-left block border border-gray-100">
+              <div class="aspect-video bg-gray-200 overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1600688654899-379ec76aca42?w=400" alt="간단 김치볶음밥" class="w-full h-full object-cover"/>
+              </div>
+              <div class="p-4">
+                <h3 class="font-medium mb-2">간단 김치볶음밥</h3>
+                <p class="text-sm text-gray-600 line-clamp-2 mb-3">냉장고 속 김치로 5분 만에 완성하는 든든한 한 끼!</p>
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded">🔪 하</span>
+                  <span class="text-xs text-gray-500">⏱ 10분</span>
+                </div>
+                <div class="flex items-center justify-between text-sm text-gray-500">
+                  <span>❤ 245</span><span>💬 32</span><span>👀 1203</span>
+                </div>
+              </div>
+            </a>
+            <a th:href="@{/recipe/detail/3}" href="/recipe/detail/3" class="recipe-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow text-left block border border-gray-100">
+              <div class="aspect-video bg-gray-200 overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1653697469316-955d5ebe5994?w=400" alt="매콤 라면볶이" class="w-full h-full object-cover"/>
+              </div>
+              <div class="p-4">
+                <h3 class="font-medium mb-2">매콤 라면볶이</h3>
+                <p class="text-sm text-gray-600 line-clamp-2 mb-3">라면을 국물 없이 볶아서 더 맛있게!</p>
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded">🔪 하</span>
+                  <span class="text-xs text-gray-500">⏱ 15분</span>
+                </div>
+                <div class="flex items-center justify-between text-sm text-gray-500">
+                  <span>❤ 312</span><span>💬 45</span><span>👀 1567</span>
+                </div>
+              </div>
+            </a>
+            <a th:href="@{/recipe/detail/5}" href="/recipe/detail/5" class="recipe-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow text-left block border border-gray-100">
+              <div class="aspect-video bg-gray-200 overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1573470571028-a0ca7a723959?w=400" alt="된장찌개" class="w-full h-full object-cover"/>
+              </div>
+              <div class="p-4">
+                <h3 class="font-medium mb-2">된장찌개</h3>
+                <p class="text-sm text-gray-600 line-clamp-2 mb-3">구수한 된장에 두부와 야채를 넣은 따뜻한 국물 요리.</p>
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded">🔪 하</span>
+                  <span class="text-xs text-gray-500">⏱ 15분</span>
+                </div>
+                <div class="flex items-center justify-between text-sm text-gray-500">
+                  <span>❤ 156</span><span>💬 19</span><span>👀 734</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 플로팅 가챠 버튼 -->
+    <a th:href="@{/recipe/create}" href="/recipe/create" id="floating-gacha" class="floating-gacha fixed bottom-8 right-8 w-16 h-16 flex items-center justify-center bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 z-50 overflow-hidden">
+      <div class="absolute inset-0 bg-white/20 rounded-full blur-sm animate-spin-slow pointer-events-none"></div>
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="relative z-10 text-white shrink-0"><rect width="12" height="12" x="2" y="10" rx="2" ry="2"/><path d="m17.92 14 3.5-3.5a2.24 2.24 0 0 0 0-3l-5-4.92a2.24 2.24 0 0 0-3 0L10 6"/><path d="M6 18h.01"/><path d="M10 14h.01"/><path d="M15 6h.01"/><path d="M18 9h.01"/></svg>
+      <span class="absolute -top-1 -right-1 bg-yellow-400 text-purple-900 text-[10px] font-bold px-1.5 py-0.5 rounded-full shadow-lg whitespace-nowrap">🎲 가챠</span>
+    </a>
+  </div>
+  <script th:src="@{/js/home.js}"></script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+/* Recipe App - Custom styles & animations (use with Tailwind CDN) */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  min-height: 100vh;
+  color: #1f2937;
+}
+
+/* Animations */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes dice-wiggle {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(10deg) scale(1.1); }
+  50% { transform: rotate(-10deg) scale(1); }
+  75% { transform: rotate(10deg) scale(1.1); }
+}
+
+@keyframes float-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease-out forwards;
+}
+
+.animate-dice-wiggle {
+  animation: dice-wiggle 2s ease-in-out infinite;
+}
+
+.animate-float-bounce {
+  animation: float-bounce 2s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 3s linear infinite;
+}
+
+/* Custom shadow */
+.shadow-3xl {
+  box-shadow: 0 35px 60px -15px rgb(0 0 0 / 0.3);
+}
+
+/* Gacha / floating button */
+.floating-gacha {
+  animation: float-bounce 2s ease-in-out infinite;
+  min-width: 4rem;
+  min-height: 4rem;
+}
+
+.floating-gacha:hover {
+  animation: none;
+  transform: scale(1.1) rotate(5deg);
+}
+
+.floating-gacha:active {
+  animation: none;
+  transform: scale(0.9);
+}
+
+.group:hover .gacha-btn {
+  transform: scale(1.1);
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+/* 가챠 배너 배경 오버레이 - group hover 시 opacity 증가 */
+.gacha-banner-overlay {
+  opacity: 0.1;
+  transition: opacity 0.3s ease;
+}
+.group:hover .gacha-banner-overlay {
+  opacity: 0.2;
+}
+
+/* 유틸리티 - bg-opacity, blur */
+.bg-white\/20 { background-color: rgba(255, 255, 255, 0.2); }
+.backdrop-blur-sm { backdrop-filter: blur(4px); }
+.blur-sm { filter: blur(4px); }
+.hidden { display: none !important; }
+
+/* Tab styles */
+.tab-active {
+  border-bottom: 2px solid #d97706;
+  color: #d97706;
+  font-weight: 500;
+}
+
+.tab-inactive {
+  color: #6b7280;
+}
+
+.tab-inactive:hover {
+  color: #374151;
+}
+
+.mypage-tab-active {
+  border-bottom: 2px solid #111827;
+  color: #111827;
+  font-weight: 500;
+}
+
+.mypage-tab-inactive {
+  color: #9ca3af;
+}
+
+.mypage-tab-inactive:hover {
+  color: #4b5563;
+}
+
+/* View toggle */
+.view-active {
+  background-color: #111827;
+  color: #fff;
+}
+
+.view-inactive {
+  background-color: #f3f4f6;
+  color: #4b5563;
+}
+
+.view-inactive:hover {
+  background-color: #e5e7eb;
+}
+
+/* Recipe card image hover */
+.recipe-card:hover img {
+  transform: scale(1.05);
+}
+.recipe-card img {
+  transition: transform 0.3s ease;
+}
+
+/* Line clamp */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Lucide icon sizing (when using data-lucide) */
+[data-lucide] {
+  width: 1.25em;
+  height: 1.25em;
+  flex-shrink: 0;
+}
