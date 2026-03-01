@@ -73,6 +73,11 @@ application.properties.yml
 uploads/
 
 ############################################
+# Claude Code Worktrees
+############################################
+.claude/
+
+############################################
 # AI Generated Images (runtime)
 ############################################
 src/main/resources/static/images/*.png
