@@ -23,8 +23,8 @@ public class RecipeEntity {
     private Integer difficultyId;
     private Integer purposeId;
     private Integer cuisineId;
-    private boolean aiGenerated;
-    private boolean isPublic;
+    private Boolean isAiGenerated;
+    private Boolean isPublic;
     private int viewCount;
     private int commentCount;
     private int likeCount;
@@ -55,7 +55,7 @@ public class RecipeEntity {
         private String normalizedName;
         private BigDecimal quantity;
         private String unit;
-        private boolean aiGenerated;
+        private Boolean isAiGenerated;
     }
 
     @Data

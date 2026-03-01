@@ -6,15 +6,15 @@
     <insert id="insertRecipe" parameterType="com.dailytable.dailytable.domain.recipe.RecipeEntity"
             useGeneratedKeys="true" keyProperty="id">
         INSERT INTO recipes (user_id, title, title_image, description, cooking_time,
-        difficulty_id, purpose_id, cuisine_id, is_ai_generated, is_public)
+                            difficulty_id, purpose_id, cuisine_id, is_ai_generated, is_public)
         VALUES (#{userId}, #{title}, #{titleImage}, #{description}, #{cookingTime},
-        #{difficultyId}, #{purposeId}, #{cuisineId}, #{aiGenerated}, #{isPublic})
+                #{difficultyId}, #{purposeId}, #{cuisineId}, #{isAiGenerated}, #{isPublic})
     </insert>
 
     <insert id="insertRecipeIngredient"
             parameterType="com.dailytable.dailytable.domain.recipe.RecipeEntity$RecipeIngredient">
         INSERT INTO recipe_ingredients (recipe_id, name, normalized_name, quantity, unit, is_ai_generated)
-        VALUES (#{recipeId}, #{name}, #{normalizedName}, #{quantity}, #{unit}, #{aiGenerated})
+        VALUES (#{recipeId}, #{name}, #{normalizedName}, #{quantity}, #{unit}, #{isAiGenerated})
     </insert>
 
     <insert id="insertRecipeStep"
@@ -31,17 +31,17 @@
 
     <select id="findById" resultType="com.dailytable.dailytable.domain.recipe.RecipeEntity">
         SELECT r.*,
-        d.name AS difficulty_name,
-        p.name AS purpose_name,
-        c.name AS cuisine_name,
-        u.nickname AS user_nickname
+               d.name AS difficulty_name,
+               p.name AS purpose_name,
+               c.name AS cuisine_name,
+               u.nickname AS user_nickname
         FROM recipes r
         JOIN difficulties d ON r.difficulty_id = d.id
         JOIN purposes p ON r.purpose_id = p.id
         JOIN cuisines c ON r.cuisine_id = c.id
         JOIN users u ON r.user_id = u.id
         WHERE r.id = #{id}
-        AND r.deleted_at IS NULL
+          AND r.deleted_at IS NULL
     </select>
 
     <select id="findIngredientsByRecipeId"

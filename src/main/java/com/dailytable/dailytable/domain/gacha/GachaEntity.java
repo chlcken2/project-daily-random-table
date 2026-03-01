@@ -24,8 +24,8 @@ public class GachaEntity {
     private Integer difficultyId;
     private Integer purposeId;
     private Integer cuisineId;
-    private boolean aiGenerated;
-    private boolean isPublic;
+    private Boolean isAiGenerated;
+    private Boolean isPublic;
     private LocalDateTime createdAt;
 
     private List<Ingredient> ingredients;

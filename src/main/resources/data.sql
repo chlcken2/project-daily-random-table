@@ -2,7 +2,7 @@
 INSERT IGNORE INTO difficulties (id, name) VALUES (1, '하'), (2, '중'), (3, '상');
 
 -- Seed: purposes
-INSERT IGNORE INTO purposes (id, name) VALUES (1,'가정식')(2, '속세의맛'), (3, '다이어트'), (4, '건강식'), (5, '술안주');
+INSERT IGNORE INTO purposes (id, name) VALUES (1, '속세의맛'), (2, '다이어트'), (3, '건강식'), (4, '술안주');
 
 -- Seed: cuisines
 INSERT IGNORE INTO cuisines (id, name) VALUES (1, '상관없음'), (2, '한식'), (3, '일식'), (4, '중식'), (5, '양식'), (6, '동남아');

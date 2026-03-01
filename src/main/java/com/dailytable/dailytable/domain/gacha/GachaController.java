@@ -21,7 +21,6 @@ public class GachaController {
     private final GachaService gachaService;
     private final RecipeService recipeService;
 
-
     @GetMapping("/home")
     public String getGachaHome(Model model) {
         GachaDto.DailyCountResponse dailyCount = gachaService.getDailyCount(DUMMY_USER_ID);

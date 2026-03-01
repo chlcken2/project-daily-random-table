@@ -7,9 +7,9 @@
         SELECT COUNT(*)
         FROM recipes
         WHERE user_id = #{userId}
-        AND is_ai_generated = true
-        AND DATE(created_at) = CURDATE()
-        AND deleted_at IS NULL
+          AND is_ai_generated = true
+          AND DATE(created_at) = CURDATE()
+          AND deleted_at IS NULL
     </select>
 
 </mapper>
