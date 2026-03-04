@@ -27,15 +27,26 @@
     return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
+  // ─────────────────────────────────────────────────────────────
+  // ApiResponse 구조:
+  //   { success, message, data, errorCode }
+  //
+  // /gacha/count   → data = DailyCountResponse { count, max, canGenerate }
+  // /gacha/generate → data = GenerateResponse  { recipe: { id, title, ... } }
+  // /gacha/publish  → data = null, message = "모두의 식탁에 등록되었습니다!"
+  // ─────────────────────────────────────────────────────────────
+
   // Load daily count on page load
   function loadDailyCount() {
     fetch('/gacha/count')
       .then(function(r) { return r.json(); })
-      .then(function(data) {
-        gachaCount = data.count;
-        maxDaily = data.max;
+      .then(function(res) {
+        if (!res.success) return;
+        var d = res.data;  // DailyCountResponse
+        gachaCount = d.count;
+        maxDaily = d.max;
         gachaCountEl.textContent = gachaCount;
-        if (!data.canGenerate) {
+        if (!d.canGenerate) {
           gachaLimitMsg.classList.remove('hidden');
         }
         updateGachaBtn();
@@ -190,15 +201,17 @@
       body: JSON.stringify(requestBody)
     })
     .then(function(r) { return r.json(); })
-    .then(function(data) {
+    .then(function(res) {
+      // res = ApiResponse { success, message, data: GenerateResponse { recipe }, errorCode }
       clearInterval(progressInterval);
       progressBar.style.width = '100%';
 
       setTimeout(function() {
         gachaRolling.classList.add('hidden');
 
-        if (!data.success) {
-          showError(data.message || '레시피 생성에 실패했습니다.');
+        if (!res.success) {
+          // GlobalExceptionHandler가 반환한 에러 (GACHA_DAILY_LIMIT, GACHA_AI_FAILURE 등)
+          showError(res.message || '레시피 생성에 실패했습니다.');
           gachaBtn.disabled = false;
           gachaBtnText.textContent = '🎲 식단 가챠 돌리기!';
           return;
@@ -211,9 +224,10 @@
           gachaLimitMsg.classList.remove('hidden');
         }
 
-        // Show result
-        currentRecipeId = data.recipe.id;
-        showResult(data.recipe);
+        // res.data = GenerateResponse, res.data.recipe = RecipeResult
+        var recipe = res.data.recipe;
+        currentRecipeId = recipe.id;
+        showResult(recipe);
         gachaBtn.disabled = gachaCount >= maxDaily || ingredients.length === 0;
         gachaBtnText.textContent = '🎲 식단 가챠 돌리기!';
       }, 500);
@@ -269,15 +283,16 @@
   }
 
   // Private save (나만의 식탁)
+  // res = ApiResponse { success, message, data:null }
   document.getElementById('btn-private').addEventListener('click', function() {
     if (!currentRecipeId) return;
     fetch('/gacha/publish/' + currentRecipeId + '?isPublic=false', { method: 'POST' })
       .then(function(r) { return r.json(); })
-      .then(function(data) {
-        if (data.success) {
+      .then(function(res) {
+        if (res.success) {
           window.location.href = '/mypage';
         } else {
-          showError(data.message);
+          showError(res.message);
         }
       })
       .catch(function() { showError('저장에 실패했습니다.'); });
@@ -288,11 +303,11 @@
     if (!currentRecipeId) return;
     fetch('/gacha/publish/' + currentRecipeId + '?isPublic=true', { method: 'POST' })
       .then(function(r) { return r.json(); })
-      .then(function(data) {
-        if (data.success) {
+      .then(function(res) {
+        if (res.success) {
           alert('모두의 식탁에 등록되었습니다! 🎉');
         } else {
-          showError(data.message);
+          showError(res.message);
         }
       })
       .catch(function() { showError('등록에 실패했습니다.'); });

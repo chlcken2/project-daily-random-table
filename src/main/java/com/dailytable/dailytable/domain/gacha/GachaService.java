@@ -5,6 +5,7 @@ import com.dailytable.dailytable.domain.recipe.RecipeEntity;
 import com.dailytable.dailytable.domain.recipe.RecipeService;
 import com.dailytable.dailytable.global.ai.GeminiClient;
 import com.dailytable.dailytable.global.ai.ImageGenerationClient;
+import com.dailytable.dailytable.global.common.ErrorCode;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -79,18 +80,12 @@ public class GachaService {
         // Check daily limit
         int todayCount = gachaRepository.countTodayGenerations(userId);
         if (todayCount >= MAX_DAILY) {
-            return GachaDto.GenerateResponse.builder()
-                    .success(false)
-                    .message("오늘의 가챠 기회를 모두 사용했어요! 내일 다시 도전하세요")
-                    .build();
+            throw new GachaException(ErrorCode.GACHA_DAILY_LIMIT);
         }
 
         // Validate: at least 1 ingredient required
         if (request.getIngredients() == null || request.getIngredients().isEmpty()) {
-            return GachaDto.GenerateResponse.builder()
-                    .success(false)
-                    .message("재료를 1개 이상 추가해주세요!")
-                    .build();
+            throw new GachaException(ErrorCode.GACHA_NO_INGREDIENTS);
         }
 
         // Build ingredient/sauce strings for AI prompt
@@ -136,10 +131,7 @@ public class GachaService {
 
         if (recipeJson == null || !recipeJson.has("recipe")) {
             log.error("All Gemini attempts failed", lastException);
-            return GachaDto.GenerateResponse.builder()
-                    .success(false)
-                    .message("현재 내부 서비스의 지연으로 통신이 원활하지 않습니다. 새로고침 후 이용 부탁드립니다~")
-                    .build();
+            throw new GachaException(ErrorCode.GACHA_AI_FAILURE);
         }
 
         // Parse AI response
@@ -237,10 +229,7 @@ public class GachaService {
             recipeService.saveFullRecipe(recipeEntity);
         } catch (Exception e) {
             log.error("Failed to save recipe to DB", e);
-            return GachaDto.GenerateResponse.builder()
-                    .success(false)
-                    .message("레시피 저장에 실패했습니다. 다시 시도해주세요.")
-                    .build();
+            throw new GachaException(ErrorCode.GACHA_SAVE_FAILURE);
         }
 
         // Build response DTO
@@ -282,8 +271,6 @@ public class GachaService {
                 .build();
 
         return GachaDto.GenerateResponse.builder()
-                .success(true)
-                .message("레시피가 생성되었습니다!")
                 .recipe(result)
                 .build();
     }

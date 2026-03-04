@@ -2,6 +2,7 @@ package com.dailytable.dailytable.domain.gacha;
 
 import com.dailytable.dailytable.domain.recipe.RecipeEntity;
 import com.dailytable.dailytable.domain.recipe.RecipeService;
+import com.dailytable.dailytable.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -28,46 +29,42 @@ public class GachaController {
         return "recipe-create";
     }
 
+    /**
+     * 레시피 생성
+     * 성공: ApiResponse { success:true, message:"레시피가 생성되었습니다!", data: { recipe:{...} } }
+     * 실패: GlobalExceptionHandler → ApiResponse { success:false, message:"...", errorCode:"GACHA_*" }
+     */
     @PostMapping("/generate")
     @ResponseBody
-    public ResponseEntity<GachaDto.GenerateResponse> generateRecipe(
+    public ResponseEntity<ApiResponse<GachaDto.GenerateResponse>> generateRecipe(
             @RequestBody GachaDto.GenerateRequest request) {
-        try {
-            GachaDto.GenerateResponse response = gachaService.generate(request, DUMMY_USER_ID);
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            log.error("Recipe generation failed", e);
-            return ResponseEntity.ok(GachaDto.GenerateResponse.builder()
-                    .success(false)
-                    .message("현재 내부 서비스의 지연으로 통신이 원활하지 않습니다. 새로고침 후 이용 부탁드립니다~")
-                    .build());
-        }
+        GachaDto.GenerateResponse response = gachaService.generate(request, DUMMY_USER_ID);
+        return ResponseEntity.ok(ApiResponse.success("레시피가 생성되었습니다!", response));
     }
 
+    /**
+     * 오늘 남은 가챠 횟수 조회
+     * 성공: ApiResponse { success:true, message:"OK", data: { count:1, max:3, canGenerate:true } }
+     */
     @GetMapping("/count")
     @ResponseBody
-    public ResponseEntity<GachaDto.DailyCountResponse> getDailyCount() {
-        return ResponseEntity.ok(gachaService.getDailyCount(DUMMY_USER_ID));
+    public ResponseEntity<ApiResponse<GachaDto.DailyCountResponse>> getDailyCount() {
+        return ResponseEntity.ok(ApiResponse.success(gachaService.getDailyCount(DUMMY_USER_ID)));
     }
 
+    /**
+     * 레시피 공개/비공개 저장
+     * 성공: ApiResponse { success:true, message:"모두의 식탁에 등록되었습니다!" }
+     * 실패: GlobalExceptionHandler → ApiResponse { success:false, message:"...", errorCode:"RECIPE_NOT_FOUND" }
+     */
     @PostMapping("/publish/{id}")
     @ResponseBody
-    public ResponseEntity<GachaDto.GenerateResponse> publishRecipe(
+    public ResponseEntity<ApiResponse<Void>> publishRecipe(
             @PathVariable Long id,
             @RequestParam(defaultValue = "true") boolean isPublic) {
-        try {
-            recipeService.updatePublicStatus(id, isPublic);
-            return ResponseEntity.ok(GachaDto.GenerateResponse.builder()
-                    .success(true)
-                    .message(isPublic ? "모두의 식탁에 등록되었습니다!" : "나만의 식탁에 등록되었습니다!")
-                    .build());
-        } catch (Exception e) {
-            log.error("Publish failed for recipe {}", id, e);
-            return ResponseEntity.ok(GachaDto.GenerateResponse.builder()
-                    .success(false)
-                    .message("등록에 실패했습니다. 다시 시도해주세요.")
-                    .build());
-        }
+        recipeService.updatePublicStatus(id, isPublic);
+        String msg = isPublic ? "모두의 식탁에 등록되었습니다!" : "나만의 식탁에 등록되었습니다!";
+        return ResponseEntity.ok(ApiResponse.success(msg, null));
     }
 
     @GetMapping("/recipe/{id}")

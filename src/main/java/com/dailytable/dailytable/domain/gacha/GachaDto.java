@@ -32,13 +32,12 @@ public class GachaDto {
         private String unit;
     }
 
+    // ApiResponse가 success/message를 담당하므로 data 역할만 수행
     @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     public static class GenerateResponse {
-        private boolean success;
-        private String message;
         private RecipeResult recipe;
     }
 
