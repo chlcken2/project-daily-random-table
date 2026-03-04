@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title th:text="${recipe.title} + ' - 자취방 레시피'">레시피 상세</title>
+  <title th:text="${recipe.title} + ' - 一人暮らしレシピ'">レシピ詳細</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" th:href="@{/css/recipe.css}"/>
 </head>
@@ -12,7 +12,7 @@
     <div class="max-w-4xl mx-auto px-4 py-4">
       <a th:href="@{/gacha/home}" class="flex items-center gap-2 hover:text-amber-200 transition-colors">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
-        가챠로 돌아가기
+        ガチャに戻る
       </a>
     </div>
   </header>
@@ -21,7 +21,7 @@
     <!-- Title Image -->
     <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-6">
       <div class="aspect-video bg-gray-200 overflow-hidden">
-        <img th:src="${recipe.titleImage}" th:alt="${recipe.title}" 
+        <img th:src="${recipe.titleImage}" th:alt="${recipe.title}"
              onerror="this.src='https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=600'"
              class="w-full h-full object-cover"/>
       </div>
@@ -31,12 +31,12 @@
     <section class="bg-white rounded-2xl shadow-lg p-6 mb-6">
       <div class="flex items-start justify-between mb-4">
         <div class="flex-1">
-          <h1 class="text-3xl font-bold mb-2" th:text="${recipe.title}">레시피 제목</h1>
-          <p class="text-gray-600 mb-4" th:text="${recipe.description}">요약</p>
+          <h1 class="text-3xl font-bold mb-2" th:text="${recipe.title}">レシピタイトル</h1>
+          <p class="text-gray-600 mb-4" th:text="${recipe.description}">概要</p>
           <div class="flex items-center gap-2 text-sm text-gray-500">
-            <span th:text="'by ' + ${recipe.userNickname}">by 셰프</span>
+            <span th:text="'by ' + ${recipe.userNickname}">by シェフ</span>
             <span>•</span>
-            <span>AI 생성</span>
+            <span>AI生成</span>
           </div>
         </div>
       </div>
@@ -44,39 +44,39 @@
       <!-- Stats -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <div class="bg-amber-50 p-4 rounded-lg text-center">
-          <p class="text-sm text-gray-600">난이도</p>
-          <p class="font-medium text-lg" th:text="${recipe.difficultyName}">중</p>
+          <p class="text-sm text-gray-600">難易度</p>
+          <p class="font-medium text-lg" th:text="${recipe.difficultyName}">中</p>
         </div>
         <div class="bg-blue-50 p-4 rounded-lg text-center">
-          <p class="text-sm text-gray-600">조리시간</p>
-          <p class="font-medium text-lg" th:text="${recipe.cookingTime} + '분'">30분</p>
+          <p class="text-sm text-gray-600">調理時間</p>
+          <p class="font-medium text-lg" th:text="${recipe.cookingTime} + '分'">30分</p>
         </div>
         <div class="bg-green-50 p-4 rounded-lg text-center">
-          <p class="text-sm text-gray-600">목적</p>
-          <p class="font-medium text-lg" th:text="${recipe.purposeName}">속세의맛</p>
+          <p class="text-sm text-gray-600">目的</p>
+          <p class="font-medium text-lg" th:text="${recipe.purposeName}">ガッツリ系</p>
         </div>
         <div class="bg-purple-50 p-4 rounded-lg text-center">
-          <p class="text-sm text-gray-600">국가</p>
-          <p class="font-medium text-lg" th:text="${recipe.cuisineName}">한식</p>
+          <p class="text-sm text-gray-600">料理スタイル</p>
+          <p class="font-medium text-lg" th:text="${recipe.cuisineName}">韓国料理</p>
         </div>
       </div>
 
       <!-- Tags -->
       <div class="flex flex-wrap gap-2 mb-6">
-        <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm" th:text="'#' + ${recipe.cuisineName}">#한식</span>
-        <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm" th:text="'#' + ${recipe.purposeName}">#속세의맛</span>
-        <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm" th:text="'#' + ${recipe.difficultyName}">#중</span>
+        <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm" th:text="'#' + ${recipe.cuisineName}">#韓国料理</span>
+        <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm" th:text="'#' + ${recipe.purposeName}">#ガッツリ系</span>
+        <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm" th:text="'#' + ${recipe.difficultyName}">#中</span>
       </div>
     </section>
 
     <!-- Nutrients -->
     <section class="bg-white rounded-2xl shadow-lg p-6 mb-6" th:if="${recipe.nutrients != null and !recipe.nutrients.isEmpty()}">
-      <h2 class="text-2xl font-bold mb-4">📊 영양 정보</h2>
+      <h2 class="text-2xl font-bold mb-4">📊 栄養情報</h2>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div th:each="nutrient : ${recipe.nutrients}" class="p-4 rounded-lg text-center"
              th:classappend="${nutrient.nutrientName == 'calories' ? 'bg-red-50' : (nutrient.nutrientName == 'protein' ? 'bg-blue-50' : (nutrient.nutrientName == 'fat' ? 'bg-yellow-50' : 'bg-green-50'))}">
           <p class="text-sm text-gray-600"
-             th:text="${nutrient.nutrientName == 'calories' ? '칼로리' : (nutrient.nutrientName == 'protein' ? '단백질' : (nutrient.nutrientName == 'fat' ? '지방' : '탄수화물'))}">영양소</p>
+             th:text="${nutrient.nutrientName == 'calories' ? 'カロリー' : (nutrient.nutrientName == 'protein' ? 'タンパク質' : (nutrient.nutrientName == 'fat' ? '脂質' : '炭水化物'))}">栄養素</p>
           <p class="font-bold text-lg" th:text="${nutrient.amount} + ${nutrient.unit}">0g</p>
         </div>
       </div>
@@ -84,11 +84,11 @@
 
     <!-- Ingredients -->
     <section class="bg-white rounded-2xl shadow-lg p-6 mb-6">
-      <h2 class="text-2xl font-bold mb-4">📦 재료</h2>
+      <h2 class="text-2xl font-bold mb-4">📦 食材</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div th:each="ingredient : ${recipe.ingredients}"
              class="flex items-center justify-between bg-amber-50 p-3 rounded-lg">
-          <span th:text="${ingredient.name}">재료명</span>
+          <span th:text="${ingredient.name}">食材名</span>
           <span class="text-gray-600" th:text="${ingredient.quantity} + ${ingredient.unit}">100g</span>
         </div>
       </div>
@@ -96,13 +96,13 @@
 
     <!-- Steps -->
     <section class="bg-white rounded-2xl shadow-lg p-6 mb-6">
-      <h2 class="text-2xl font-bold mb-4">👨‍🍳 조리 방법</h2>
+      <h2 class="text-2xl font-bold mb-4">👨‍🍳 調理方法</h2>
       <div class="space-y-4">
         <div th:each="step : ${recipe.steps}" class="flex gap-4">
           <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-600 text-white rounded-full flex items-center justify-center font-medium"
                th:text="${step.stepOrder}">1</div>
           <div class="flex-1 bg-gray-50 p-4 rounded-lg">
-            <p th:text="${step.content}">조리 단계</p>
+            <p th:text="${step.content}">調理ステップ</p>
           </div>
         </div>
       </div>
@@ -111,7 +111,7 @@
     <!-- Back to Gacha -->
     <div class="text-center">
       <a th:href="@{/gacha/home}" class="inline-block bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-xl font-medium shadow-lg transition-colors">
-        🎲 다시 가챠 돌리기
+        🎲 もう一度ガチャを回す
       </a>
     </div>
   </div>
