@@ -217,7 +217,7 @@
       if (!overlay) return;
       overlay.classList.remove('hidden');
       setPhase(0);
-      musicRef = startMusic();
+      musicRef = (typeof SoundManager !== 'undefined') ? SoundManager.startBGM() : startMusic();
 
       var t1 = setTimeout(function(){ dropCoin(); setPhase(1); }, 600);
       var t2 = setTimeout(function(){ dropCoin(); }, 1300);
@@ -394,10 +394,7 @@
     gachaBtn.disabled = true;
     gachaBtnText.textContent = '🍳 料理中...';
 
-    // Open machine overlay immediately
-    GachaMachine.open();
-
-    var MIN_ANIM_MS = 5800;  // minimum exciting wait time
+    var MIN_ANIM_MS = 5800;  // minimum machine-animation time (starts AFTER wow)
     var apiDone  = false;
     var animDone = false;
     var apiPayload = null;
@@ -424,11 +421,12 @@
       });
     }
 
-    // Minimum animation timer (excitement buffer)
-    var animTimer = setTimeout(function(){
-      animDone = true;
-      tryReveal();
-    }, MIN_ANIM_MS);
+    // ★ WOW pre-sequence (≈2.9 s) → then open machine
+    //   MIN_ANIM_MS timer starts AFTER wow so the machine runs its full phases
+    WowSequence.run(function () {
+      GachaMachine.open();
+      setTimeout(function () { animDone = true; tryReveal(); }, MIN_ANIM_MS);
+    });
 
     // API call
     var purpose    = document.querySelector('input[name="purpose"]:checked').value;
