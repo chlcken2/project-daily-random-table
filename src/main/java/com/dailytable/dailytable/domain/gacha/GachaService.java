@@ -6,8 +6,10 @@ import com.dailytable.dailytable.domain.recipe.RecipeService;
 import com.dailytable.dailytable.global.ai.GeminiClient;
 import com.dailytable.dailytable.global.ai.ImageGenerationClient;
 import com.dailytable.dailytable.global.common.ErrorCode;
+import com.dailytable.dailytable.global.util.RecipeMapConverter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -17,58 +19,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.dailytable.dailytable.global.common.RecipeType.RECIPE_TYPE;
+import static com.dailytable.dailytable.global.util.RecipeMapConverter.*;
+
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class GachaService {
 
     private static final int MAX_DAILY = 3;
     private static final int MAX_RETRY = 2;
 
-    private static final Map<String, Integer> PURPOSE_MAP = Map.of(
-            "속세의맛", 1, "다이어트", 2, "건강식", 3, "술안주", 4
-    );
-    private static final Map<String, Integer> CUISINE_MAP = Map.of(
-            "상관없음", 1, "한식", 2, "일식", 3, "중식", 4, "양식", 5, "동남아", 6
-    );
-    private static final Map<String, Integer> DIFFICULTY_MAP = Map.of(
-            "상관없음", 0, "하", 1, "중", 2, "상", 3
-    );
-    private static final Map<String, String> DIFFICULTY_AI_MAP = Map.of(
-            "하", "LOW", "중", "MEDIUM", "상", "HIGH", "상관없음", "ANY"
-    );
-    private static final Map<String, Integer> DIFFICULTY_RESULT_MAP = Map.of(
-            "LOW", 1, "MEDIUM", 2, "HIGH", 3
-    );
-    private static final Map<String, String> DIFFICULTY_LABEL_MAP = Map.of(
-            "LOW", "하", "MEDIUM", "중", "HIGH", "상"
-    );
-    private static final Map<Integer, String> CUISINE_STYLE_MAP = Map.of(
-            1, "Any", 2, "Korean", 3, "Japanese", 4, "Chinese", 5, "Western", 6, "Southeast Asian"
-    );
-
-    private final GachaRepository gachaRepository;
+    private final GachaMapper gachaMapper;
     private final RecipeService recipeService;
     private final IngredientService ingredientService;
     private final GeminiClient geminiClient;
     private final ImageGenerationClient imageGenerationClient;
     private final ObjectMapper objectMapper;
 
-    public GachaService(GachaRepository gachaRepository,
-                        RecipeService recipeService,
-                        IngredientService ingredientService,
-                        GeminiClient geminiClient,
-                        ImageGenerationClient imageGenerationClient,
-                        ObjectMapper objectMapper) {
-        this.gachaRepository = gachaRepository;
-        this.recipeService = recipeService;
-        this.ingredientService = ingredientService;
-        this.geminiClient = geminiClient;
-        this.imageGenerationClient = imageGenerationClient;
-        this.objectMapper = objectMapper;
-    }
-
     public GachaDto.DailyCountResponse getDailyCount(Long userId) {
-        int count = gachaRepository.countTodayGenerations(userId);
+        int count = gachaMapper.countTodayGenerations(userId);
         return GachaDto.DailyCountResponse.builder()
                 .count(count)
                 .max(MAX_DAILY)
@@ -78,7 +48,7 @@ public class GachaService {
 
     public GachaDto.GenerateResponse generate(GachaDto.GenerateRequest request, Long userId) {
         // Check daily limit
-        int todayCount = gachaRepository.countTodayGenerations(userId);
+        int todayCount = gachaMapper.countTodayGenerations(userId);
         if (todayCount >= MAX_DAILY) {
             throw new GachaException(ErrorCode.GACHA_DAILY_LIMIT);
         }
@@ -105,7 +75,7 @@ public class GachaService {
         String purpose = request.getPurpose() != null ? request.getPurpose() : "속세의맛";
         String cuisine = request.getCuisine() != null ? request.getCuisine() : "상관없음";
         String difficulty = request.getDifficulty() != null ? request.getDifficulty() : "상관없음";
-        String aiDifficulty = DIFFICULTY_AI_MAP.getOrDefault(difficulty, "ANY");
+        String aiDifficulty = RecipeMapConverter.DIFFICULTY_AI_MAP.getOrDefault(difficulty, "ANY");
 
         // Call Gemini with retry
         JsonNode recipeJson = null;
@@ -135,7 +105,7 @@ public class GachaService {
         }
 
         // Parse AI response
-        JsonNode recipe = recipeJson.get("recipe");
+        JsonNode recipe = recipeJson.get(RECIPE_TYPE.getName());
         String title = recipe.path("title").asText("AI 레시피");
         String summary = recipe.path("summary").asText("");
         String aiDifficultyResult = recipe.path("difficulty").asText("MEDIUM");
