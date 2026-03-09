@@ -15,10 +15,10 @@ public class RecipeDetailDto {
 	private String titleImage;
 	private String description;
 	private int cookingTime;
-    private String difficultyLabel;
-	private String difficultyId;
+	private String difficultyLabel;
+	private String purpose;
 	private String createdAtFormatted;
-	private int cuisineId;
+	private String cuisine;
 	private boolean isAiGenerated;
 	private boolean isPublic;
 	private int viewCount;
