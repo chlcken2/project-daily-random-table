@@ -10,6 +10,11 @@
         SELECT EXISTS(SELECT 1 FROM users WHERE nickname = #{nickname} AND deleted_at IS NULL)
     </select>
 
+    <select id="selectByEmail" resultType="com.dailytable.dailytable.domain.auth.UserEntity">
+        SELECT id, email, password, nickname, role, created_at, updated_at, deleted_at
+        FROM users WHERE email = #{email} AND deleted_at IS NULL
+    </select>
+
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO users (email, password, nickname, role, created_at, updated_at, deleted_at)
         VALUES (#{email}, #{password}, #{nickname}, #{role}, NOW(), NOW(), NULL)

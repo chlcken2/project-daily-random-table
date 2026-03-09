@@ -8,5 +8,6 @@ public interface AuthMapper {
 
     boolean existsByEmail(@Param("email") String email);
     boolean existsByNickname(@Param("nickname") String nickname);
+    UserEntity selectByEmail(@Param("email") String email);
     void insert(UserEntity user);
 }

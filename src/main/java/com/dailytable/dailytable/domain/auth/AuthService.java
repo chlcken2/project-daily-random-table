@@ -2,18 +2,28 @@ package com.dailytable.dailytable.domain.auth;
 
 import com.dailytable.dailytable.global.common.ErrorCode;
 import com.dailytable.dailytable.global.exception.BaseException;
+import com.dailytable.dailytable.global.jwt.JwtProvider;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 public class AuthService {
 
+    private static final int REFRESH_TOKEN_VALID_DAYS = 7;
+
     private final AuthMapper authMapper;
     private final PasswordEncoder passwordEncoder;
+    private final JwtProvider jwtProvider;
+    private final RefreshTokenMapper refreshTokenMapper;
 
-    public AuthService(AuthMapper authMapper, PasswordEncoder passwordEncoder) {
+    public AuthService(AuthMapper authMapper, PasswordEncoder passwordEncoder,
+                       JwtProvider jwtProvider, RefreshTokenMapper refreshTokenMapper) {
         this.authMapper = authMapper;
         this.passwordEncoder = passwordEncoder;
+        this.jwtProvider = jwtProvider;
+        this.refreshTokenMapper = refreshTokenMapper;
     }
 
     public void signup(UserSignupRequest dto) {
@@ -41,5 +51,40 @@ public class AuthService {
                 .build();
 
         authMapper.insert(user);
+    }
+
+    public AuthResponse login(UserLoginRequest dto) {
+        String email = dto.getEmail() != null ? dto.getEmail().trim() : "";
+        String password = dto.getPassword() != null ? dto.getPassword().trim() : "";
+
+        if (email.isEmpty() || password.isEmpty()) {
+            throw new BaseException(ErrorCode.INVALID_LOGIN);
+        }
+
+        UserEntity user = authMapper.selectByEmail(email);
+        if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
+            throw new BaseException(ErrorCode.INVALID_LOGIN);
+        }
+
+        String accessToken = jwtProvider.createAccessToken(user.getId());
+        String refreshToken = jwtProvider.createRefreshToken(user.getId());
+        LocalDateTime expiresAt = LocalDateTime.now().plusDays(REFRESH_TOKEN_VALID_DAYS);
+
+        RefreshToken rt = RefreshToken.builder()
+                .userId(user.getId())
+                .token(refreshToken)
+                .expiresAt(expiresAt)
+                .build();
+        refreshTokenMapper.insert(rt);
+
+        return AuthResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+    }
+
+    public void logout(String refreshToken) {
+        if (refreshToken == null || refreshToken.isBlank()) return;
+        refreshTokenMapper.deleteByToken(refreshToken);
     }
 }
