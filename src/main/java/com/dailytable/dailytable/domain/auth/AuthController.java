@@ -28,6 +28,12 @@ public class AuthController {
         return ResponseEntity.ok(ApiResponse.success("로그인 성공", response));
     }
 
+    @PostMapping("/token/refresh")
+    public ResponseEntity<?> refresh(@RequestBody TokenRefreshRequest request) {
+        AuthResponse response = authService.refreshAccessToken(request);
+        return ResponseEntity.ok(ApiResponse.success("토큰 갱신 성공", response));
+    }
+
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@RequestHeader(value = "Authorization", required = false) String authHeader,
                                     @CookieValue(value = "refreshToken", required = false) String refreshToken) {

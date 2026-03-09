@@ -83,6 +83,28 @@ public class AuthService {
                 .build();
     }
 
+    public AuthResponse refreshAccessToken(TokenRefreshRequest dto) {
+        String refreshToken = dto.getRefreshToken() != null ? dto.getRefreshToken().trim() : "";
+        if (refreshToken.isEmpty()) {
+            throw new BaseException(ErrorCode.INVALID_REQUEST);
+        }
+
+        RefreshToken rt = refreshTokenMapper.selectByTokenAndNotExpired(
+                refreshToken,
+                LocalDateTime.now()
+        );
+        if (rt == null) {
+            throw new BaseException(ErrorCode.INVALID_REQUEST);
+        }
+
+        String newAccessToken = jwtProvider.createAccessToken(rt.getUserId());
+
+        return AuthResponse.builder()
+                .accessToken(newAccessToken)
+                .refreshToken(refreshToken)
+                .build();
+    }
+
     public void logout(String refreshToken) {
         if (refreshToken == null || refreshToken.isBlank()) return;
         refreshTokenMapper.deleteByToken(refreshToken);
