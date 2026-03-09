@@ -17,6 +17,7 @@ public class Security {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/auth/signup", "/auth/login").permitAll()
                         .requestMatchers("/", "/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/gacha/**").permitAll()
                         .requestMatchers("/api/gacha/**").permitAll()
