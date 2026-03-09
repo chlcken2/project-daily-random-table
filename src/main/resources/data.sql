@@ -1,11 +1,11 @@
 -- Seed: difficulties
-INSERT IGNORE INTO difficulties (id, name) VALUES (1, '하'), (2, '중'), (3, '상');
+INSERT IGNORE INTO difficulties (id, name) VALUES (1, '低'), (2, '中'), (3, '高');
 
 -- Seed: purposes
-INSERT IGNORE INTO purposes (id, name) VALUES (1, '속세의맛'), (2, '다이어트'), (3, '건강식'), (4, '술안주');
+INSERT IGNORE INTO purposes (id, name) VALUES (1, 'ガッツリ系'), (2, 'ダイエット'), (3, 'ヘルシー'), (4, 'おつまみ');
 
 -- Seed: cuisines
-INSERT IGNORE INTO cuisines (id, name) VALUES (1, '상관없음'), (2, '한식'), (3, '일식'), (4, '중식'), (5, '양식'), (6, '동남아');
+INSERT IGNORE INTO cuisines (id, name) VALUES (1, 'なんでも '), (2, '日本料理'), (3, '韓国料理'), (4, '中華料理'), (5, '洋食'), (6, '東南アジア料理');
 
 -- Seed: dummy test user (will be ignored if already exists)
 INSERT IGNORE INTO users (id, email, password, nickname) VALUES (1, 'test@dailytable.com', '$2a$10$dummyHashedPasswordForTestUser000000000000000', '테스트셰프');
