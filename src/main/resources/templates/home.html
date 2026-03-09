@@ -246,10 +246,8 @@
     </div>
 
     <!-- フローティングガチャボタン -->
-    <a th:href="@{/gacha/home}" href="/gacha/home" id="floating-gacha" class="floating-gacha fixed bottom-8 right-8 w-16 h-16 flex items-center justify-center bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 z-50 overflow-hidden">
-      <div class="absolute inset-0 bg-white/20 rounded-full blur-sm animate-spin-slow pointer-events-none"></div>
-      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="relative z-10 text-white shrink-0"><rect width="12" height="12" x="2" y="10" rx="2" ry="2"/><path d="m17.92 14 3.5-3.5a2.24 2.24 0 0 0 0-3l-5-4.92a2.24 2.24 0 0 0-3 0L10 6"/><path d="M6 18h.01"/><path d="M10 14h.01"/><path d="M15 6h.01"/><path d="M18 9h.01"/></svg>
-      <span class="absolute -top-1 -right-1 bg-yellow-400 text-purple-900 text-[10px] font-bold px-1.5 py-0.5 rounded-full shadow-lg whitespace-nowrap">🎲 ガチャ</span>
+    <a th:href="@{/gacha/home}" href="/gacha/home" id="floating-gacha" class="fixed bottom-8 right-8 w-32 h-32 flex items-center justify-center z-50 transition-all duration-300 hover:scale-110 hover:rotate-12">
+      <img src="https://i.ibb.co/4wgmvdV3/AI.png" alt="GACHA" class="w-32 h-32 object-cover">
     </a>
   </div>
   <script th:src="@{/js/home.js}"></script>
