@@ -5,21 +5,19 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import com.dailytable.dailytable.global.util.AuthHeaderUtils;
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
     private final AuthService authService;
 
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody @Valid UserSignupRequest request) {
         authService.signup(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success("가입 완료", null));
+        return ResponseEntity.ok(ApiResponse.success("가입 완료", null));
     }
 
     @PostMapping("/login")
@@ -37,13 +35,10 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@RequestHeader(value = "Authorization", required = false) String authHeader,
                                     @CookieValue(value = "refreshToken", required = false) String refreshToken) {
-        String token = refreshToken != null && !refreshToken.isBlank() ? refreshToken : extractRefreshTokenFromHeader(authHeader);
+    	String token = refreshToken != null && !refreshToken.isBlank() ? refreshToken : AuthHeaderUtils.extractBearerToken(authHeader);
         authService.logout(token);
         return ResponseEntity.ok(ApiResponse.success("로그아웃되었습니다.", null));
     }
 
-    private String extractRefreshTokenFromHeader(String authHeader) {
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) return null;
-        return authHeader.substring(7).trim();
-    }
+   
 }
