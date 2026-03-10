@@ -8,9 +8,12 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+
+@RequiredArgsConstructor
 @Service
 public class AuthService {
 
+	@Value("")
     private static final int REFRESH_TOKEN_VALID_DAYS = 7;
 
     private final AuthMapper authMapper;
@@ -18,24 +21,17 @@ public class AuthService {
     private final JwtProvider jwtProvider;
     private final RefreshTokenMapper refreshTokenMapper;
 
-    public AuthService(AuthMapper authMapper, PasswordEncoder passwordEncoder,
-                       JwtProvider jwtProvider, RefreshTokenMapper refreshTokenMapper) {
-        this.authMapper = authMapper;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtProvider = jwtProvider;
-        this.refreshTokenMapper = refreshTokenMapper;
-    }
-
+ 
     public void signup(UserSignupRequest dto) {
         String email = dto.getEmail() != null ? dto.getEmail().trim() : "";
         String nickname = dto.getNickname() != null ? dto.getNickname().trim() : "";
         String password = dto.getPassword() != null ? dto.getPassword().trim() : "";
         String confirmPassword = dto.getConfirmPassword() != null ? dto.getConfirmPassword().trim() : "";
 
-        if (email.isEmpty()) throw new BaseException(ErrorCode.INVALID_REQUEST);
-        if (nickname.isEmpty()) throw new BaseException(ErrorCode.INVALID_REQUEST);
-        if (password.isEmpty()) throw new BaseException(ErrorCode.INVALID_REQUEST);
-        if (confirmPassword.isEmpty()) throw new BaseException(ErrorCode.INVALID_REQUEST);
+        if (email.isEmpty()) throw new BaseException(ErrorCode.EMAIL_REQUIRED);
+        if (nickname.isEmpty()) throw new BaseException(ErrorCode.NICKNAME_REQUIRED);
+        if (password.isEmpty()) throw new BaseException(ErrorCode.PASSWORD_REQUIRED);
+        if (confirmPassword.isEmpty()) throw new BaseException(ErrorCode.CONFIRM_PASSWORD_REQUIRED);
         if (!password.equals(confirmPassword)) throw new BaseException(ErrorCode.PASSWORD_MISMATCH);
 
         if (authMapper.existsByEmail(email)) throw new BaseException(ErrorCode.DUPLICATE_EMAIL);
@@ -57,13 +53,19 @@ public class AuthService {
         String email = dto.getEmail() != null ? dto.getEmail().trim() : "";
         String password = dto.getPassword() != null ? dto.getPassword().trim() : "";
 
-        if (email.isEmpty() || password.isEmpty()) {
-            throw new BaseException(ErrorCode.INVALID_LOGIN);
+        if (email.isEmpty()) {
+            throw new BaseException(ErrorCode.EMAIL_REQUIRED);
+        }
+        if (password.isEmpty()) {
+            throw new BaseException(ErrorCode.PASSWORD_REQUIRED);
         }
 
         UserEntity user = authMapper.selectByEmail(email);
-        if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
-            throw new BaseException(ErrorCode.INVALID_LOGIN);
+        if (user == null) {
+            throw new BaseException(ErrorCode.USER_NOT_FOUND);
+        }
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new BaseException(ErrorCode.INVALID_PASSWORD);
         }
 
         String accessToken = jwtProvider.createAccessToken(user.getId());
