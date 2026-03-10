@@ -28,10 +28,10 @@ public class AuthService {
         String password = dto.getPassword() != null ? dto.getPassword().trim() : "";
         String confirmPassword = dto.getConfirmPassword() != null ? dto.getConfirmPassword().trim() : "";
 
-        if (email.isEmpty()) throw new BaseException(ErrorCode.INVALID_REQUEST);
-        if (nickname.isEmpty()) throw new BaseException(ErrorCode.INVALID_REQUEST);
-        if (password.isEmpty()) throw new BaseException(ErrorCode.INVALID_REQUEST);
-        if (confirmPassword.isEmpty()) throw new BaseException(ErrorCode.INVALID_REQUEST);
+        if (email.isEmpty()) throw new BaseException(ErrorCode.EMAIL_REQUIRED);
+        if (nickname.isEmpty()) throw new BaseException(ErrorCode.NICKNAME_REQUIRED);
+        if (password.isEmpty()) throw new BaseException(ErrorCode.PASSWORD_REQUIRED);
+        if (confirmPassword.isEmpty()) throw new BaseException(ErrorCode.CONFIRM_PASSWORD_REQUIRED);
         if (!password.equals(confirmPassword)) throw new BaseException(ErrorCode.PASSWORD_MISMATCH);
 
         if (authMapper.existsByEmail(email)) throw new BaseException(ErrorCode.DUPLICATE_EMAIL);
