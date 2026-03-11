@@ -10,4 +10,7 @@ public interface AuthMapper {
     boolean existsByNickname(@Param("nickname") String nickname);
     UserEntity selectByEmail(@Param("email") String email);
     void insert(UserEntity user);
+
+    //프로필 조회용
+    UserEntity selectById(@Param("id") Long id);
 }
