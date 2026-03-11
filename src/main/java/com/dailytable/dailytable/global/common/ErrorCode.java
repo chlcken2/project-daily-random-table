@@ -4,6 +4,7 @@ package com.dailytable.dailytable.global.common;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
 
 @Getter
 @RequiredArgsConstructor
@@ -33,7 +34,10 @@ public enum ErrorCode {
     EMAIL_REQUIRED(HttpStatus.BAD_REQUEST, "이메일을 입력해 주세요."),
     PASSWORD_REQUIRED(HttpStatus.BAD_REQUEST, "비밀번호를 입력해 주세요."),
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다."),
-    INVALID_LOGIN(HttpStatus.UNAUTHORIZED, "이메일 또는 비밀번호를 확인해 주세요.");
+    INVALID_LOGIN(HttpStatus.UNAUTHORIZED, "이메일 또는 비밀번호를 확인해 주세요."),
+
+    // User -  프로필조회
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다.");
 
     private final HttpStatus status;
     private final String message;
