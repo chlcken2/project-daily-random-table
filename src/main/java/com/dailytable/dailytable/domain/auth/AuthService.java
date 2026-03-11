@@ -111,4 +111,17 @@ public class AuthService {
         if (refreshToken == null || refreshToken.isBlank()) return;
         refreshTokenMapper.deleteByToken(refreshToken);
     }
+
+    public UserProfileResponse getProfile(Long userId) {
+        UserEntity user = authMapper.selectById(userId);
+        if (user == null) {
+            throw new BaseException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        return UserProfileResponse.builder()
+                .email(user.getEmail())
+                .nickname(user.getNickname())
+                .role(user.getRole())
+                .build();
+    }
 }
