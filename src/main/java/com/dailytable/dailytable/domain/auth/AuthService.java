@@ -3,6 +3,7 @@ package com.dailytable.dailytable.domain.auth;
 import com.dailytable.dailytable.global.common.ErrorCode;
 import com.dailytable.dailytable.global.exception.BaseException;
 import com.dailytable.dailytable.global.jwt.JwtProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,6 @@ import java.time.LocalDateTime;
 @Service
 public class AuthService {
 
-	@Value("")
     private static final int REFRESH_TOKEN_VALID_DAYS = 7;
 
     private final AuthMapper authMapper;
