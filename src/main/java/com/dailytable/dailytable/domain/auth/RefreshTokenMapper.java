@@ -1,5 +1,6 @@
 package com.dailytable.dailytable.domain.auth;
 
+import com.dailytable.dailytable.domain.auth.dto.entity.RefreshToken;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
