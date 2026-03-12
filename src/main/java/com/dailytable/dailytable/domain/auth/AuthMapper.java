@@ -1,5 +1,6 @@
 package com.dailytable.dailytable.domain.auth;
 
+import com.dailytable.dailytable.domain.auth.dto.entity.UserEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -11,6 +12,5 @@ public interface AuthMapper {
     UserEntity selectByEmail(@Param("email") String email);
     void insert(UserEntity user);
 
-    //프로필 조회용
     UserEntity selectById(@Param("id") Long id);
 }

@@ -1,5 +1,11 @@
 package com.dailytable.dailytable.domain.auth;
 
+import com.dailytable.dailytable.domain.auth.dto.entity.RefreshToken;
+import com.dailytable.dailytable.domain.auth.dto.entity.UserEntity;
+import com.dailytable.dailytable.domain.auth.dto.request.TokenRefreshRequest;
+import com.dailytable.dailytable.domain.auth.dto.request.UserLoginRequest;
+import com.dailytable.dailytable.domain.auth.dto.request.UserSignupRequest;
+import com.dailytable.dailytable.domain.auth.dto.response.AuthResponse;
 import com.dailytable.dailytable.global.common.ErrorCode;
 import com.dailytable.dailytable.global.exception.BaseException;
 import com.dailytable.dailytable.global.jwt.JwtProvider;
@@ -8,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-
 
 @RequiredArgsConstructor
 @Service
@@ -21,7 +26,6 @@ public class AuthService {
     private final JwtProvider jwtProvider;
     private final RefreshTokenMapper refreshTokenMapper;
 
- 
     public void signup(UserSignupRequest dto) {
         String email = dto.getEmail() != null ? dto.getEmail().trim() : "";
         String nickname = dto.getNickname() != null ? dto.getNickname().trim() : "";
@@ -110,18 +114,5 @@ public class AuthService {
     public void logout(String refreshToken) {
         if (refreshToken == null || refreshToken.isBlank()) return;
         refreshTokenMapper.deleteByToken(refreshToken);
-    }
-
-    public UserProfileResponse getProfile(Long userId) {
-        UserEntity user = authMapper.selectById(userId);
-        if (user == null) {
-            throw new BaseException(ErrorCode.USER_NOT_FOUND);
-        }
-
-        return UserProfileResponse.builder()
-                .email(user.getEmail())
-                .nickname(user.getNickname())
-                .role(user.getRole())
-                .build();
     }
 }
