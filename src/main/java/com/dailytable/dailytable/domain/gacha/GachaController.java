@@ -63,10 +63,11 @@ public class GachaController {
             @PathVariable Long id,
             @RequestParam(defaultValue = "true") boolean isPublic) {
         recipeService.updatePublicStatus(id, isPublic);
-        String msg = isPublic ? "모두의 식탁에 등록되었습니다!" : "나만의 식탁에 등록되었습니다!";
+        String msg = isPublic ? "みんなの食卓に登録されました!" : "私だけの食卓に登録されました!";
         return ResponseEntity.ok(ApiResponse.success(msg, null));
     }
 
+    // note: 선빈 개발 후 변경할 api
     @GetMapping("/recipe/{id}")
     public String getRecipeDetail(@PathVariable Long id, Model model) {
         RecipeEntity recipe = recipeService.getRecipeDetail(id);
