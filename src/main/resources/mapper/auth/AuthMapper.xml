@@ -10,8 +10,8 @@
         SELECT EXISTS(SELECT 1 FROM users WHERE nickname = #{nickname} AND deleted_at IS NULL)
     </select>
 
-    <select id="selectByEmail" resultType="com.dailytable.dailytable.domain.auth.UserEntity">
-        SELECT id, email, password, nickname, role, created_at, updated_at, deleted_at
+    <select id="selectByEmail" resultType="com.dailytable.dailytable.domain.auth.dto.entity.UserEntity">
+        SELECT id, email, password, nickname, role, created_at AS createdAt, updated_at AS updatedAt, deleted_at AS deletedAt
         FROM users WHERE email = #{email} AND deleted_at IS NULL
     </select>
 
@@ -19,4 +19,11 @@
         INSERT INTO users (email, password, nickname, role, created_at, updated_at, deleted_at)
         VALUES (#{email}, #{password}, #{nickname}, #{role}, NOW(), NOW(), NULL)
     </insert>
+
+    <select id="selectById" resultType="com.dailytable.dailytable.domain.auth.dto.entity.UserEntity">
+        SELECT id, email, password, nickname, role,
+               created_at AS createdAt, updated_at AS updatedAt, deleted_at AS deletedAt
+        FROM users
+        WHERE id = #{id} AND deleted_at IS NULL
+    </select>
 </mapper>

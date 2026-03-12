@@ -1,4 +1,4 @@
-package com.dailytable.dailytable.domain.auth;
+package com.dailytable.dailytable.domain.auth.dto.response;
 
 import lombok.*;
 

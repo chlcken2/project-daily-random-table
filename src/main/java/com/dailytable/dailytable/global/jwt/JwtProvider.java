@@ -50,4 +50,24 @@ public class JwtProvider {
                 .signWith(getSigningKey())
                 .compact();
     }
+
+
+     //Access Token에서 userId(subject)를 꺼냄. 유효하지 않거나 만료되면 null.
+
+    public Long getUserIdFromToken(String token) {
+        if (token == null || token.isBlank()) {
+            return null;
+        }
+        try {
+            String subject = Jwts.parser()
+                    .verifyWith(getSigningKey())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload()
+                    .getSubject();
+            return subject == null ? null : Long.parseLong(subject);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }
