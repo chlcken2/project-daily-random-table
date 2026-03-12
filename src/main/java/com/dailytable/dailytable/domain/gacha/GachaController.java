@@ -6,6 +6,7 @@ import com.dailytable.dailytable.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,15 +17,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/gacha")
 public class GachaController {
 
-    // Dummy user ID for testing (until auth is integrated)
-    private static final Long DUMMY_USER_ID = 1L;
-
     private final GachaService gachaService;
     private final RecipeService recipeService;
 
     @GetMapping("/home")
-    public String getGachaHome(Model model) {
-        GachaDto.DailyCountResponse dailyCount = gachaService.getDailyCount(DUMMY_USER_ID);
+    public String getGachaHome(Model model, @AuthenticationPrincipal Long userId) {
+        GachaDto.DailyCountResponse dailyCount = gachaService.getDailyCount(userId);
         model.addAttribute("dailyCount", dailyCount);
         return "recipe-create";
     }
@@ -37,8 +35,8 @@ public class GachaController {
     @PostMapping("/generate")
     @ResponseBody
     public ResponseEntity<ApiResponse<GachaDto.GenerateResponse>> generateRecipe(
-            @RequestBody GachaDto.GenerateRequest request) {
-        GachaDto.GenerateResponse response = gachaService.generate(request, DUMMY_USER_ID);
+            @RequestBody GachaDto.GenerateRequest request, @AuthenticationPrincipal Long userId) {
+        GachaDto.GenerateResponse response = gachaService.generate(request, userId);
         return ResponseEntity.ok(ApiResponse.success("레시피가 생성되었습니다!", response));
     }
 
@@ -48,8 +46,8 @@ public class GachaController {
      */
     @GetMapping("/count")
     @ResponseBody
-    public ResponseEntity<ApiResponse<GachaDto.DailyCountResponse>> getDailyCount() {
-        return ResponseEntity.ok(ApiResponse.success(gachaService.getDailyCount(DUMMY_USER_ID)));
+    public ResponseEntity<ApiResponse<GachaDto.DailyCountResponse>> getDailyCount(@AuthenticationPrincipal Long userId) {
+        return ResponseEntity.ok(ApiResponse.success(gachaService.getDailyCount(userId)));
     }
 
     /**
@@ -63,10 +61,11 @@ public class GachaController {
             @PathVariable Long id,
             @RequestParam(defaultValue = "true") boolean isPublic) {
         recipeService.updatePublicStatus(id, isPublic);
-        String msg = isPublic ? "모두의 식탁에 등록되었습니다!" : "나만의 식탁에 등록되었습니다!";
+        String msg = isPublic ? "みんなの食卓に登録されました!" : "私だけの食卓に登録されました!";
         return ResponseEntity.ok(ApiResponse.success(msg, null));
     }
 
+    // note: 선빈 개발 후 변경할 api
     @GetMapping("/recipe/{id}")
     public String getRecipeDetail(@PathVariable Long id, Model model) {
         RecipeEntity recipe = recipeService.getRecipeDetail(id);
