@@ -184,4 +184,39 @@ public class IngredientService {
 
         return result.isEmpty() ? name : result;
     }
+
+    /**
+     * Get user's ingredients by type
+     */
+    public List<IngredientRepository.UserIngredient> getMyIngredients(Long userId, Integer type) {
+        return ingredientRepository.findByUserId(userId, type);
+    }
+
+    /**
+     * Add ingredient to user's fridge with 3-stage normalization
+     */
+    public IngredientRepository.UserIngredient addIngredient(Long userId, String name, double quantity, String unit, int type) {
+        // Stage 1-3: Normalize ingredient name
+        String normalizedName = normalize(name);
+
+        // Create user ingredient
+        IngredientRepository.UserIngredient ingredient = IngredientRepository.UserIngredient.builder()
+                .userId(userId)
+                .name(name.trim())
+                .normalizedName(normalizedName)
+                .quantity(quantity)
+                .unit(unit)
+                .type(type)
+                .build();
+
+        ingredientRepository.insertUserIngredient(ingredient);
+        return ingredient;
+    }
+
+    /**
+     * Delete user ingredient (soft delete)
+     */
+    public boolean deleteIngredient(Long userId, Long ingredientId) {
+        return ingredientRepository.deleteUserIngredient(ingredientId, userId) > 0;
+    }
 }
