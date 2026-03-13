@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dailytable.dailytable.domain.ranking.RankingRepository">
+
+    <!-- 
+        [담당 영역 1, 2] 랭킹 시스템 SQL
+        인기도 점수 공식: (좋아요 × 3) + (댓글 × 2) + (조회수 × 1)
+        users, difficulties 테이블과 JOIN하여 작성자 닉네임과 난이도명을 함께 조회
+    -->
+    <sql id="rankingColumns">
+        r.id,
+        r.title,
+        r.title_image as titleImage,
+        u.nickname,
+        r.like_count as likeCount,
+        r.comment_count as commentCount,
+        r.view_count as viewCount,
+        (r.like_count * 3 + r.comment_count * 2 + r.view_count * 1) as popularityScore,
+        d.name as difficultyLabel,
+        r.cooking_time as cookingTime,
+        r.created_at as createdAt
+    </sql>
+
+    <!-- 
+        [오늘의 식단] 당일 인기 레시피 Top 5
+        - 조회 조건: created_at >= CURDATE() (오늘 00:00 이후 생성된 레시피)
+        - 공개 레시피만: is_public = 1
+        - 삭제되지 않은 레시피: deleted_at IS NULL
+        - 정렬: 인기도 점수 내림차순 → 생성일 내림차순
+    -->
+    <select id="selectTodayBestRecipes" resultType="com.dailytable.dailytable.domain.ranking.RecipeRankingDto">
+        SELECT <include refid="rankingColumns"/>
+        FROM recipes r
+        JOIN users u ON r.user_id = u.id
+        JOIN difficulties d ON r.difficulty_id = d.id
+        WHERE r.created_at >= CURDATE()
+        AND r.is_public = 1
+        AND r.deleted_at IS NULL
+        ORDER BY popularityScore DESC, r.created_at DESC
+        LIMIT #{limit}
+    </select>
+
+    <!-- 
+        [명예의 식단] 주간 인기 레시피 Top 5
+        - 조회 조건: created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY) (최근 7일간)
+        - 공개 레시피만: is_public = 1
+        - 삭제되지 않은 레시피: deleted_at IS NULL
+        - 정렬: 인기도 점수 내림차순 → 생성일 내림차순
+    -->
+    <select id="selectWeeklyBestRecipes" resultType="com.dailytable.dailytable.domain.ranking.RecipeRankingDto">
+        SELECT <include refid="rankingColumns"/>
+        FROM recipes r
+        JOIN users u ON r.user_id = u.id
+        JOIN difficulties d ON r.difficulty_id = d.id
+        WHERE r.created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+        AND r.is_public = 1
+        AND r.deleted_at IS NULL
+        ORDER BY popularityScore DESC, r.created_at DESC
+        LIMIT #{limit}
+    </select>
+
+</mapper>

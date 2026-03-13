@@ -25,4 +25,13 @@ public interface RecipeRepository {
     List<RecipeEntity.RecipeNutrient> findNutrientsByRecipeId(@Param("recipeId") Long recipeId);
 
     void updatePublicStatus(@Param("id") Long id, @Param("isPublic") boolean isPublic);
+
+    // For RecipeController - public recipes
+    List<RecipeDto> findPublicRecipes();
+
+    List<RecipeDto> findAllPublicRecipes();
+
+    List<RecipeDto> findByUserId(@Param("userId") Long userId);
+
+    List<RecipeDto> findLikedRecipesByUserId(@Param("userId") Long userId);
 }
