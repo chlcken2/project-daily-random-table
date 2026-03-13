@@ -2,6 +2,43 @@
   var activeTab = 'recipes';
   var viewMode = 'grid';
 
+  var accessToken = localStorage.getItem('accessToken');
+  if (!accessToken) {
+    window.location.href = '/login';
+    return;
+  }
+
+  fetch('/users/me', {
+    headers: { 'Authorization': 'Bearer ' + accessToken }
+  })
+    .then(function(res) {
+      if (res.status === 401) {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        window.location.href = '/login';
+        return null;
+      }
+      return res.json();
+    })
+    .then(function(result) {
+      if (!result) return;
+      if (result.success && result.data) {
+        var d = result.data;
+        var nickEl = document.getElementById('profile-nickname');
+        var emailEl = document.getElementById('profile-email');
+        var roleEl = document.getElementById('profile-role');
+        if (nickEl) nickEl.textContent = d.nickname || '—';
+        if (emailEl) emailEl.textContent = d.email || '—';
+        if (roleEl && d.role) roleEl.textContent = d.role;
+      }
+    })
+    .catch(function() {
+      var nickEl = document.getElementById('profile-nickname');
+      var emailEl = document.getElementById('profile-email');
+      if (nickEl) nickEl.textContent = '—';
+      if (emailEl) emailEl.textContent = '—';
+    });
+
   var tabContentMap = {
     recipes: { grid: 'view-grid', list: 'view-list' },
     liked: { grid: 'view-liked-grid', list: 'view-liked-list' }
@@ -50,4 +87,17 @@
       updateView();
     });
   });
+
+  var logoutBtn = document.getElementById('mypage-logout');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', function() {
+      var rt = localStorage.getItem('refreshToken');
+      var opts = { method: 'POST', headers: {} };
+      if (rt) opts.headers['Authorization'] = 'Bearer ' + rt;
+      fetch('/auth/logout', opts).then(function() {}).catch(function() {});
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      window.location.href = '/login';
+    });
+  }
 })();

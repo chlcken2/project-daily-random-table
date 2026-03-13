@@ -26,7 +26,7 @@
 
     <!-- 新規登録フォーム -->
     <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-b-3xl p-6 shadow-2xl border-8 border-t-0 border-gray-950">
-      <form th:action="@{/signup}" action="/signup" method="post">
+      <form id="signup-form" th:action="@{/signup}" action="/signup" method="post">
         <input type="hidden" name="password" id="signup-password-value"/>
         <input type="hidden" name="confirmPassword" id="signup-confirm-value"/>
 

@@ -19,20 +19,45 @@
   }
 
   function updateLoginBtn() {
-    if (emailInput.value.trim() && password.length >= 4 && password.length <= 8) {
+    if (emailInput.value.trim() && password.length >= 6 && password.length <= 16) {
       loginBtn.classList.remove('pointer-events-none', 'opacity-60');
-      loginBtn.href = '/';
     } else {
       loginBtn.classList.add('pointer-events-none', 'opacity-60');
-      loginBtn.removeAttribute('href');
-      loginBtn.href = '#';
     }
   }
+
+  loginBtn.addEventListener('click', function() {
+    if (loginBtn.classList.contains('opacity-60')) return;
+    var email = emailInput.value.trim();
+    if (!email || password.length < 6 || password.length > 16) return;
+
+    loginBtn.disabled = true;
+    fetch('/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, password: password })
+    })
+      .then(function(res) { return res.json(); })
+      .then(function(result) {
+        if (result.success && result.data) {
+          if (result.data.accessToken) localStorage.setItem('accessToken', result.data.accessToken);
+          if (result.data.refreshToken) localStorage.setItem('refreshToken', result.data.refreshToken);
+          window.location.href = '/';
+        } else {
+          alert(result.message || 'ログインに失敗しました');
+          loginBtn.disabled = false;
+        }
+      })
+      .catch(function() {
+        alert('요청 실패');
+        loginBtn.disabled = false;
+      });
+  });
 
   document.querySelectorAll('.keypad-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
       var char = btn.textContent.trim();
-      if (password.length < 8 && allowedChars.includes(char)) {
+      if (password.length < 16 && allowedChars.includes(char)) {
         password += char;
         renderPassword();
         updateLoginBtn();

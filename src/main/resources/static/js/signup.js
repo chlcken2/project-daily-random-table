@@ -97,8 +97,37 @@
   document.getElementById('signup-email').addEventListener('input', updateSubmit);
   document.getElementById('signup-nickname').addEventListener('input', updateSubmit);
 
-  document.querySelector('form').addEventListener('submit', function(e) {
+  document.getElementById('signup-form').addEventListener('submit', function(e) {
+    e.preventDefault();
     passwordValue.value = password;
     confirmValue.value = confirmPassword;
+
+    var email = document.getElementById('signup-email').value.trim();
+    var nickname = document.getElementById('signup-nickname').value.trim();
+    if (!email || !nickname || password.length < 6 || password !== confirmPassword) {
+      alert('입력값을 확인해 주세요.');
+      return;
+    }
+
+    fetch('/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: email,
+        nickname: nickname,
+        password: password,
+        confirmPassword: confirmPassword
+      })
+    })
+      .then(function(res) { return res.json(); })
+      .then(function(result) {
+        if (result.success) {
+          alert(result.message || '가입 완료');
+          window.location.href = '/login';
+        } else {
+          alert(result.message || '가입 실패');
+        }
+      })
+      .catch(function() { alert('요청 실패'); });
   });
 })();
