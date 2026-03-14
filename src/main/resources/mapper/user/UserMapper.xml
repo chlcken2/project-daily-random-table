@@ -8,4 +8,14 @@
         FROM users
         WHERE id = #{id} AND deleted_at IS NULL
     </select>
+
+    <select id="countMyRecipes" resultType="int">
+        SELECT COUNT(*) FROM recipes
+        WHERE user_id = #{userId} AND deleted_at IS NULL
+    </select>
+
+    <select id="countReceivedLikes" resultType="int">
+        SELECT COALESCE(SUM(like_count), 0) FROM recipes
+        WHERE user_id = #{userId} AND deleted_at IS NULL
+    </select>
 </mapper>
