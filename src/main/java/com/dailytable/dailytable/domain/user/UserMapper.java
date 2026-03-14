@@ -8,4 +8,7 @@ import org.apache.ibatis.annotations.Param;
 public interface UserMapper {
 
     UserEntity selectById(@Param("id") Long id);
+
+    int countMyRecipes(@Param("userId") Long userId);
+    int countReceivedLikes(@Param("userId") Long userId);
 }
