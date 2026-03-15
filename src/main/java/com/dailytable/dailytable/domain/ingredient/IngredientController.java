@@ -41,6 +41,7 @@ public class IngredientController {
     /**
      * [재료/소스 등록] 새로운 재료 또는 소스를 사용자 냉장고에 추가
      * 3단계 정규화 과정: 1) 코드 전처리 → 2) Alias DB 조회 → 3) AI 정규화
+     * 사실상 2단계 까지만 동작
      * ON DUPLICATE KEY UPDATE: 중복 시 수량 업데이트
      * type: 1=재료, 2=소스
      */
@@ -62,7 +63,7 @@ public class IngredientController {
     /**
      * [재료/소스 삭제] 사용자의 재료를 Soft Delete로 삭제
      * 실제로 DB에서 삭제하지 않고 deleted_at 필드에 현재 시간을 기록
-     * 본인의 재료만 삭제 가능 (userId 검증)
+     * 본인의 재료만 삭제 가능 (userId 검증, 검증실패시 삭제안됨)
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteIngredient(
