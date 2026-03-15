@@ -2,11 +2,15 @@ package com.dailytable.dailytable.domain.user;
 
 import com.dailytable.dailytable.domain.auth.dto.entity.UserEntity;
 import com.dailytable.dailytable.domain.gacha.GachaMapper;
+import com.dailytable.dailytable.domain.user.dto.response.UserLikedRecipeResponse;
+import com.dailytable.dailytable.domain.user.dto.response.UserMyRecipeResponse;
 import com.dailytable.dailytable.domain.user.dto.response.UserProfileResponse;
 import com.dailytable.dailytable.global.common.ErrorCode;
 import com.dailytable.dailytable.global.exception.BaseException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -32,5 +36,13 @@ public class UserService {
                 .receivedLikeCount(receivedLikeCount)
                 .totalGachaCount(totalGachaCount)
                 .build();
+    }
+
+    public List<UserMyRecipeResponse> getMyRecipes(Long userId) {
+        return userMapper.selectMyRecipes(userId);
+    }
+
+    public List<UserLikedRecipeResponse> getLikedRecipes(Long userId) {
+        return userMapper.selectLikedRecipesByUserId(userId);
     }
 }
