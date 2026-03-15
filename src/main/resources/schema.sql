@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS recipes (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_id BIGINT NOT NULL,
     title VARCHAR(255) NOT NULL,
-    title_image TEXT NOT NULL,
+    title_image LONGTEXT NOT NULL,
     description TEXT,
     cooking_time INT,
     difficulty_id TINYINT NOT NULL,
