@@ -53,6 +53,9 @@ public class RecipeService {
         RecipeEntity recipe = recipeRepository.findById(id);
         if (recipe == null) return null;
 
+        // 상세페이지 진입 시 조회수 증가 (API, Web 공통)
+        recipeRepository.incrementViewCount(id);
+
         recipe.setIngredients(recipeRepository.findIngredientsByRecipeId(id));
         recipe.setSteps(recipeRepository.findStepsByRecipeId(id));
         recipe.setNutrients(recipeRepository.findNutrientsByRecipeId(id));
@@ -93,7 +96,7 @@ public class RecipeService {
         // Check if recipe belongs to user
         RecipeEntity recipe = recipeRepository.findById(id);
         if (recipe == null || !recipe.getUserId().equals(userId)) {
-            throw new RuntimeException("레시피를 찾을 수 없거나 권한이 없습니다.");
+            throw new RuntimeException("レシピが見つからないか、権限がありません。");
         }
         recipeRepository.updatePublicStatus(id, isPublic);
     }
@@ -107,6 +110,15 @@ public class RecipeService {
         dto.setTitleImage(recipe.getTitleImage());
         dto.setDescription(recipe.getDescription());
         dto.setCookingTime(recipe.getCookingTime());
+        
+        // Map difficultyId to Japanese label safely (bypassing DB encoding issues)
+        String label = "中";
+        if (recipe.getDifficultyId() != null) {
+            if (recipe.getDifficultyId() == 1) label = "低";
+            else if (recipe.getDifficultyId() == 3) label = "高";
+        }
+        dto.setDifficultyLabel(label);
+        
         dto.setAiGenerated(recipe.getIsAiGenerated() != null ? recipe.getIsAiGenerated() : false);
         dto.setPublic(recipe.getIsPublic() != null ? recipe.getIsPublic() : false);
         dto.setViewCount(recipe.getViewCount());
@@ -116,5 +128,31 @@ public class RecipeService {
         dto.setCreatedAt(recipe.getCreatedAt());
         dto.setUpdatedAt(recipe.getUpdatedAt());
         return dto;
+    }
+
+    // 공감 기능
+    public void toggleLike(Long recipeId, Long userId) {
+        // 먼저 삭제 시도
+        recipeRepository.toggleLike(recipeId, userId);
+        // 삭제된 행이 없으면 (0이면) 추가
+        recipeRepository.addLike(recipeId, userId);
+        recipeRepository.updateLikeCount(recipeId);
+    }
+
+    // 덧글 작성
+    public void addComment(Long recipeId, Long userId, String content) {
+        recipeRepository.addComment(recipeId, userId, content);
+        recipeRepository.updateCommentCount(recipeId);
+    }
+
+    // 덧글 목록 조회
+    public List<CommentDto> getComments(Long recipeId) {
+        return recipeRepository.findCommentsByRecipeId(recipeId);
+    }
+
+    // 공감 취소
+    public void cancelLike(Long recipeId, Long userId) {
+        recipeRepository.deleteLike(recipeId, userId);
+        recipeRepository.updateLikeCount(recipeId);
     }
 }

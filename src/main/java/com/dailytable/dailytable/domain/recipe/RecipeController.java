@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/recipes")
-public class RecipeContoller {
+public class RecipeController {
 
     private final RecipeService recipeService;
 
@@ -53,7 +53,7 @@ public class RecipeContoller {
     /**
      * 레시피 상세 조회
      * path variable로 레시피 ID 받아서 상세 정보 반환
-     * RecipeDetailDto: 재료, 조리步骤, 영양정보 포함
+     * RecipeDetailDto: 재료, 조리법, 영양정보 포함
      */
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<RecipeDetailDto>> getRecipeDetail(
@@ -78,5 +78,54 @@ public class RecipeContoller {
         recipeService.updateVisibility(id, userId, isPublic);
         String msg = isPublic ? "公開設定にしました!" : "非公開設定にしました!";
         return ResponseEntity.ok(ApiResponse.success(msg, null));
+    }
+
+    /**
+     * 레시피 공감 (좋아요)
+     */
+    @PostMapping("/{id}/like")
+    public ResponseEntity<ApiResponse<Void>> toggleLike(
+            @PathVariable Long id,
+            @AuthenticationPrincipal Long userId) {
+        log.info("POST /api/recipes/{}/like, userId: {}", id, userId);
+        recipeService.toggleLike(id, userId);
+        return ResponseEntity.ok(ApiResponse.success("「いいね」しました！", null));
+    }
+
+    /**
+     * 덧글 작성
+     */
+    @PostMapping("/{id}/comments")
+    public ResponseEntity<ApiResponse<Void>> addComment(
+            @PathVariable Long id,
+            @RequestBody CommentRequest request,
+            @AuthenticationPrincipal Long userId) {
+        log.info("POST /api/recipes/{}/comments, userId: {}", id, userId);
+        String content = request.getContent();
+        recipeService.addComment(id, userId, content);
+        return ResponseEntity.ok(ApiResponse.success("コメントを投稿しました！", null));
+    }
+
+    /**
+     * 덧글 목록 조회
+     */
+    @GetMapping("/{id}/comments")
+    public ResponseEntity<ApiResponse<List<CommentDto>>> getComments(
+            @PathVariable Long id) {
+        log.info("GET /api/recipes/{}/comments", id);
+        List<CommentDto> comments = recipeService.getComments(id);
+        return ResponseEntity.ok(ApiResponse.success(comments));
+    }
+
+    /**
+     * 공감 취소
+     */
+    @DeleteMapping("/{id}/like")
+    public ResponseEntity<ApiResponse<Void>> cancelLike(
+            @PathVariable Long id,
+            @AuthenticationPrincipal Long userId) {
+        log.info("DELETE /api/recipes/{}/like, userId: {}", id, userId);
+        recipeService.cancelLike(id, userId);
+        return ResponseEntity.ok(ApiResponse.success("「いいね」を取り消しました。", null));
     }
 }
