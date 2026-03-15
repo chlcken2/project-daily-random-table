@@ -22,7 +22,7 @@ public class UserService {
         }
         int myRecipeCount = userMapper.countMyRecipes(userId);
         int receivedLikeCount = userMapper.countReceivedLikes(userId);
-        int gachaCount = gachaMapper.countTodayGenerations(userId);
+        int totalGachaCount = gachaMapper.countTotalGenerations(userId);
 
         return UserProfileResponse.builder()
                 .email(user.getEmail())
@@ -30,7 +30,7 @@ public class UserService {
                 .role(user.getRole())
                 .myRecipeCount(myRecipeCount)
                 .receivedLikeCount(receivedLikeCount)
-                .gachaCount(gachaCount)
+                .totalGachaCount(totalGachaCount)
                 .build();
     }
 }
