@@ -35,7 +35,7 @@
         if (roleEl && d.role) roleEl.textContent = d.role;
         if (myRecipeEl) myRecipeEl.textContent = typeof d.myRecipeCount === 'number' ? d.myRecipeCount : 0;
         if (receivedLikeEl) receivedLikeEl.textContent = typeof d.receivedLikeCount === 'number' ? d.receivedLikeCount : 0;
-        if (gachaEl) gachaEl.textContent = typeof d.gachaCount === 'number' ? d.gachaCount : 0;
+        if (gachaEl) gachaEl.textContent = typeof d.totalGachaCount === 'number' ? d.totalGachaCount : 0;
       }
     })
     .catch(function() {
