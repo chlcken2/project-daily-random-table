@@ -54,22 +54,19 @@
         INSERT INTO user_ingredients (user_id, name, normalized_name, quantity, unit, type, created_at, updated_at)
         VALUES (#{userId}, #{name}, #{normalizedName}, #{quantity}, #{unit}, #{type}, NOW(), NOW())
         ON DUPLICATE KEY UPDATE
-            quantity = quantity + #{quantity},
+            quantity = CASE 
+                WHEN deleted_at IS NOT NULL 
+                THEN #{quantity} 
+                ELSE quantity + #{quantity} 
+            END,
+            unit = #{unit},
+            deleted_at = NULL,
             updated_at = NOW()
     </insert>
 
-    <update id="updateUserIngredientQuantity">
-        UPDATE user_ingredients
-        SET quantity = #{quantity},
-            updated_at = NOW()
-        WHERE user_id = #{userId}
-        AND normalized_name = #{normalizedName}
-        AND deleted_at IS NULL
-    </update>
-
     <!-- 
-        [재료/소스 삭제 - Soft Delete] 실제 DELETE가 아닌 논리적 삭제
-        deleted_at 필드에 현재 시간을 기록하여 삭제된 것으로 표시
+        [재료/소스 삭제 - Soft Delete] 논리적 삭제
+        재등록 시 삭제된 레코드를 복원하여 제약 조건 문제 해결
         본인의 재료만 삭제 가능하도록 user_id 조건 추가
     -->
     <update id="deleteUserIngredient">
@@ -84,6 +81,15 @@
         FROM user_ingredients
         WHERE id = #{id}
         AND deleted_at IS NULL
+    </select>
+
+    <select id="findByUserIdAndNormalizedName" resultType="com.dailytable.dailytable.domain.ingredient.IngredientRepository$UserIngredient">
+        SELECT id, user_id as userId, name, normalized_name as normalizedName, quantity, unit, type
+        FROM user_ingredients
+        WHERE user_id = #{userId}
+        AND normalized_name = #{normalizedName}
+        AND deleted_at IS NULL
+        LIMIT 1
     </select>
 
 </mapper>

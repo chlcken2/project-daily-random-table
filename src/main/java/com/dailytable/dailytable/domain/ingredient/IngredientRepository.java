@@ -21,11 +21,11 @@ public interface IngredientRepository {
 
     void insertUserIngredient(UserIngredient ingredient);
 
-    void updateUserIngredientQuantity(@Param("userId") Long userId, @Param("normalizedName") String normalizedName, @Param("quantity") double quantity);
-
     int deleteUserIngredient(@Param("id") Long id, @Param("userId") Long userId);
 
     UserIngredient findById(@Param("id") Long id);
+
+    UserIngredient findByUserIdAndNormalizedName(@Param("userId") Long userId, @Param("normalizedName") String normalizedName);
 
     // Inner class for user_ingredients
     @lombok.Data
