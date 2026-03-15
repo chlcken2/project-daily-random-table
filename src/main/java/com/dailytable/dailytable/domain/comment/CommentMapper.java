@@ -2,12 +2,14 @@ package com.dailytable.dailytable.domain.comment;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.dailytable.dailytable.domain.comment.dto.CommentCreateDto;
 import com.dailytable.dailytable.domain.comment.dto.CommentEditDto;
 import com.dailytable.dailytable.domain.comment.dto.CommentResponseDto;
 
+@Mapper
 public interface CommentMapper {
 
 	void insertComment(

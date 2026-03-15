@@ -2,6 +2,7 @@ package com.dailytable.dailytable.domain.gacha;
 
 import com.dailytable.dailytable.domain.recipe.RecipeEntity;
 import com.dailytable.dailytable.domain.recipe.RecipeService;
+import com.dailytable.dailytable.global.common.ErrorCode;
 import com.dailytable.dailytable.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,9 @@ public class GachaController {
 
     @GetMapping("/home")
     public String getGachaHome(Model model, @AuthenticationPrincipal Long userId) {
+        if (userId == null) {
+            return "redirect:/login";
+        }
         GachaDto.DailyCountResponse dailyCount = gachaService.getDailyCount(userId);
         model.addAttribute("dailyCount", dailyCount);
         return "recipe-create";
@@ -34,8 +38,11 @@ public class GachaController {
      */
     @PostMapping("/generate")
     @ResponseBody
-    public ResponseEntity<ApiResponse<GachaDto.GenerateResponse>> generateRecipe(
+    public ResponseEntity<ApiResponse<?>> generateRecipe(
             @RequestBody GachaDto.GenerateRequest request, @AuthenticationPrincipal Long userId) {
+        if (userId == null) {
+            return ResponseEntity.ok(ApiResponse.fail(ErrorCode.UNAUTHORIZED));
+        }
         GachaDto.GenerateResponse response = gachaService.generate(request, userId);
         return ResponseEntity.ok(ApiResponse.success("레시피가 생성되었습니다!", response));
     }
