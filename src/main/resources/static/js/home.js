@@ -43,7 +43,7 @@
   }
 
   function renderTodayRanking(recipes) {
-    var container = document.querySelector('section:has(h2:contains("今日何食べる？")) .space-y-3');
+    var container = document.getElementById('today-ranking-container');
     if (!container || !recipes.length) return;
     
     container.innerHTML = recipes.map(function(r, i) {
@@ -76,7 +76,7 @@
   }
 
   function renderWeeklyRanking(recipes) {
-    var container = document.querySelector('section:has(h2:contains("伝説のグルメ")) .space-y-3');
+    var container = document.getElementById('weekly-ranking-container');
     if (!container || !recipes.length) return;
     
     var rankColors = ['from-yellow-400 to-yellow-600', 'from-gray-300 to-gray-500', 'from-amber-600 to-amber-800'];
@@ -87,6 +87,8 @@
           '<h3 class="font-medium truncate">' + r.title + '</h3>' +
           '<div class="flex items-center gap-3 text-xs text-gray-500">' +
             '<span>❤ ' + r.likeCount + '</span>' +
+            '<span>💬 ' + r.commentCount + '</span>' +
+            '<span>👀 ' + r.viewCount + '</span>' +
           '</div>' +
         '</div>' +
       '</a>';
@@ -114,19 +116,22 @@
     container.innerHTML = recipes.map(function(r) {
       return '<a href="/recipe/detail/' + r.id + '" class="recipe-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow text-left block border border-gray-100">' +
         '<div class="aspect-video bg-gray-200 overflow-hidden">' +
-          '<img src="' + (r.titleImage || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400') + '" alt="' + r.title + '" class="w-full h-full object-cover"/>' +
+          '<img src="' + (r.titleImage || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400') + '" alt="' + r.title + '" class="w-full h-full object-cover" onerror="this.src=\'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400\'"/>' +
         '</div>' +
         '<div class="p-4">' +
           '<h3 class="font-medium mb-2">' + r.title + '</h3>' +
           '<p class="text-sm text-gray-600 line-clamp-2 mb-3">' + (r.description || '') + '</p>' +
           '<div class="flex items-center gap-2 mb-3">' +
-            '<span class="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded">🔪 ' + (r.difficultyName || '中') + '</span>' +
+            '<span class="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded">🔪 ' + (r.difficultyId == 1 ? '低' : r.difficultyId == 3 ? '高' : '中') + '</span>' +
             '<span class="text-xs text-gray-500">⏱ ' + (r.cookingTime || 20) + '分</span>' +
           '</div>' +
-          '<div class="flex items-center justify-between text-sm text-gray-500">' +
-            '<span>❤ ' + (r.likeCount || 0) + '</span>' +
-            '<span>💬 ' + (r.commentCount || 0) + '</span>' +
-            '<span>👀 ' + (r.viewCount || 0) + '</span>' +
+          '<div class="flex items-center justify-between mt-3 text-sm text-gray-500">' +
+            '<div class="flex items-center gap-3">' +
+              '<span>❤ ' + (r.likeCount || 0) + '</span>' +
+              '<span>💬 ' + (r.commentCount || 0) + '</span>' +
+              '<span>👀 ' + (r.viewCount || 0) + '</span>' +
+            '</div>' +
+            '<span class="text-xs">' + (r.createdAt ? r.createdAt.substring(0, 10) : '') + '</span>' +
           '</div>' +
         '</div>' +
       '</a>';
