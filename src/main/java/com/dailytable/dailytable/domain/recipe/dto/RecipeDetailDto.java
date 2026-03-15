@@ -29,5 +29,5 @@ public class RecipeDetailDto {
 	private List<RecipeNutrientDto> nutrients;
 	private LocalDateTime createdAt;
 	private String createdAtFormatted;
-
+	
 }

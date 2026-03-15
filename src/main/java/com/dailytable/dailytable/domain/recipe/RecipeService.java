@@ -1,66 +1,68 @@
 package com.dailytable.dailytable.domain.recipe;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.dailytable.dailytable.domain.recipe.dto.RecipeDetailDto;
+import com.dailytable.dailytable.global.common.ErrorCode;
+import com.dailytable.dailytable.global.exception.BaseException;
+import com.dailytable.dailytable.global.util.TimeUtil;
 
-@Slf4j
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class RecipeService {
 
-    private final RecipeRepository recipeRepository;
+	private final RecipeMapper recipeMapper;
 
-    public RecipeService(RecipeRepository recipeRepository) {
-        this.recipeRepository = recipeRepository;
-    }
+	public RecipeService(RecipeMapper recipeMapper) {
+		this.recipeMapper = recipeMapper;
+	}
+	
+	@Transactional
+	public RecipeDetailDto getRecipeDetail(Long recipeId, Long userId) {
+		// 1 기본 레시피 조회
+		RecipeDetailDto recipe = recipeMapper.findById(recipeId);
+		if (recipe == null) {
+			throw new BaseException(ErrorCode.RECIPE_NOT_FOUND);
+		}
 
-    @Transactional
-    public RecipeEntity saveFullRecipe(RecipeEntity recipe) {
-        // Insert main recipe
-        recipeRepository.insertRecipe(recipe);
-        Long recipeId = recipe.getId();
+		// 2 조회수 처리
+		if (userId != null) {
 
-        // Insert ingredients
-        if (recipe.getIngredients() != null) {
-            for (RecipeEntity.RecipeIngredient ingredient : recipe.getIngredients()) {
-                ingredient.setRecipeId(recipeId);
-                recipeRepository.insertRecipeIngredient(ingredient);
-            }
-        }
+			boolean hasViewLog = recipeMapper.existsViewLog(userId, recipeId);
 
-        // Insert steps
-        if (recipe.getSteps() != null) {
-            for (RecipeEntity.RecipeStep step : recipe.getSteps()) {
-                step.setRecipeId(recipeId);
-                recipeRepository.insertRecipeStep(step);
-            }
-        }
+			if (!hasViewLog) {
+				recipeMapper.insertViewLog(userId, recipeId);
+				recipeMapper.increaseViewCount(recipeId);
+			}
 
-        // Insert nutrients
-        if (recipe.getNutrients() != null) {
-            for (RecipeEntity.RecipeNutrient nutrient : recipe.getNutrients()) {
-                nutrient.setRecipeId(recipeId);
-                recipeRepository.insertRecipeNutrient(nutrient);
-            }
-        }
+			//3 좋아요 여부
+			Long likeId = recipeMapper.findLikeId(userId, recipeId);
+			recipe.setLiked(likeId != null);
+		}
 
-        return recipe;
-    }
+		// 4 steps 조회
+		recipe.setSteps(
+				recipeMapper.findStepsByRecipeId(recipeId)
+				);
 
-    public RecipeEntity getRecipeDetail(Long id) {
-        RecipeEntity recipe = recipeRepository.findById(id);
-        if (recipe == null) return null;
+		// 5 ingredients 조회
+		recipe.setIngredients(
+				recipeMapper.findIngredientsByRecipeId(recipeId)
+				);
 
-        recipe.setIngredients(recipeRepository.findIngredientsByRecipeId(id));
-        recipe.setSteps(recipeRepository.findStepsByRecipeId(id));
-        recipe.setNutrients(recipeRepository.findNutrientsByRecipeId(id));
+		// 6 nutrients 조회
+		recipe.setNutrients(
+				recipeMapper.findNutrientsByRecipeId(recipeId)
+				);
 
-        return recipe;
-    }
+		// 6 시간 변환
+		recipe.setCreatedAtFormatted(
+				TimeUtil.formatRelativeTime(recipe.getCreatedAt())
+				);
 
-    public void updatePublicStatus(Long id, boolean isPublic) {
-        recipeRepository.updatePublicStatus(id, isPublic);
-    }
+		return recipe;
+	}
 }

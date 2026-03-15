@@ -2,18 +2,22 @@ package com.dailytable.dailytable.domain.comment;
 
 import java.util.List;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dailytable.dailytable.domain.comment.dto.CommentCreateDto;
 import com.dailytable.dailytable.domain.comment.dto.CommentEditDto;
 import com.dailytable.dailytable.domain.comment.dto.CommentResponseDto;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -26,70 +30,58 @@ public class CommentController {
 	@GetMapping("/{recipeId}/comments")
 	@ResponseBody
 	public List<CommentResponseDto> getComments(
-			@PathVariable Long recipeId
-			) {
+			@PathVariable Long recipeId,
+			@RequestParam(defaultValue = "1") int page) {  // page 쿼리 파라미터 받기
 
-		return commentService.getRecipeComments(recipeId);
+		return commentService.getRecipeComments(recipeId, page);
 	}
 
 	@PostMapping("/{recipeId}/comments")
+	@ResponseBody
 	public String insertComment(
 			@PathVariable Long recipeId,
-			@RequestParam String content,
-			HttpSession session) {
+			@RequestBody CommentCreateDto commentCreateDto,
+			@AuthenticationPrincipal Long userId) {
 
-		Long userId = (Long) session.getAttribute("userId");
 
-		if (userId == null) {
-			return "redirect:/login";
-		}
+		String content = commentCreateDto.getContent();
 
 		if (content == null || content.trim().isEmpty()) {
-			return "redirect:/recipes/" + recipeId;
+			return "コメントが入力できていません。";
 		}
 
 		commentService.insertComment(recipeId, userId, content);
 
-		return "redirect:/recipes/" + recipeId;
+		return "登録できました。";
 	}
 
-	@PostMapping("/{recipeId}/comments/{commentId}/delete")
+	@DeleteMapping("/{recipeId}/comments/{commentId}")
+	@ResponseBody
 	public String deleteComment(
 			@PathVariable Long recipeId,
 			@PathVariable Long commentId,
-			HttpSession session) {
+			@AuthenticationPrincipal Long userId) {
 
-		Long userId = (Long) session.getAttribute("userId");
-
-		if (userId == null) {
-			return "redirect:/login";
-		}
 
 		commentService.deleteComment(commentId, recipeId, userId);
 
-		return "redirect:/recipes/" + recipeId;
+		return "削除できました。";
 	}
-	
-	@PostMapping("/{recipeId}/comments/{commentId}/edit")
+
+	@PutMapping("/{recipeId}/comments/{commentId}")
+	@ResponseBody
 	public String editComment(
-	        @PathVariable Long recipeId,
-	        @PathVariable Long commentId,
-	        @RequestParam String content,
-	        HttpSession session) {
+			@PathVariable Long recipeId,
+			@PathVariable Long commentId,
+			@RequestBody CommentEditDto commentEditDto,
+			@AuthenticationPrincipal Long userId) {
 
-	    Long userId = (Long) session.getAttribute("userId");
 
-	    if (userId == null) {
-	        return "redirect:/login";
-	    }
+		commentEditDto.setCommentId(commentId);
 
-	    CommentEditDto dto = new CommentEditDto();
-	    dto.setCommentId(commentId);
-	    dto.setContent(content);
+		commentService.editComment(commentEditDto, userId);
 
-	    commentService.editComment(dto, userId);
-
-	    return "redirect:/recipes/" + recipeId;
+		return "編集できました。";
 	}
 
 }

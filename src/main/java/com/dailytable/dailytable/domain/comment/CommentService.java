@@ -29,14 +29,14 @@ public class CommentService {
 		commentMapper.increaseCommentCount(recipeId);
 	}
 
-	public List<CommentResponseDto> getRecipeComments(Long recipeId) {
-		List<CommentResponseDto> comments =
-				commentMapper.selectComments(recipeId);
+	public List<CommentResponseDto> getRecipeComments(Long recipeId, int page) {
+		int size = 10;
+		int offset = (page - 1) * size;
+
+		List<CommentResponseDto> comments = commentMapper.selectComments(recipeId, size, offset);
 
 		for (CommentResponseDto comment : comments) {
-			comment.setCreatedAtFormatted(
-					TimeUtil.formatRelativeTime(comment.getCreatedAt())
-					);
+			comment.setCreatedAtFormatted(TimeUtil.formatRelativeTime(comment.getCreatedAt()));
 		}
 
 		return comments;
@@ -50,10 +50,10 @@ public class CommentService {
 			commentMapper.decreaseCommentCount(recipeId);
 		}
 	}
-	
+
 	public void editComment(CommentEditDto commentEditDto, Long userId) {
 
-	    commentMapper.updateComment(commentEditDto, userId);
+		commentMapper.updateComment(commentEditDto, userId);
 
 	}
 

@@ -1,0 +1,608 @@
+[33mcommit 6ef6f019b118a7adf9ef014aa51943dfbb25fa50[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/seonbin[m[33m)[m
+Author: sbncy <emils01329@gmail.com>
+Date:   Fri Mar 13 11:01:53 2026 +0900
+
+    refactor : String nickname 추가
+
+[33mcommit 2d9f976f5801072dcc145f234a69fd1a353a62e0[m
+Merge: 6514336 be21e51
+Author: sbncy <emils01329@gmail.com>
+Date:   Thu Mar 12 12:36:28 2026 +0900
+
+    Merge branch 'main' of https://github.com/chlcken2/project-gacha-recipe into feature/seonbin
+
+[33mcommit be21e513a171b6b83f46680b0bf2f8508b3a311c[m
+Author: chl.cken <67785225+chlcken2@users.noreply.github.com>
+Date:   Thu Mar 12 11:45:36 2026 +0900
+
+    Feature/changhyeon (#16)
+    
+    * fix: change　gacha　ko to jp
+    
+    * fix: @geunchan created @AuthenticationPrincipal use
+    
+    * fix: edit ai generator prompt
+
+[33mcommit 21d54ff2150218abf7e63bc4cef825227734a766[m
+Author: chl.cken <67785225+chlcken2@users.noreply.github.com>
+Date:   Thu Mar 12 11:24:09 2026 +0900
+
+    Feature/changhyeon (#15)
+    
+    * fix: change　gacha　ko to jp
+    
+    * fix: @geunchan created @AuthenticationPrincipal use
+
+[33mcommit d3c59e7bdba624848d342588daf2763982503010[m
+Author: yukunchan1233-creator <yukunchan1233@gmail.com>
+Date:   Thu Mar 12 11:16:47 2026 +0900
+
+    [근찬] 프로필 조회 및 jwt 인증 필터 구현 (#13)
+    
+    * feat: JwtProvider에 getUserIdFromToken 추가
+    
+    * feat: JWT 인증 필터 추가
+    
+    * feat: Security에 JWT 필터 등록
+    
+    * feat: 프로필 조회용 UserProfileResponse 추가
+    
+    * feat: 프로필 조회용 AuthMapper 메서드 및 XML 추가
+    
+    * feat: AuthService에 getProfile 구현
+    
+    * feat: GET /users/me 프로필 조회 API 추가
+    
+    * refactor: auth DTO를 dto/request로 이동
+    
+    * refactor: AuthResponse를 dto/response로 이동
+    
+    * refactor: UserEntity를 dto/entity로 이동
+    
+    * refactor: auth import 경로 수정, AuthService에서 getProfile 제거
+    
+    * refactor: auth 기존 DTO/Entity 삭제 (dto 하위로 이전됨)
+    
+    * feat: user 프로필 조회용 UserProfileResponse 추가 (dto/response)
+    
+    * feat: user 프로필 조회용 UserMapper 추가
+    
+    * feat: user 프로필 조회용 UserService 추가
+    
+    * refactor: UserController가 UserService·user DTO 사용하도록 변경
+    
+    * refactor: RefreshToken을 auth/dto/entity로 이동
+
+[33mcommit 8a132c979e3956524e973034e1105df109eee542[m
+Author: chl.cken <67785225+chlcken2@users.noreply.github.com>
+Date:   Thu Mar 12 11:16:36 2026 +0900
+
+    fix: change　gacha　ko to jp (#14)
+
+[33mcommit 65143363a48d2af2a52b4f9b3cab20a61845d4f4[m[33m ([m[1;31morigin/feature/seonbin[m[33m)[m
+Author: sbncy <emils01329@gmail.com>
+Date:   Wed Mar 11 21:53:21 2026 +0900
+
+    feat : 시간 처리 관련 util 추가
+
+[33mcommit 94e8af43a654ab5fdf50f7b7a2203d63a690792d[m
+Author: sbncy <emils01329@gmail.com>
+Date:   Wed Mar 11 21:48:54 2026 +0900
+
+    feat : 댓글 관련 기능 Mapper.xml 추가
+
+[33mcommit 5c7286cc41b655264f38ad9f4a748e23022beeee[m
+Author: sbncy <emils01329@gmail.com>
+Date:   Wed Mar 11 21:47:49 2026 +0900
+
+    feat : 댓글 관련 기능 처리를 위한 Mapper.java 추가
+
+[33mcommit 3a6df2aff938e89e984cab89b1a322950611073e[m
+Author: sbncy <emils01329@gmail.com>
+Date:   Wed Mar 11 21:47:09 2026 +0900
+
+    feat : 댓글 관련 기능처리를 위한 서비스 추가
+
+[33mcommit 3934cafb794c60f782cdb66bbea0aa53ea668cff[m
+Author: sbncy <emils01329@gmail.com>
+Date:   Wed Mar 11 21:46:27 2026 +0900
+
+    feat : 댓글 관련 기능을 위한 컨트롤러 추가
+
+[33mcommit 1d49ad503ba73082aed6a0b683c2a6515a074399[m
+Author: sbncy <emils01329@gmail.com>
+Date:   Wed Mar 11 21:45:45 2026 +0900
+
+    feat : 댓글 출력을 위한 Dto 추가
+
+[33mcommit 9a5f8b1fd55becc40e931c5416b0258630e3e6f3[m
+Author: sbncy <emils01329@gmail.com>
+Date:   Wed Mar 11 21:44:59 2026 +0900
+
+    feat : 댓글 수정을 위한 Dto 추가
+
+[33mcommit 0f16e56d4ccc1c241291ee8b8de655f3f688048c[m
+Author: sbncy <emils01329@gmail.com>
+Date:   Wed Mar 11 21:43:58 2026 +0900
+
+    feat : 댓글 입력을 위한 Dto 추가
+
+[33mcommit ab16603d7f05190b18db5c65d0213924d40f028e[m
+Merge: 2650acb b8f66e5
+Author: yukunchan1233-creator <yukunchan1233@gmail.com>
+Date:   Wed Mar 11 19:26:25 2026 +0900
+
+    Merge pull request #12 from chlcken2/feature/geunchan
+    
+    Feature/geunchan
+
+[33mcommit b8f66e58e345c6608ae173aa7489dd06c20188b6[m
+Author: Yu <yukunchan1233@gmail.com>
+Date:   Wed Mar 11 19:15:27 2026 +0900
+
+    user폴더 내의 파일들 삭제
+
+[33mcommit 30066794b3165d10f4864c5072172c0a8ec31ed5[m
+Author: Yu <yukunchan1233@gmail.com>
+Date:   Wed Mar 11 11:10:13 2026 +0900
+
+    refactor: AuthService 로그인/회원가입 에러코드 분기
+
+[33mcommit 17b991efff91f93133853877f617ee72d0069ef4[m
+Author: Yu <yukunchan1233@gmail.com>
+Date:   Wed Mar 11 11:09:53 2026 +0900
+
+    refactor: AuthController Bearer 토큰 추출 로직 utils로 이동
+
+[33mcommit 7aafa2e72d52585219c8bc2f340069ba83d2de0b[m
+Merge: 1b976df 2650acb
+Author: Yu <yukunchan1233@gmail.com>
+Date:   Wed Mar 11 11:04:20 2026 +0900
+
+    Merge branch 'main' into feature/geunchan
+
+[33mcommit 2650acb28f06ed09ac4417942eae49d2665868f5[m
+Author: Yu <yukunchan1233@gmail.com>
+Date:   Wed Mar 11 10:56:39 2026 +0900
+
+    UserEntity 삭제
+
+[33mcommit 1b976df55467f48e8e430ce064747f7919186073[m
+Merge: 5e600ed 9078e59
+Author: Yu <yukunchan1233@gmail.com>
+Date:   Tue Mar 10 19:53:49 2026 +0900
+
+    Merge branch 'feature/geunchan' of https://github.com/chlcken2/project-gacha-recipe into feature/geunchan
+
+[33mcommit 5e600ed347f9adf159735b7dcdcc1f7807443f23[m
+Author: yukunchan1233-creator <yukunchan1233@gmail.com>
+Date:   Tue Mar 10 11:54:01 2026 +0900
+
+    Feature/geunchan 수정사항 반영 (#11)
+    
+    * refactor: Bearer 토큰 추출 로직을 컨틀롤러에서 utils로 옮김
+    
+    * 로그인 실패 시 에러코드 분기 (이메일/비번 빈값, 회원없음, 비번불일치)
+    
+    * 회원가입 검증 에러코드 분기 (이메일/닉네임/비번/확인비번)
+
+[33mcommit 9078e59ac692cf2e50f8661f272f214ece5b7aec[m
+Author: Yu <yukunchan1233@gmail.com>
+Date:   Tue Mar 10 11:43:27 2026 +0900
+
+    회원가입 검증 에러코드 분기 (이메일/닉네임/비번/확인비번)
+
+[33mcommit 583b8ab8e77e3752e3bba77894a9ff90f40d949e[m
+Author: Yu <yukunchan1233@gmail.com>
+Date:   Tue Mar 10 11:36:51 2026 +0900
+
+    로그인 실패 시 에러코드 분기 (이메일/비번 빈값, 회원없음, 비번불일치)
+
+[33mcommit abeda1f2a9c4fdea1180105465888737f63b062b[m
+Author: Yu <yukunchan1233@gmail.com>
+Date:   Tue Mar 10 11:30:04 2026 +0900
+
+    refactor: Bearer 토큰 추출 로직을 컨틀롤러에서 utils로 옮김
+
+[33mcommit 6a5cfef1271f876a951463275ab57921cb83d166[m
+Merge: 0deda72 b92e8e7
+Author: chl.cken <67785225+chlcken2@users.noreply.github.com>
+Date:   Tue Mar 10 10:09:06 2026 +0900
+
+    Merge pull request #10 from chlcken2/feature/geunchan
+    
+    Feature/geunchan
+
+[33mcommit b92e8e76b3d923ec650f3f0eb2912e74010f25b8[m
+Author: Yu <yukunchan1233@gmail.com>
+Date:   Mon Mar 9 23:47:44 2026 +0900
+
+    feat: 토큰 갱신
+
+[33mcommit b2db06f0233ca92273ec5c6c27c59ee0c1e8e790[m
+Merge: 8804b7b 0deda72
+Author: Yu <yukunchan1233@gmail.com>
+Date:   Mon Mar 9 22:59:42 2026 +0900
+
+    Merge branch 'main' into feature/geunchan
+
+[33mcommit 738c8bdabfdd335868d5825bcad4d563e8d88d6b[m
+Author: sbncy <emils01329@gmail.com>
+Date:   Mon Mar 9 12:46:18 2026 +0900
+
+    refactor RecipeMapConvert 처리를 위한 불필요해진 difficultyID 제거
+
+[33mcommit 3c1ff57dfb25f09de36febb153c0cf29b70e5931[m[33m ([m[1;32mmain[m[33m)[m
+Merge: d6e0312 0deda72
+Author: sbncy <emils01329@gmail.com>
+Date:   Mon Mar 9 11:37:12 2026 +0900
+
+    Merge branch 'main' of https://github.com/chlcken2/project-gacha-recipe into feature/seonbin
+    commit
+    test
+    .
+
+[33mcommit 0deda72b72625d51678bc3c4ff26a3cbfba758ae[m
+Merge: 5ce419a 9520589
+Author: chl.cken <67785225+chlcken2@users.noreply.github.com>
+Date:   Mon Mar 9 11:26:21 2026 +0900
+
+    Merge pull request #8 from chlcken2/feature/changhyeon
+    
+    fix: change data.sql　ko to jp
+
+[33mcommit 9520589afbbf2a0c7115b5a7f8e0334aec1061a3[m
+Author: changhyeon <ckdgus988@gmail.com>
+Date:   Mon Mar 9 11:25:40 2026 +0900
+
+    fix: change data.sql　ko to jp
+
+[33mcommit d6e0312aefadc2ca48f4419769f081a567239207[m
+Author: sbncy <emils01329@gmail.com>
+Date:   Mon Mar 9 11:10:20 2026 +0900
+
+    feat: 상세페이지 DTO 구성
+
+[33mcommit da5de6f156930ab066019494199e143f332be135[m
+Author: sbncy <emils01329@gmail.com>
+Date:   Mon Mar 9 11:09:32 2026 +0900
+
+    상세페이지 DTO 구성
+
+[33mcommit 834655a60cacf0b7f3828dfea2fac94347970ad0[m
+Author: sbncy <emils01329@gmail.com>
+Date:   Mon Mar 9 11:02:53 2026 +0900
+
+    상세페이지 DTO 구성
+
+[33mcommit 609e5495451d59c9b226190cc66ea631d9f9f8dd[m
+Author: Yuya <Yuya@Yuya>
+Date:   Mon Mar 9 10:46:56 2026 +0900
+
+    상세페이지 관련 DTO 구성
+
+[33mcommit 8df6e61782bd4898026c8d9211c732bef6632147[m
+Author: Yuya <Yuya@Yuya>
+Date:   Mon Mar 9 10:38:01 2026 +0900
+
+    상세페이지 관련 DTO 생성
+
+[33mcommit 8804b7bd47465d3360f3bb86884f6396c1a6d0d6[m
+Author: Yu <yukunchan1233@gmail.com>
+Date:   Mon Mar 9 10:09:14 2026 +0900
+
+    feat: 로그인·로그아웃
+
+[33mcommit c730c40433073cc67b5b9f70e59581d45a0ce3b1[m
+Merge: 79a1627 5ce419a
+Author: Yu <yukunchan1233@gmail.com>
+Date:   Mon Mar 9 10:00:26 2026 +0900
+
+    Merge branch 'main' into feature/geunchan
+
+[33mcommit 79a16273f342d2101dd3d14e45a20bad916d4c56[m
+Author: Yu <yukunchan1233@gmail.com>
+Date:   Mon Mar 9 09:59:00 2026 +0900
+
+    feat: 회원가입
+
+[33mcommit 5ce419abae999cb1f6a6fa7b0379b3d862bc112c[m
+Merge: 4705a08 d4cbb4b
+Author: chl.cken <67785225+chlcken2@users.noreply.github.com>
+Date:   Mon Mar 9 09:28:30 2026 +0900
+
+    Merge pull request #7 from chlcken2/feature/ilgwon
+    
+    feat: home.html 가챠사이트 이동 아이콘 교체 및 hover 애니메이션 효과 추가
+
+[33mcommit d4cbb4b8821d100998e0a3a839479519a5fdfb70[m
+Merge: afef704 4705a08
+Author: AN-ILGWON <jindohound@gmail.com>
+Date:   Mon Mar 9 02:50:40 2026 +0900
+
+    Merge branch 'main' into feature/ilgwon
+
+[33mcommit afef704db2fa0f4356551531e5807532803791b5[m
+Author: AN-ILGWON <jindohound@gmail.com>
+Date:   Mon Mar 9 02:21:10 2026 +0900
+
+    feat: 메인 home에서 클릭시 食事ガチャ로 이동하는 아이콘 교체
+
+[33mcommit 4705a0821d8a881341ef866cc2dc0bc1f1b6fb20[m
+Author: AN-ILGWON <jindohound@gmail.com>
+Date:   Mon Mar 9 01:59:13 2026 +0900
+
+    feat: home에서 食事ガチャ로 이동 아이콘 교체
+
+[33mcommit ebb775b747366c3de93382b02b197e5d865045ba[m
+Merge: e575ae7 286b185
+Author: Yu <yukunchan1233@gmail.com>
+Date:   Sat Mar 7 16:08:08 2026 +0900
+
+    머지 충돌 해결, application.properties는 로컬만 사용
+
+[33mcommit e575ae70be2c07445ac79163b8596f1eea120457[m
+Author: Yu <yukunchan1233@gmail.com>
+Date:   Sat Mar 7 15:01:29 2026 +0900
+
+    feat: just 연결확인
+
+[33mcommit 286b1859076f45764bf9e1e6363dc5f62013bb9a[m
+Merge: c4261cc ed4b312
+Author: chl.cken <67785225+chlcken2@users.noreply.github.com>
+Date:   Fri Mar 6 12:34:54 2026 +0900
+
+    Merge pull request #5 from chlcken2/feature/changhyeon
+    
+    fix: view, ai result 日本語で
+
+[33mcommit ed4b31242b97e5c8f2dfe6e3bc62709ebd21772d[m
+Author: changhyeon <ckdgus988@gmail.com>
+Date:   Fri Mar 6 12:34:12 2026 +0900
+
+    fix: view, ai result 日本語で
+
+[33mcommit c4261ccfda56f865e2789161fb12cdba862ccf0b[m
+Merge: a1f3af1 2616717
+Author: chl.cken <67785225+chlcken2@users.noreply.github.com>
+Date:   Fri Mar 6 11:33:17 2026 +0900
+
+    Merge pull request #4 from chlcken2/feature/changhyeon
+    
+    Feature/changhyeon
+
+[33mcommit 261671713836fc87c32b767afb8ff2b98f7ccc04[m
+Author: changhyeon <ckdgus988@gmail.com>
+Date:   Fri Mar 6 11:31:00 2026 +0900
+
+    remove application.properties from tracking
+
+[33mcommit 80621b60577227e3420687f6bdfc83bb9daaf33f[m
+Author: changhyeon <ckdgus988@gmail.com>
+Date:   Fri Mar 6 11:29:05 2026 +0900
+
+    fix: appication.properties에 image key value to move
+
+[33mcommit a1f3af1f32ed4825a4fe9b1fa31b273f9e0b38d3[m
+Merge: 11dced2 0be350e
+Author: AN_ILGWON <jindohund@gmail.com>
+Date:   Fri Mar 6 02:18:04 2026 +0900
+
+    Merge pull request #2 from chlcken2/feature/ilgwon
+    
+     [안일권] 홈 화면 私の冷蔵庫(내 냉장고) 탭 제거
+
+[33mcommit 0be350e01b1f2ad430a6236d36446db40428b794[m
+Author: AN-ILGWON <jindohound@gmail.com>
+Date:   Fri Mar 6 02:02:06 2026 +0900
+
+    refactor: 홈 화면 私の冷蔵庫 (내 냉장고) 탭 제거
+
+[33mcommit 34d0508cb65321f49cf3e01b3e9766f54404a82c[m
+Author: AN-ILGWON <jindohound@gmail.com>
+Date:   Fri Mar 6 00:57:57 2026 +0900
+
+    refactor: 마이페이지 도감 기능 제거
+
+[33mcommit f8b728202abd47d2663acfb4373ba2971f34d864[m
+Author: changhyeon <ckdgus988@gmail.com>
+Date:   Thu Mar 5 10:44:45 2026 +0900
+
+    feat: create Gacha Machine JS create with music and wow menent
+
+[33mcommit e8896f118b2bf2a26e1e754cf9725d8972c6c660[m
+Author: changhyeon <ckdgus988@gmail.com>
+Date:   Thu Mar 5 10:43:43 2026 +0900
+
+    chore: @RequiredArgsConstructor 추가로 코드 변경,
+
+[33mcommit 474fef4dd31c62c1761e7a9920271abe2f1f4512[m
+Author: changhyeon <ckdgus988@gmail.com>
+Date:   Thu Mar 5 10:42:11 2026 +0900
+
+    chore: Repository name Mapper change
+
+[33mcommit 11dced26412f8813594a7daa8b3879d914d5aed3[m
+Author: changhyeon <ckdgus988@gmail.com>
+Date:   Thu Mar 5 09:29:39 2026 +0900
+
+    chore: 팀원 작업 내용 주석 내용 추가
+
+[33mcommit ce80bcf6b6cb2e2d752798e7427b6d121f312847[m
+Author: changhyeon <ckdgus988@gmail.com>
+Date:   Thu Mar 5 09:07:09 2026 +0900
+
+    fix: change real gacha machine design
+
+[33mcommit 9b9a6b620e6b4e8b09b383e40f62e6b900e1e3d9[m
+Author: changhyeon <ckdgus988@gmail.com>
+Date:   Wed Mar 4 14:45:50 2026 +0900
+
+    fix: change real gacha machine design
+
+[33mcommit 0b430ef9236d2db9bd208f8f83f8d9cb2abb7675[m
+Author: changhyeon <ckdgus988@gmail.com>
+Date:   Wed Mar 4 14:45:25 2026 +0900
+
+    fix: lang ko to ja
+
+[33mcommit 6fa29fc96af608c451dc1356d36c8df83cf5334d[m
+Author: changhyeon <ckdgus988@gmail.com>
+Date:   Wed Mar 4 14:22:55 2026 +0900
+
+    fix: lang ko to ja
+
+[33mcommit 21a85a608496156dbbdef398d92bcf444efb3520[m
+Author: changhyeon <ckdgus988@gmail.com>
+Date:   Wed Mar 4 14:04:27 2026 +0900
+
+    feat: 예외 처리 시스템 통합 및 ApiResponse 통일
+    
+    - ErrorCode: GACHA_DAILY_LIMIT/NO_INGREDIENTS/AI_FAILURE/SAVE_FAILURE/RECIPE_NOT_FOUND 추가
+    - GachaException: gacha 도메인 전용 예외 클래스 생성
+    - GachaService: return 에러 → throw GachaException으로 전환 (GlobalExceptionHandler 위임)
+    - GachaDto.GenerateResponse: success/message 제거 (ApiResponse가 담당)
+    - GachaController: /count, /publish 엔드포인트도 ApiResponse로 통일
+    - recipe-create.js: 새 응답 구조 반영 (res.data.recipe, res.data.count 등)
+    
+    Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+
+[33mcommit 82f1d73e445ed33fc8e09a7933c7f0dc62d30698[m
+Author: changhyeon <ckdgus988@gmail.com>
+Date:   Wed Mar 4 12:39:37 2026 +0900
+
+    fix: git ignore add
+
+[33mcommit e6c24ab9232c1b994461a297c7da165d8e2ded2e[m
+Author: changhyeon <ckdgus988@gmail.com>
+Date:   Wed Mar 4 11:59:37 2026 +0900
+
+    fix: global 관련 된 에러코드 및 response, handler 처리 수정
+
+[33mcommit a16a09870df64b564c6d36ac7f06a3c033382d65[m
+Author: changhyeon <ckdgus988@gmail.com>
+Date:   Tue Mar 3 09:13:11 2026 +0900
+
+    fix: file_folder 불필요 내용 삭제 및 @Getter 사용
+
+[33mcommit c87175e822d46198cd8551b86cf12bcca37ae167[m
+Author: changhyeon <ckdgus988@gmail.com>
+Date:   Mon Mar 2 22:01:47 2026 +0900
+
+    feat: globalExceptionHandler 정의
+
+[33mcommit 4134a1ffff0a25ddb1d187bd0e5c8f4d5043749a[m
+Author: changhyeon <ckdgus988@gmail.com>
+Date:   Mon Mar 2 22:01:31 2026 +0900
+
+    feat: errorCode 정의
+
+[33mcommit b7551c823f54732a18d17e3e595ad900932fa892[m
+Author: changhyeon <ckdgus988@gmail.com>
+Date:   Mon Mar 2 22:01:19 2026 +0900
+
+    feat: BaseExcpetion 정의
+
+[33mcommit 490196bde605d6e09aa09d4d206dd8251f77ec47[m
+Author: changhyeon <ckdgus988@gmail.com>
+Date:   Mon Mar 2 20:34:16 2026 +0900
+
+    feat: apiResponse 정의
+
+[33mcommit 73b152882b6363932f09c9a763d486481446f738[m
+Author: 창현 <changhyeon@changhyeon-ui-MacBookPro.local>
+Date:   Mon Mar 2 14:24:13 2026 +0900
+
+    feat: recipe prompt edit
+
+[33mcommit a1bb7cfed825127d7e73b969db6eddf5358c9647[m
+Author: 창현 <changhyeon@changhyeon-ui-MacBookPro.local>
+Date:   Mon Mar 2 02:59:22 2026 +0900
+
+    Fix: downgrade mybatis-spring-boot-starter to 3.0.3 for Spring Boot 3.2.5
+    
+    mybatis-spring-boot-starter:4.0.1 requires Spring Boot 3.3+.
+    Spring Boot 3.2.5에서는 PropertyMapper API 변경으로 NPE 발생.
+    3.0.3으로 다운그레이드하여 호환성 문제 해결.
+    
+    Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+
+[33mcommit 0ddeaad2a7808e52abcdae8ce3ddcdeeb6eb69bd[m
+Merge: f55936d 0921fc1
+Author: 창현 <changhyeon@changhyeon-ui-MacBookPro.local>
+Date:   Mon Mar 2 02:57:02 2026 +0900
+
+    Merge claude/confident-lumiere: Gemini AI gacha recipe generation
+    
+    - Gemini 2.5-flash for recipe JSON generation
+    - Gemini 2.0-flash-exp-image-generation for food photos (Pollinations fallback)
+    - Image files saved to static/images/ and served via WebMvcConfig
+    - Boolean field fix: isAiGenerated, isPublic (Lombok/MyBatis compatibility)
+    - 3-stage ingredient normalization via IngredientService
+    - schema.sql: title_image TEXT (was VARCHAR(512))
+    - mybatis-spring-boot-starter bumped to 4.0.1
+    
+    Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+
+[33mcommit f55936d8c90f840e939a16a924529ebc9c9ee175[m
+Author: 창현 <changhyeon@changhyeon-ui-MacBookPro.local>
+Date:   Mon Mar 2 02:49:20 2026 +0900
+
+    chore: .claude/ 워크트리 gitignore 추가, 임베디드 git 제거
+
+[33mcommit 43d163ebb36512e596b85ab9f68649f902272572[m
+Author: 창현 <changhyeon@changhyeon-ui-MacBookPro.local>
+Date:   Mon Mar 2 02:48:58 2026 +0900
+
+    feat: 팀원 작업 저장 (Common/Utils 분리, AI 도메인 재구성)
+    
+    Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+
+[33mcommit 0921fc10fb09d9c0e55e4063d9d0b38024d47358[m
+Author: 창현 <changhyeon@changhyeon-ui-MacBookPro.local>
+Date:   Mon Mar 2 02:47:44 2026 +0900
+
+    feat: AI 식단 가챠 시스템 구현
+    
+    - Gemini 2.5-flash 레시피 JSON 생성 (재료/단계/영양정보)
+    - gemini-2.0-flash-exp-image-generation 음식 이미지 생성
+    - GeminiClient, ImageGenerationClient, AppConfig, WebMvcConfig 추가
+    - GachaController/Service/Repository/Dto/Entity 구현
+    - RecipeEntity/Service/Repository, IngredientService/Repository 구현
+    - MyBatis XML 매퍼 (gacha, recipe, ingredient)
+    - schema.sql, data.sql 초기 데이터
+    - recipe-create.html/js, recipe-detail.html 프론트엔드 연동
+    - 일일 가챠 횟수 제한(3회), 진행 애니메이션, 결과 카드 UI
+    - 나만의 식탁(private)/모두의 식탁(public) 저장 기능
+    
+    Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+
+[33mcommit cdc7bc5cc903fb9bdc820612f28454dab6cb2c6e[m
+Author: 창현 <changhyeon@changhyeon-ui-MacBookPro.local>
+Date:   Wed Feb 25 11:23:01 2026 +0900
+
+    gacha folder create
+
+[33mcommit 8f3e17892d3e4ef70e820ac8a66c36810a340d5a[m
+Author: 창현 <changhyeon@changhyeon-ui-MacBookPro.local>
+Date:   Fri Feb 20 16:21:52 2026 +0900
+
+    feat: new UI,UX を作るために新しいstructureを設計
+
+[33mcommit a08a2992ab0f0572745f920eb74376f801f58cae[m
+Author: 창현 <changhyeon@changhyeon-ui-MacBookPro.local>
+Date:   Fri Feb 20 10:58:42 2026 +0900
+
+    feat: file, fold sturct set
+
+[33mcommit f7f3c688a4625fcb42d97a07c32c5ff18c60e066[m
+Author: 창현 <changhyeon@changhyeon-ui-MacBookPro.local>
+Date:   Fri Feb 20 09:59:53 2026 +0900
+
+    first gitignore setting
+
+[33mcommit 3ea6db112f53df402219e944dfbf6efc3f54d0ab[m
+Author: 창현 <changhyeon@changhyeon-ui-MacBookPro.local>
+Date:   Fri Feb 20 09:52:03 2026 +0900
+
+    first commit
