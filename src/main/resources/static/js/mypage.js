@@ -27,16 +27,28 @@
         var nickEl = document.getElementById('profile-nickname');
         var emailEl = document.getElementById('profile-email');
         var roleEl = document.getElementById('profile-role');
+        var myRecipeEl = document.getElementById('profile-my-recipe-count');
+        var receivedLikeEl = document.getElementById('profile-received-like-count');
+        var gachaEl = document.getElementById('profile-gacha-count');
         if (nickEl) nickEl.textContent = d.nickname || '—';
         if (emailEl) emailEl.textContent = d.email || '—';
         if (roleEl && d.role) roleEl.textContent = d.role;
+        if (myRecipeEl) myRecipeEl.textContent = typeof d.myRecipeCount === 'number' ? d.myRecipeCount : 0;
+        if (receivedLikeEl) receivedLikeEl.textContent = typeof d.receivedLikeCount === 'number' ? d.receivedLikeCount : 0;
+        if (gachaEl) gachaEl.textContent = typeof d.totalGachaCount === 'number' ? d.totalGachaCount : 0;
       }
     })
     .catch(function() {
       var nickEl = document.getElementById('profile-nickname');
       var emailEl = document.getElementById('profile-email');
+      var myRecipeEl = document.getElementById('profile-my-recipe-count');
+      var receivedLikeEl = document.getElementById('profile-received-like-count');
+      var gachaEl = document.getElementById('profile-gacha-count');
       if (nickEl) nickEl.textContent = '—';
       if (emailEl) emailEl.textContent = '—';
+      if (myRecipeEl) myRecipeEl.textContent = '0';
+      if (receivedLikeEl) receivedLikeEl.textContent = '0';
+      if (gachaEl) gachaEl.textContent = '0';
     });
 
   var tabContentMap = {

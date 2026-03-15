@@ -12,4 +12,12 @@
           AND deleted_at IS NULL
     </select>
 
+    <select id="countTotalGenerations" resultType="int">
+        SELECT COUNT(*)
+        FROM recipes
+        WHERE user_id = #{userId}
+          AND is_ai_generated = true
+          AND deleted_at IS NULL
+    </select>
+
 </mapper>
