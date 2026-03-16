@@ -37,13 +37,17 @@ public class Security {
 
                         // 프로필 / 마이페이지는 인증 필요
                         .requestMatchers("/users/me", "/users/me/**").authenticated()
+                        .requestMatchers("/recipes/**").authenticated()
 
                         // 그 외 나머지
                         .anyRequest().permitAll()
                 )
                 // 폼 로그인 / 기본 인증은 사용 안 함 (우리가 직접 만든 로그인 사용)
                 .formLogin(form -> form.disable())
-                .httpBasic(basic -> basic.disable());
+                .httpBasic(basic -> basic.disable())
+                .exceptionHandling(ex -> ex.authenticationEntryPoint((request, response, authException) -> {
+                    response.sendRedirect("/login");
+                }));
 
         return http.build();
     }

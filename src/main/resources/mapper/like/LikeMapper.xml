@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.dailytable.dailytable.domain.like.LikeMapper">
+
+<!--LikeMapper.xml -->
+	<insert id="insertLike">
+		INSERT INTO recipe_likes (user_id, recipe_id, created_at)
+		VALUES (#{userId}, #{recipeId}, NOW())
+	</insert>
+
+	<delete id="deleteLike">
+		DELETE FROM recipe_likes
+		WHERE user_id = #{userId} AND recipe_id = #{recipeId}
+	</delete>
+
+	<update id="increaseLikeCount">
+		UPDATE recipes SET like_count = like_count + 1 WHERE id = #{recipeId}
+	</update>
+
+	<update id="decreaseLikeCount">
+		UPDATE recipes SET like_count = like_count - 1 WHERE id = #{recipeId}
+	</update>
+
+	<select id="findLikeId" resultType="Long">
+		SELECT id FROM recipe_likes
+		WHERE user_id = #{userId} AND recipe_id = #{recipeId}
+	</select>
+
+</mapper>

@@ -1,4 +1,4 @@
-package com.dailytable.dailytable.domain.recipe;
+package com.dailytable.dailytable.domain.recipe.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,22 +14,20 @@ public class RecipeDetailDto {
 	private String title;
 	private String titleImage;
 	private String description;
+	private String nickname;
 	private int cookingTime;
 	private String difficultyLabel;
 	private String purpose;
-	private String createdAtFormatted;
 	private String cuisine;
-	private boolean isAiGenerated;
 	private boolean isPublic;
 	private int viewCount;
 	private int commentCount;
 	private int likeCount;
-	private int popularityScore;
 	private boolean isLiked;
-//	private List<RecipeStepDto> steps;
+	private List<RecipeStepDto> steps;
 	private List<IngredientDto> ingredients;
-//	private List<RecipeNutrientDto> nutrients;
+	private List<RecipeNutrientDto> nutrients;
 	private LocalDateTime createdAt;
-	private LocalDateTime updatedAt;
-	private LocalDateTime deletedAt;
+	private String createdAtFormatted;
+	
 }
