@@ -29,10 +29,10 @@ public class RankingController {
      * 정렬: popularity_score DESC (인기도 높은 순)
      */
     @GetMapping("/today")
-    public ResponseEntity<ApiResponse<List<RecipeRankingDto>>> getTodayRanking(
+    public ResponseEntity<ApiResponse<List<RankingDto>>> getTodayRanking(
             @RequestParam(defaultValue = "5") int limit) {
         log.info("GET /api/ranking/today, limit: {}", limit);
-        List<RecipeRankingDto> ranking = rankingService.getTodayRanking(limit);
+        List<RankingDto> ranking = rankingService.getTodayRanking(limit);
         return ResponseEntity.ok(ApiResponse.success(ranking));
     }
 
@@ -42,10 +42,10 @@ public class RankingController {
      * 정렬: popularity_score DESC (인기도 높은 순)
      */
     @GetMapping("/weekly")
-    public ResponseEntity<ApiResponse<List<RecipeRankingDto>>> getWeeklyRanking(
+    public ResponseEntity<ApiResponse<List<RankingDto>>> getWeeklyRanking(
             @RequestParam(defaultValue = "5") int limit) {
         log.info("GET /api/ranking/weekly, limit: {}", limit);
-        List<RecipeRankingDto> ranking = rankingService.getWeeklyRanking(limit);
+        List<RankingDto> ranking = rankingService.getWeeklyRanking(limit);
         return ResponseEntity.ok(ApiResponse.success(ranking));
     }
 }

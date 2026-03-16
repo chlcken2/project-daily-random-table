@@ -1,110 +1,118 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ja">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>ホーム - 一人暮らしレシピ</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" th:href="@{/css/recipe.css}" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ホーム - 一人暮らしレシピ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" th:href="@{/css/recipe.css}"/>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100">
-  <div class="min-h-screen pb-20">
-    <!-- ヘッダー -->
-    <header class="bg-gradient-to-r from-amber-700 to-amber-800 text-white sticky top-0 z-50 shadow-lg">
-      <div class="max-w-7xl mx-auto px-4 py-4">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <div class="bg-amber-600 p-2 rounded-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            </div>
-            <div>
-              <h1 class="text-xl font-bold">🏠 一人暮らしレシピ</h1>
-              <p class="text-xs text-amber-200">ようこそ！</p>
-            </div>
+<div class="min-h-screen pb-20">
+  <!-- ヘッダー -->
+  <header class="bg-gradient-to-r from-amber-700 to-amber-800 text-white sticky top-0 z-50 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="bg-amber-600 p-2 rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
           </div>
-          <div class="flex items-center gap-2">
-            <a th:href="@{/mypage}" href="/mypage" class="bg-amber-600 hover:bg-amber-500 p-2 rounded-lg transition-colors flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            </a>
-            <a th:href="@{/login}" href="/login" class="bg-red-600 hover:bg-red-500 p-2 rounded-lg transition-colors flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-            </a>
+          <div>
+            <h1 class="text-xl font-bold">🏠 一人暮らしレシピ</h1>
+            <p class="text-xs text-amber-200">ようこそ！</p>
           </div>
         </div>
-      </div>
-    </header>
-
-    <div class="max-w-7xl mx-auto px-4 py-6">
-      <!-- ガチャメインバナー -->
-      <a th:href="@{/gacha/home}" href="/gacha/home" class="gacha-banner block mb-6 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 rounded-2xl p-6 shadow-2xl cursor-pointer hover:shadow-3xl transition-all duration-300 relative overflow-hidden group animate-fade-in-up">
-        <div class="gacha-banner-overlay absolute inset-0 bg-cover bg-center opacity-10 group-hover:opacity-20 transition-opacity duration-300" style="background-image: url('https://images.unsplash.com/photo-1768501391108-ba094c8a6894?w=1080');"></div>
-        <div class="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div class="flex items-center gap-4">
-            <div class="animate-dice-wiggle bg-white/20 backdrop-blur-sm p-4 rounded-xl flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><rect width="12" height="12" x="2" y="10" rx="2" ry="2"/><path d="m17.92 14 3.5-3.5a2.24 2.24 0 0 0 0-3l-5-4.92a2.24 2.24 0 0 0-3 0L10 6"/><path d="M6 18h.01"/><path d="M10 14h.01"/><path d="M15 6h.01"/><path d="M18 9h.01"/></svg>
-            </div>
-            <div class="text-white">
-              <h2 class="text-2xl sm:text-3xl font-bold mb-1">🎰 食事ガチャに挑戦！</h2>
-              <p class="text-pink-100 text-sm">冷蔵庫の食材でランダムレシピを引いてみよう ✨</p>
-            </div>
-          </div>
-          <span class="gacha-btn bg-white text-purple-600 px-6 py-3 rounded-full font-bold text-base sm:text-lg shadow-lg transition-all duration-300 inline-block">ガチャへ行く →</span>
-        </div>
-      </a>
-
-      <!-- 今日の食卓 + 名誉の食卓 -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <section class="bg-white rounded-2xl shadow-lg p-6">
-          <div class="flex items-center gap-2 mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-amber-600"><path d="M6 14c.5.5 1 1 2 1s1.5-.5 2-1"/><path d="M17 20a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-1"/><path d="M6 11V9a2 2 0 0 1 2-2h1"/><path d="M6 20a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1"/><path d="M2 10h20"/></svg>
-            <h2 class="text-xl font-bold">🍳 今日何食べる？</h2>
-            <span class="text-sm text-gray-500 ml-auto">リアルタイム人気 🔥</span>
-          </div>
-          <div class="space-y-3" id="today-ranking-container">
-            <!-- APIで動的にロードされます -->
-          </div>
-        </section>
-
-        <section class="bg-white rounded-2xl shadow-lg p-6">
-          <div class="flex items-center gap-2 mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-amber-600"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
-            <h2 class="text-xl font-bold">🏆 伝説のグルメ</h2>
-            <span class="text-sm text-gray-500 ml-auto">歴代ベスト 👑</span>
-          </div>
-          <div class="space-y-3" id="weekly-ranking-container">
-            <!-- APIで動的にロードされます -->
-          </div>
-        </section>
-      </div>
-
-      <!-- タブナビゲーション -->
-      <div class="bg-white rounded-t-2xl shadow-lg">
-        <div class="flex border-b border-gray-200">
-          <button type="button" class="flex-1 flex items-center justify-center gap-2 py-4 transition-colors text-gray-600">
-            🌐 みんなの食卓を見る
+        <div class="flex items-center gap-2">
+          <a th:href="@{/mypage}" href="/mypage" class="bg-amber-600 hover:bg-amber-500 p-2 rounded-lg transition-colors flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </a>
+          <a th:href="@{/login}" href="/login" id="auth-link" class="bg-red-600 hover:bg-red-500 p-2 rounded-lg transition-colors flex items-center justify-center" title="ログイン">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          </a>
+          <button type="button" id="logout-btn" class="hidden bg-red-600 hover:bg-red-500 p-2 rounded-lg transition-colors flex items-center justify-center" title="ログアウト">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
           </button>
-        </div>
-
-        <div class="p-6">
-          <!-- レシピグリッド - 全体 -->
-          <div id="tab-all" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            <!-- 全体レシピが動的にロードされます -->
-          </div>
-          <div id="tab-my" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 hidden">
-            <!-- 私のレシピが動的にロードされます -->
-          </div>
-          <div id="tab-liked" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 hidden">
-            <!-- 好きにしたレシピが動的にロードされます -->
-          </div>
         </div>
       </div>
     </div>
+  </header>
 
-    <!-- フローティングガチャボタン -->
-    <a th:href="@{/gacha/home}" href="/gacha/home" id="floating-gacha" class="fixed bottom-8 right-8 w-32 h-32 flex items-center justify-center z-50 transition-all duration-300 hover:scale-110 hover:rotate-12">
-      <img src="https://i.ibb.co/4wgmvdV3/AI.png" alt="GACHA" class="w-32 h-32 object-cover">
+  <div class="max-w-7xl mx-auto px-4 py-6">
+    <!-- Error Message -->
+    <div th:if="${error}" class="mb-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
+      <p th:text="${error}"></p>
+    </div>
+
+    <!-- ガチャメインバナー -->
+    <a th:href="@{/gacha/home}" href="/gacha/home" class="gacha-banner block mb-6 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 rounded-2xl p-6 shadow-2xl cursor-pointer hover:shadow-3xl transition-all duration-300 relative overflow-hidden group animate-fade-in-up">
+      <div class="gacha-banner-overlay absolute inset-0 bg-cover bg-center opacity-10 group-hover:opacity-20 transition-opacity duration-300" style="background-image: url('https://images.unsplash.com/photo-1768501391108-ba094c8a6894?w=1080');"></div>
+      <div class="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-4">
+          <div class="animate-dice-wiggle bg-white/20 backdrop-blur-sm p-4 rounded-xl flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><rect width="12" height="12" x="2" y="10" rx="2" ry="2"/><path d="m17.92 14 3.5-3.5a2.24 2.24 0 0 0 0-3l-5-4.92a2.24 2.24 0 0 0-3 0L10 6"/><path d="M6 18h.01"/><path d="M10 14h.01"/><path d="M15 6h.01"/><path d="M18 9h.01"/></svg>
+          </div>
+          <div class="text-white">
+            <h2 class="text-2xl sm:text-3xl font-bold mb-1">🎰 食事ガチャに挑戦！</h2>
+            <p class="text-pink-100 text-sm">冷蔵庫の食材でランダムレシピを引いてみよう ✨</p>
+          </div>
+        </div>
+        <span class="gacha-btn bg-white text-purple-600 px-6 py-3 rounded-full font-bold text-base sm:text-lg shadow-lg transition-all duration-300 inline-block">ガチャへ行く →</span>
+      </div>
     </a>
+
+    <!-- 今日の食卓 + 名誉の食卓 -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <section class="bg-white rounded-2xl shadow-lg p-6">
+        <div class="flex items-center gap-2 mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-amber-600"><path d="M6 14c.5.5 1 1 2 1s1.5-.5 2-1"/><path d="M17 20a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-1"/><path d="M6 11V9a2 2 0 0 1 2-2h1"/><path d="M6 20a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1"/><path d="M2 10h20"/></svg>
+          <h2 class="text-xl font-bold">🍳 今日何食べる？</h2>
+          <span class="text-sm text-gray-500 ml-auto">リアルタイム人気 🔥</span>
+        </div>
+        <div class="space-y-3" id="today-ranking-container">
+          <!-- APIで動的にロードされます -->
+        </div>
+      </section>
+
+      <section class="bg-white rounded-2xl shadow-lg p-6">
+        <div class="flex items-center gap-2 mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-amber-600"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+          <h2 class="text-xl font-bold">🏆 伝説のグルメ</h2>
+          <span class="text-sm text-gray-500 ml-auto">歴代ベスト 👑</span>
+        </div>
+        <div class="space-y-3" id="weekly-ranking-container">
+          <!-- APIで動的にロードされます -->
+        </div>
+      </section>
+    </div>
+
+    <!-- タブナビゲーション -->
+    <div class="bg-white rounded-t-2xl shadow-lg">
+      <div class="flex border-b border-gray-200">
+        <button type="button" class="flex-1 flex items-center justify-center gap-2 py-4 transition-colors text-gray-600">
+          🌐 みんなの食卓を見る
+        </button>
+      </div>
+
+      <div class="p-6">
+        <!-- レシピグリッド - 全体 -->
+        <div id="tab-all" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          <!-- 全体レシピが動的にロードされます -->
+        </div>
+        <div id="tab-my" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 hidden">
+          <!-- 私のレシピが動的にロードされます -->
+        </div>
+        <div id="tab-liked" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 hidden">
+          <!-- 好きにしたレシピが動的にロードされます -->
+        </div>
+      </div>
+    </div>
   </div>
-  <script th:src="@{/js/home.js}"></script>
+
+  <!-- フローティングガチャボタン -->
+  <a th:href="@{/gacha/home}" href="/gacha/home" id="floating-gacha" class="fixed bottom-8 right-8 w-32 h-32 flex items-center justify-center z-50 transition-all duration-300 hover:scale-110 hover:rotate-12">
+    <img src="https://i.ibb.co/4wgmvdV3/AI.png" alt="GACHA" class="w-32 h-32 object-cover">
+  </a>
+</div>
+<script th:src="@{/js/home.js}"></script>
 </body>
 </html>

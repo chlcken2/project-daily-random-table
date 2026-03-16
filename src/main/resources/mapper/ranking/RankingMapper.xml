@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.dailytable.dailytable.domain.ranking.RankingRepository">
+<mapper namespace="com.dailytable.dailytable.domain.ranking.RankingMapper">
 
     <!-- 
         랭킹 시스템 SQL
@@ -29,7 +29,7 @@
         - 삭제되지 않은 레시피: deleted_at IS NULL
         - 정렬: 인기도 점수 내림차순 → 생성일 내림차순
     -->
-    <select id="selectTodayBestRecipes" resultType="com.dailytable.dailytable.domain.ranking.RecipeRankingDto">
+    <select id="selectTodayBestRecipes" resultType="com.dailytable.dailytable.domain.ranking.RankingDto">
         SELECT <include refid="rankingColumns"/>
         FROM recipes r
         JOIN users u ON r.user_id = u.id
@@ -48,7 +48,7 @@
         - 삭제되지 않은 레시피: deleted_at IS NULL
         - 정렬: 인기도 점수 내림차순 → 생성일 내림차순
     -->
-    <select id="selectWeeklyBestRecipes" resultType="com.dailytable.dailytable.domain.ranking.RecipeRankingDto">
+    <select id="selectWeeklyBestRecipes" resultType="com.dailytable.dailytable.domain.ranking.RankingDto">
         SELECT <include refid="rankingColumns"/>
         FROM recipes r
         JOIN users u ON r.user_id = u.id

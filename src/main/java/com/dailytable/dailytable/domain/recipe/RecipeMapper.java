@@ -1,5 +1,6 @@
 package com.dailytable.dailytable.domain.recipe;
 
+import com.dailytable.dailytable.domain.recipe.dto.RecipeRankingDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -28,6 +29,8 @@ public interface RecipeMapper {
 	List<RecipeStepDto> findStepsByRecipeId(@Param("recipeId") Long recipeId);
 	
 	List<RecipeNutrientDto> findNutrientsByRecipeId(Long recipeId);
+
+	List<RecipeRankingDto> findPublicRecipes();
 
 	void updatePublicStatus(@Param("id") Long id, @Param("isPublic") boolean isPublic);
 

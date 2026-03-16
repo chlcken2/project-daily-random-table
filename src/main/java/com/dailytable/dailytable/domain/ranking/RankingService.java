@@ -11,15 +11,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RankingService {
 
-    private final RankingRepository rankingRepository;
+    private final RankingMapper rankingMapper;
 
-    public List<RecipeRankingDto> getTodayRanking(int limit) {
+    public List<RankingDto> getTodayRanking(int limit) {
         log.info("Getting today ranking, limit: {}", limit);
-        return rankingRepository.selectTodayBestRecipes(limit);
+        return rankingMapper.selectTodayBestRecipes(limit);
     }
 
-    public List<RecipeRankingDto> getWeeklyRanking(int limit) {
+    public List<RankingDto> getWeeklyRanking(int limit) {
         log.info("Getting weekly ranking, limit: {}", limit);
-        return rankingRepository.selectWeeklyBestRecipes(limit);
+        return rankingMapper.selectWeeklyBestRecipes(limit);
     }
 }
