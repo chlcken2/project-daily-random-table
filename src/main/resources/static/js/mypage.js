@@ -1,22 +1,24 @@
 (function() {
   var activeTab = 'recipes';
 
-  var accessToken = localStorage.getItem('accessToken');
-  if (!accessToken && document.cookie) {
-    var cookies = document.cookie.split(';');
-    for (var i = 0; i < cookies.length; i++) {
-      var parts = cookies[i].trim().split('=');
-      if (parts[0] === 'accessToken' && parts[1]) {
-        accessToken = parts[1];
-        localStorage.setItem('accessToken', accessToken);
-      }
-      if (parts[0] === 'refreshToken' && parts[1]) {
-        localStorage.setItem('refreshToken', parts[1]);
-      }
+  function getCookie(name) {
+    var c = document.cookie.split(';');
+    for (var i = 0; i < c.length; i++) {
+      var p = c[i].trim().split('=');
+      if (p[0] === name && p[1]) return p[1];
     }
+    return '';
   }
+
+  function clearTokenCookies() {
+    document.cookie = 'accessToken=; path=/; max-age=0';
+    document.cookie = 'refreshToken=; path=/; max-age=0';
+  }
+
+  var accessToken = getCookie('accessToken');
   if (!accessToken) {
-    window.location.href = '/login';
+    var target = window.location.pathname + window.location.search;
+    window.location.href = '/login?redirect=' + encodeURIComponent(target || '/mypage');
     return;
   }
 
@@ -25,9 +27,9 @@
   fetch('/users/me', { headers: headers })
     .then(function(res) {
       if (res.status === 401) {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        window.location.href = '/login';
+        clearTokenCookies();
+        var target = window.location.pathname + window.location.search;
+        window.location.href = '/login?redirect=' + encodeURIComponent(target || '/mypage');
         return null;
       }
       return res.json();
@@ -201,12 +203,8 @@
   var logoutBtn = document.getElementById('mypage-logout');
   if (logoutBtn) {
     logoutBtn.addEventListener('click', function() {
-      var rt = localStorage.getItem('refreshToken');
-      var opts = { method: 'POST', headers: {} };
-      if (rt) opts.headers['Authorization'] = 'Bearer ' + rt;
-      fetch('/auth/logout', opts).then(function() {}).catch(function() {});
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
+      fetch('/auth/logout', { method: 'POST', credentials: 'same-origin' }).then(function() {}).catch(function() {});
+      clearTokenCookies();
       window.location.href = '/login';
     });
   }
