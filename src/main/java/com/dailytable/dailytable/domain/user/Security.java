@@ -26,18 +26,33 @@ public class Security {
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        // 인증 없이 열어둘 엔드포인트
-                        .requestMatchers("/auth/signup", "/auth/login", "/auth/logout", "/auth/token/refresh").permitAll()
-                        .requestMatchers("/", "/css/**", "/js/**", "/images/**").permitAll()
-                        .requestMatchers("/gacha/**").permitAll()
-                        .requestMatchers("/api/gacha/**").permitAll()
-                        .requestMatchers("/recipe/**").permitAll()
-                        .requestMatchers("/api/recipe/**").permitAll()
-                        .requestMatchers("/login", "/signup").permitAll()
+                        // 인증 없이 열어둘 엔드포인트 (화면 + 공개 페이지/API)
+                        .requestMatchers(
+                                "/",                // 메인 홈
+                                "/login", "/signup" // 로그인/회원가입 화면
+                        ).permitAll()
 
-                        // 프로필 / 마이페이지는 인증 필요
+                        // 인증 관련 API (로그인 자체는 토큰 없이 가능해야 함)
+                        .requestMatchers(
+                                "/auth/signup",
+                                "/auth/login",
+                                "/auth/logout",
+                                "/auth/token/refresh"
+                        ).permitAll()
+
+                        // 정적 리소스
+                        .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+
+                        // 공개 화면/페이지 (가챠, 레시피 상세, 랭킹 등)
+                        .requestMatchers(
+                                "/gacha/**",
+                                "/recipes/**",
+                                "/api/ranking/**"
+                        ).permitAll()
+
+                        // 로그인 필요 영역 (마이페이지/내 데이터)
                         .requestMatchers("/users/me", "/users/me/**").authenticated()
-                        .requestMatchers("/recipes/**").authenticated()
+                        .requestMatchers("/api/ingredients/**").authenticated()
 
                         // 그 외 나머지
                         .anyRequest().permitAll()
