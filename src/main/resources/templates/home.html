@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ja">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ホーム - 一人暮らしレシピ</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" th:href="@{/css/recipe.css}"/>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ホーム - 一人暮らしレシピ</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" th:href="@{/css/recipe.css}" />
 </head>
 <body class="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100">
   <div class="min-h-screen pb-20">
@@ -26,12 +26,9 @@
             <a th:href="@{/mypage}" href="/mypage" class="bg-amber-600 hover:bg-amber-500 p-2 rounded-lg transition-colors flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             </a>
-            <a th:href="@{/login}" href="/login" id="auth-link" class="bg-red-600 hover:bg-red-500 p-2 rounded-lg transition-colors flex items-center justify-center" title="ログイン">
+            <a th:href="@{/login}" href="/login" class="bg-red-600 hover:bg-red-500 p-2 rounded-lg transition-colors flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
             </a>
-            <button type="button" id="logout-btn" class="hidden bg-red-600 hover:bg-red-500 p-2 rounded-lg transition-colors flex items-center justify-center" title="ログアウト">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-            </button>
           </div>
         </div>
       </div>

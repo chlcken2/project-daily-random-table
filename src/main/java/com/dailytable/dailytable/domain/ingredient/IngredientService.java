@@ -135,7 +135,7 @@ public class IngredientService {
             String aiResult = geminiClient.normalizeIngredient(rawName);
             JsonNode node = objectMapper.readTree(aiResult);
             String normalized = node.path("normalized").asText("").trim();
-            
+
             if (normalized.isEmpty()) {
                 normalized = cleaned;
             }
@@ -167,7 +167,7 @@ public class IngredientService {
      */
     private String preprocessName(String name) {
         if (name == null) return "";
-        
+
         String result = name;
 
         // Remove numbers (including decimals)
@@ -220,9 +220,9 @@ public class IngredientService {
                 .unit(unit)
                 .type(type)
                 .build();
-        
+
         ingredientRepository.insertUserIngredient(ingredient);
-        
+
         return ingredient;
     }
 

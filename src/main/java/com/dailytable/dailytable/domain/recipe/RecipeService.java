@@ -1,32 +1,34 @@
 package com.dailytable.dailytable.domain.recipe;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.dailytable.dailytable.domain.recipe.dto.RecipeDetailDto;
+import com.dailytable.dailytable.global.common.ErrorCode;
+import com.dailytable.dailytable.global.exception.BaseException;
+import com.dailytable.dailytable.global.util.TimeUtil;
 
-@Slf4j
+import lombok.extern.slf4j.Slf4j;
+//RecipeService
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class RecipeService {
 
-    private final RecipeRepository recipeRepository;
-
-    public RecipeService(RecipeRepository recipeRepository) {
-        this.recipeRepository = recipeRepository;
-    }
+	private final RecipeMapper recipeMapper;
 
     @Transactional
-    public RecipeEntity saveFullRecipe(RecipeEntity recipe) {
+    public void saveFullRecipe(RecipeEntity recipe) {
         // Insert main recipe
-        recipeRepository.insertRecipe(recipe);
+        recipeMapper.insertRecipe(recipe);
         Long recipeId = recipe.getId();
 
         // Insert ingredients
         if (recipe.getIngredients() != null) {
             for (RecipeEntity.RecipeIngredient ingredient : recipe.getIngredients()) {
                 ingredient.setRecipeId(recipeId);
-                recipeRepository.insertRecipeIngredient(ingredient);
+                recipeMapper.insertRecipeIngredient(ingredient);
             }
         }
 
@@ -34,7 +36,7 @@ public class RecipeService {
         if (recipe.getSteps() != null) {
             for (RecipeEntity.RecipeStep step : recipe.getSteps()) {
                 step.setRecipeId(recipeId);
-                recipeRepository.insertRecipeStep(step);
+                recipeMapper.insertRecipeStep(step);
             }
         }
 
@@ -42,117 +44,60 @@ public class RecipeService {
         if (recipe.getNutrients() != null) {
             for (RecipeEntity.RecipeNutrient nutrient : recipe.getNutrients()) {
                 nutrient.setRecipeId(recipeId);
-                recipeRepository.insertRecipeNutrient(nutrient);
+                recipeMapper.insertRecipeNutrient(nutrient);
             }
         }
 
-        return recipe;
     }
 
-    public RecipeEntity getRecipeDetail(Long id) {
-        RecipeEntity recipe = recipeRepository.findById(id);
-        if (recipe == null) return null;
+	@Transactional
+	public RecipeDetailDto getRecipeDetail(Long recipeId, Long userId) {
+		// 1 기본 레시피 조회
+        RecipeDetailDto recipe = recipeMapper.findById(recipeId);
+		if (recipe == null) {
+			throw new BaseException(ErrorCode.RECIPE_NOT_FOUND);
+		}
 
-        // 상세페이지 진입 시 조회수 증가 (API, Web 공통)
-        recipeRepository.incrementViewCount(id);
+		// 2 조회수 처리
+		if (userId != null) {
 
-        recipe.setIngredients(recipeRepository.findIngredientsByRecipeId(id));
-        recipe.setSteps(recipeRepository.findStepsByRecipeId(id));
-        recipe.setNutrients(recipeRepository.findNutrientsByRecipeId(id));
+			boolean hasViewLog = recipeMapper.existsViewLog(userId, recipeId);
 
-        return recipe;
-    }
+			if (!hasViewLog) {
+				recipeMapper.insertViewLog(userId, recipeId);
+				recipeMapper.increaseViewCount(recipeId);
+			}
 
-    public void updatePublicStatus(Long id, boolean isPublic) {
-        recipeRepository.updatePublicStatus(id, isPublic);
-    }
+			//3 좋아요 여부
+			Long likeId = recipeMapper.findLikeId(userId, recipeId);
+			recipe.setLiked(likeId != null);
+		}
 
-    // Methods for RecipeController
-    public List<RecipeDto> getPublicRecipes() {
-        return recipeRepository.findPublicRecipes();
-    }
+		// 4 steps 조회
+		recipe.setSteps(
+				recipeMapper.findStepsByRecipeId(recipeId)
+				);
 
-    public List<RecipeDto> getAllPublicRecipes() {
-        return recipeRepository.findAllPublicRecipes();
-    }
+		// 5 ingredients 조회
+		recipe.setIngredients(
+				recipeMapper.findIngredientsByRecipeId(recipeId)
+				);
 
-    public List<RecipeDto> getMyRecipes(Long userId) {
-        return recipeRepository.findByUserId(userId);
-    }
+		// 6 nutrients 조회
+		recipe.setNutrients(
+				recipeMapper.findNutrientsByRecipeId(recipeId)
+				);
 
-    public List<RecipeDto> getLikedRecipes(Long userId) {
-        return recipeRepository.findLikedRecipesByUserId(userId);
-    }
+		// 6 시간 변환
+		recipe.setCreatedAtFormatted(
+				TimeUtil.formatRelativeTime(recipe.getCreatedAt())
+				);
 
-    public RecipeDetailDto getRecipeDetail(Long id, Long userId) {
-        RecipeEntity recipe = getRecipeDetail(id);
-        if (recipe == null) return null;
-        
-        // Convert to RecipeDetailDto
-        return convertToDetailDto(recipe, userId);
-    }
+		return recipe;
+	}
 
+    // note: 추후 기능 체크할 것
     public void updateVisibility(Long id, Long userId, boolean isPublic) {
-        // Check if recipe belongs to user
-        RecipeEntity recipe = recipeRepository.findById(id);
-        if (recipe == null || !recipe.getUserId().equals(userId)) {
-            throw new RuntimeException("レシピが見つからないか、権限がありません。");
-        }
-        recipeRepository.updatePublicStatus(id, isPublic);
-    }
-
-    private RecipeDetailDto convertToDetailDto(RecipeEntity recipe, Long userId) {
-        // Conversion logic here - simplified version
-        RecipeDetailDto dto = new RecipeDetailDto();
-        dto.setId(recipe.getId());
-        dto.setUserId(recipe.getUserId());
-        dto.setTitle(recipe.getTitle());
-        dto.setTitleImage(recipe.getTitleImage());
-        dto.setDescription(recipe.getDescription());
-        dto.setCookingTime(recipe.getCookingTime());
-        
-        // Map difficultyId to Japanese label safely (bypassing DB encoding issues)
-        String label = "中";
-        if (recipe.getDifficultyId() != null) {
-            if (recipe.getDifficultyId() == 1) label = "低";
-            else if (recipe.getDifficultyId() == 3) label = "高";
-        }
-        dto.setDifficultyLabel(label);
-        
-        dto.setAiGenerated(recipe.getIsAiGenerated() != null ? recipe.getIsAiGenerated() : false);
-        dto.setPublic(recipe.getIsPublic() != null ? recipe.getIsPublic() : false);
-        dto.setViewCount(recipe.getViewCount());
-        dto.setCommentCount(recipe.getCommentCount());
-        dto.setLikeCount(recipe.getLikeCount());
-        dto.setPopularityScore(recipe.getPopularityScore());
-        dto.setCreatedAt(recipe.getCreatedAt());
-        dto.setUpdatedAt(recipe.getUpdatedAt());
-        return dto;
-    }
-
-    // 공감 기능
-    public void toggleLike(Long recipeId, Long userId) {
-        // 먼저 삭제 시도
-        recipeRepository.toggleLike(recipeId, userId);
-        // 삭제된 행이 없으면 (0이면) 추가
-        recipeRepository.addLike(recipeId, userId);
-        recipeRepository.updateLikeCount(recipeId);
-    }
-
-    // 덧글 작성
-    public void addComment(Long recipeId, Long userId, String content) {
-        recipeRepository.addComment(recipeId, userId, content);
-        recipeRepository.updateCommentCount(recipeId);
-    }
-
-    // 덧글 목록 조회
-    public List<CommentDto> getComments(Long recipeId) {
-        return recipeRepository.findCommentsByRecipeId(recipeId);
-    }
-
-    // 공감 취소
-    public void cancelLike(Long recipeId, Long userId) {
-        recipeRepository.deleteLike(recipeId, userId);
-        recipeRepository.updateLikeCount(recipeId);
+        recipeMapper.updatePublicStatus(id, isPublic);
     }
 }

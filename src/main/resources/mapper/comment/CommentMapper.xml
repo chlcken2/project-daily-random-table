@@ -5,7 +5,7 @@
 	namespace="com.dailytable.dailytable.domain.comment.CommentMapper">
 
 	<insert id="insertComment">
-		INSERT INTO recipe_comment
+		INSERT INTO recipe_comments
 		(recipe_id, user_id,
 		content,
 		created_at)
@@ -16,11 +16,17 @@
 
 	<select id="selectComments"
 		resultType="com.dailytable.dailytable.domain.comment.dto.CommentResponseDto">
-		SELECT u.nickname , c.content , c.created_at AS createdAt
-		FROM
-		recipe_comment c JOIN users u ON c.user_id=u.id WHERE
-		c.recipe_id=#{recipeId} AND c.deleted_at IS NULL ORDER BY c.created_at
-		DESC
+		SELECT
+		c.id AS commentId,
+		u.nickname,
+		c.content,
+		c.created_at AS createdAt
+		FROM recipe_comments c
+		JOIN users u ON c.user_id = u.id
+		WHERE c.recipe_id = #{recipeId}
+		AND c.deleted_at IS NULL
+		ORDER BY c.created_at DESC
+		LIMIT #{size} OFFSET #{offset}
 	</select>
 
 	<update id="increaseCommentCount">
@@ -30,7 +36,7 @@
 	</update>
 
 	<update id="deleteComment">
-		UPDATE recipe_comment
+		UPDATE recipe_comments
 		SET deleted_at = NOW()
 		WHERE id =
 		#{commentId}
@@ -45,10 +51,12 @@
 	</update>
 
 	<update id="updateComment">
-		UPDATE recipe_comment
-		SET content = #{commentEditDto.content}
+		UPDATE recipe_comments
+		SET content =
+		#{commentEditDto.content}
 		WHERE id = #{commentEditDto.commentId}
-		AND user_id = #{userId}
+		AND
+		user_id = #{userId}
 		AND deleted_at IS NULL
 	</update>
 </mapper> 

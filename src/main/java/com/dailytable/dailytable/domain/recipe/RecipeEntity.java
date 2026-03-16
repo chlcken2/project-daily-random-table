@@ -29,6 +29,7 @@ public class RecipeEntity {
     private int commentCount;
     private int likeCount;
     private int popularityScore;
+    private boolean isLiked;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
