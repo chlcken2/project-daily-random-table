@@ -2,6 +2,19 @@
   var activeTab = 'recipes';
 
   var accessToken = localStorage.getItem('accessToken');
+  if (!accessToken && document.cookie) {
+    var cookies = document.cookie.split(';');
+    for (var i = 0; i < cookies.length; i++) {
+      var parts = cookies[i].trim().split('=');
+      if (parts[0] === 'accessToken' && parts[1]) {
+        accessToken = parts[1];
+        localStorage.setItem('accessToken', accessToken);
+      }
+      if (parts[0] === 'refreshToken' && parts[1]) {
+        localStorage.setItem('refreshToken', parts[1]);
+      }
+    }
+  }
   if (!accessToken) {
     window.location.href = '/login';
     return;
@@ -58,13 +71,19 @@
   function renderMyRecipeCard(item) {
     var img = (item.titleImage && item.titleImage.trim()) ? item.titleImage : null;
     var title = escapeHtml((item.title && item.title.trim()) ? item.title : '無題');
+    var isPublic = item.isPublic === true;
     var imgHtml = img
       ? '<img src="' + escapeHtml(img) + '" alt="" class="w-full h-full object-cover" onerror="this.parentElement.classList.add(\'bg-gray-200\');this.remove()"/>'
       : '';
-    return '<a href="/gacha/recipe/' + item.id + '" class="block rounded-lg overflow-hidden bg-gray-100 hover:opacity-75 transition-opacity">' +
+    return '<div class="rounded-lg overflow-hidden bg-gray-100 hover:opacity-95 transition-opacity">' +
+      '<a href="/gacha/recipe/' + item.id + '" class="block">' +
       '<div class="aspect-square overflow-hidden">' + imgHtml + '</div>' +
       '<div class="p-2 text-sm font-medium text-gray-700 truncate">' + title + '</div>' +
-      '</a>';
+      '</a>' +
+      '<div class="px-2 pb-2 flex justify-end">' +
+      '<button type="button" class="mypage-publish-btn text-xs py-1 px-2 rounded ' + (isPublic ? 'bg-amber-500 text-white' : 'bg-gray-400 text-white') + '" data-recipe-id="' + item.id + '" data-is-public="' + isPublic + '">' + (isPublic ? '公開' : '非公開') + '</button>' +
+      '</div>' +
+      '</div>';
   }
 
   function renderLikedRecipeCard(item) {
@@ -96,12 +115,37 @@
     el.innerHTML = list.map(renderCard).join('');
   }
 
+  function attachPublishHandlers() {
+    var grid = document.getElementById('my-recipes-grid');
+    if (!grid) return;
+    grid.querySelectorAll('.mypage-publish-btn').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var id = btn.getAttribute('data-recipe-id');
+        var isPublic = btn.getAttribute('data-is-public') === 'true';
+        var nextPublic = !isPublic;
+        fetch('/gacha/publish/' + id + '?isPublic=' + nextPublic, { method: 'POST', headers: headers })
+          .then(function(res) { return res.json(); })
+          .then(function(result) {
+            if (result && result.success) {
+              btn.setAttribute('data-is-public', nextPublic);
+              btn.textContent = nextPublic ? '公開' : '非公開';
+              btn.className = 'mypage-publish-btn text-xs py-1 px-2 rounded ' + (nextPublic ? 'bg-amber-500 text-white' : 'bg-gray-400 text-white');
+            }
+          })
+          .catch(function() {});
+      });
+    });
+  }
+
   function loadRecipes() {
     fetch('/users/me/recipes?type=my', { headers: headers })
       .then(function(res) { return res.status === 401 ? null : res.json(); })
       .then(function(result) {
         if (result && result.success && Array.isArray(result.data)) {
           renderGrid('my-recipes-grid', result.data, renderMyRecipeCard, 'マイレシピはまだありません');
+          attachPublishHandlers();
         } else {
           renderGrid('my-recipes-grid', [], renderMyRecipeCard, 'マイレシピはまだありません');
         }
