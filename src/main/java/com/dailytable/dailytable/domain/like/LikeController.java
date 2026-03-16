@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class LikeController {
 
     private final LikeService likeService;
-
+    //likecount
     @PostMapping("/{recipeId}/likes")
     @ResponseBody
     public String like(
