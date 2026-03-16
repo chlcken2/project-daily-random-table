@@ -39,7 +39,7 @@ public class GachaController {
     @PostMapping("/generate")
     @ResponseBody
     public ResponseEntity<ApiResponse<?>> generateRecipe(
-            @RequestBody GachaDto.GenerateRequest request, @AuthenticationPrincipal Long userId) {
+            @RequestBody GachaDto.GenerateRequest request, @AuthenticationPrincipal Long userId) throws Exception {
         if (userId == null) {
             return ResponseEntity.ok(ApiResponse.fail(ErrorCode.UNAUTHORIZED));
         }

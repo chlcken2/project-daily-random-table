@@ -25,9 +25,13 @@ import java.util.UUID;
 public class ImageGenerationClient {
 
     @Value("${gemini.api.image.model}")
-    private String GEMINI_IMAGE_MODEL;
-    private static final String GEMINI_API_URL =
-            "https://generativelanguage.googleapis.com/v1beta/models/%s:generateContent?key=%s";
+    private String IMAGEN_MODEL;
+
+    @Value("${google.cloud.project.id}")
+    private String projectId;
+
+    private static final String IMAGEN_API_URL =
+            "https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict";
 
     // Static images directory (relative to project root - works with bootRun)
     private static final String STATIC_IMAGE_DIR = "src/main/resources/static/images";
@@ -45,71 +49,66 @@ public class ImageGenerationClient {
     }
 
     /**
-     * Generates a food image using Gemini image generation model.
-     * Falls back to Pollinations.ai if Gemini fails.
+     * Generates a food image using Imagen model.
+     * Falls back to Pollinations.ai if Imagen fails.
      */
-    public String generateImageUrl(String title, String cuisineStyle) {
+    public String generateImageUrl(String title, String cuisineStyle) throws Exception {
         try {
-            return generateGeminiImageUrl(title, cuisineStyle);
+            return generateImagenImageUrl(title, cuisineStyle);
         } catch (Exception e) {
-            log.warn("Gemini image generation failed, falling back to Pollinations: {}", e.getMessage());
+            log.warn("Imagen image generation failed, falling back to Pollinations: {}", e.getMessage());
             return generatePollinationsUrl(title, cuisineStyle);
         }
     }
 
-    private String generateGeminiImageUrl(String title, String cuisineStyle) throws Exception {
+
+    private String generateImagenImageUrl(String title, String cuisineStyle) throws Exception {
+        log.info("Attempting Imagen image generation for title: {}, cuisine: {}", title, cuisineStyle);
         String prompt = "Professional food photography of " + title
-                + " close-up shot, white ceramic plate,"
+                + " 100mm macro lens, white ceramic plate,"
                 + " restaurant quality, soft studio lighting, appetizing, no text";
 
-        // Build request body
+        // Build request body for Imagen
         ObjectNode requestBody = objectMapper.createObjectNode();
-
-        ArrayNode contents = requestBody.putArray("contents");
-        ObjectNode content = contents.addObject();
-        ArrayNode parts = content.putArray("parts");
-        parts.addObject().put("text", prompt);
-
-        ObjectNode genConfig = requestBody.putObject("generationConfig");
-        genConfig.putArray("responseModalities").add("IMAGE").add("TEXT");
+        ArrayNode instances = requestBody.putArray("instances");
+        ObjectNode instance = instances.addObject();
+        instance.put("prompt", prompt);
+        ObjectNode parameters = requestBody.putObject("parameters");
+        parameters.put("sampleCount", 1);
+        parameters.put("aspectRatio", "1:1");
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("x-goog-api-key", apiKey); // Use header for API key
         HttpEntity<String> entity = new HttpEntity<>(requestBody.toString(), headers);
 
-        String apiUrl = String.format(GEMINI_API_URL, GEMINI_IMAGE_MODEL, apiKey);
-        String response = restTemplate.postForObject(apiUrl, entity, String.class);
+        String apiUrl = String.format(IMAGEN_API_URL, projectId, IMAGEN_MODEL);
+        log.info("Imagen API URL: {}", apiUrl);
+        log.info("Request body: {}", requestBody.toString());
+        try {
+            String response = restTemplate.postForObject(apiUrl, entity, String.class);
+            log.info("Imagen response: {}", response);
 
-        JsonNode responseNode = objectMapper.readTree(response);
-        JsonNode parts2 = responseNode
-                .path("candidates").get(0)
-                .path("content")
-                .path("parts");
+            JsonNode responseNode = objectMapper.readTree(response);
+            JsonNode predictions = responseNode.path("predictions");
+            if (predictions.isArray() && predictions.size() > 0) {
+                String base64Data = predictions.get(0).path("bytesBase64Encoded").asText();
+                if (base64Data != null && !base64Data.isEmpty()) {
+                    // Save image to static directory
+                    String filename = UUID.randomUUID() + ".png";
+                    Path imagePath = Paths.get(STATIC_IMAGE_DIR, filename);
+                    Files.createDirectories(imagePath.getParent());
+                    Files.write(imagePath, Base64.getDecoder().decode(base64Data));
 
-        // Find the part that contains inlineData (image), not text
-        JsonNode inlineData = null;
-        for (JsonNode part2 : parts2) {
-            if (!part2.path("inlineData").isMissingNode()) {
-                inlineData = part2.path("inlineData");
-                break;
+                    log.info("Imagen image generated and saved: {}", filename);
+                    return IMAGE_URL_PREFIX + filename;
+                }
             }
+            throw new RuntimeException("No image data in Imagen response");
+        } catch (org.springframework.web.client.HttpClientErrorException e) {
+            log.error("Imagen API error: Status {}, Response body: {}", e.getStatusCode(), e.getResponseBodyAsString());
+            throw e;
         }
-        if (inlineData == null || inlineData.isMissingNode() || inlineData.isNull()) {
-            throw new RuntimeException("No image data in Gemini response");
-        }
-
-        String mimeType = inlineData.path("mimeType").asText("image/png");
-        String base64Data = inlineData.path("data").asText();
-
-        // Save image to static directory
-        String ext = mimeType.contains("jpeg") || mimeType.contains("jpg") ? ".jpg" : ".png";
-        String filename = UUID.randomUUID() + ext;
-        Path imagePath = Paths.get(STATIC_IMAGE_DIR, filename);
-        Files.createDirectories(imagePath.getParent());
-        Files.write(imagePath, Base64.getDecoder().decode(base64Data));
-
-        log.info("Gemini image generated and saved: {}", filename);
-        return IMAGE_URL_PREFIX + filename;
     }
 
     /**

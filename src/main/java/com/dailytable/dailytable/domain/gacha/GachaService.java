@@ -46,7 +46,7 @@ public class GachaService {
                 .build();
     }
 
-    public GachaDto.GenerateResponse generate(GachaDto.GenerateRequest request, Long userId) {
+    public GachaDto.GenerateResponse generate(GachaDto.GenerateRequest request, Long userId) throws Exception {
         // Check daily limit
         int todayCount = gachaMapper.countTodayGenerations(userId);
         if (todayCount >= MAX_DAILY) {
