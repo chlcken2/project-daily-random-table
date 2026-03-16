@@ -1,9 +1,9 @@
-package com.dailytable.dailytable.domain.recipe;
+package com.dailytable.dailytable.domain.recipe.dto;
 
 import lombok.Data;
 
 @Data
-public class RecipeDto {
+public class RecipeRankingDto {
     private Long id;
     private String title;
     private String titleImage;

@@ -1,12 +1,11 @@
-package com.dailytable.dailytable.domain.recipe;
+package com.dailytable.dailytable.domain.recipe.dto;
 
-import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
 public class RecipeStepDto {
     private Long id;
+    private Long recipeId;
     private int stepOrder;
     private String content;
 }

@@ -1,51 +1,46 @@
 package com.dailytable.dailytable.domain.recipe;
 
+
 import com.dailytable.dailytable.global.response.ApiResponse;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import com.dailytable.dailytable.domain.recipe.dto.RecipeDetailDto;
 
-/**
- * 모두의 식탁 - 공개 레시피 API
- * 모든 사용자가 공개한 레시피 목록을 조회하는 기능
- * JWT 인증을 통해 사용자별로 내 레시피/좋아요한 레시피도 조회 가능
- */
+import lombok.RequiredArgsConstructor;
+
 @Slf4j
-@RestController
+@Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/recipes")
+@RequestMapping("/recipes")
 public class RecipeController {
 
-    private final RecipeService recipeService;
+	private final RecipeService recipeService;
 
-    /**
-     * 홈 - [모두의 식탁] 공개 레시피 목록 조회
-     * type 파라미터에 따라 다른 목록 반환:
-     * - publicAll: 모든 공개 레시피 (홈 화면 'みんなの食卓' 탭)
+	@GetMapping("/{id}")
+	public String getRecipeDetail(
+			@PathVariable("id") Long id,
+			@AuthenticationPrincipal Long userId,
+			Model model
+			) {
 
-     * JWT 토큰에서 userId 추출 → 해당 사용자의 데이터만 필터링
-     */
-    @GetMapping
-    public ResponseEntity<ApiResponse<List<RecipeDto>>> getRecipes(
-            @AuthenticationPrincipal Long userId,
-            @RequestParam(required = false) String type) {
-        log.info("GET /api/recipes, userId: {}, type: {}", userId, type);
+		RecipeDetailDto recipe = recipeService.getRecipeDetail(id, userId);
 
-        List<RecipeDto> recipes = recipeService.getPublicRecipes();
-        return ResponseEntity.ok(ApiResponse.success(recipes));
-    }
+		model.addAttribute("recipe", recipe);
 
-
+		return "recipe-detail";
+	}
     /**
      * 레시피 공개/비공개 상태 변경
      * 가챠로 생성한 레시피를 'みんなの食卓'에 공개하거나 비공개로 설정
      * 본인 레시피만 수정 가능 (userId 검증)
      */
     @PatchMapping("/{id}/visibility")
+    @ResponseBody
     public ResponseEntity<ApiResponse<Void>> updateVisibility(
             @PathVariable Long id,
             @RequestParam boolean isPublic,
