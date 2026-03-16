@@ -5,6 +5,11 @@
     if (parts.length == 2) return parts.pop().split(";").shift();
   }
 
+  function clearTokenCookies() {
+    document.cookie = 'accessToken=; path=/; max-age=0';
+    document.cookie = 'refreshToken=; path=/; max-age=0';
+  }
+
   var authLink = document.getElementById('auth-link');
   var logoutBtn = document.getElementById('logout-btn');
   var accessToken = getCookie('accessToken');
@@ -16,18 +21,13 @@
 
   if (logoutBtn) {
     logoutBtn.addEventListener('click', function() {
-      var rt = getCookie('refreshToken');
-      var opts = { method: 'POST', headers: {} };
-      if (rt) opts.headers['Authorization'] = 'Bearer ' + rt;
-      fetch('/auth/logout', opts)
+      fetch('/auth/logout', { method: 'POST', credentials: 'same-origin' })
         .then(function() {
-          document.cookie = 'accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-          document.cookie = 'refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+          clearTokenCookies();
           window.location.href = '/login';
         })
         .catch(function() {
-          document.cookie = 'accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-          document.cookie = 'refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+          clearTokenCookies();
           window.location.href = '/login';
         });
     });
