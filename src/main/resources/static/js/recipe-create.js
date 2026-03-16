@@ -303,8 +303,15 @@
   // ═══════════════════════════════════════════════════════════════
   //  I N G R E D I E N T   A P I   I N T E G R A T I O N
   // ═══════════════════════════════════════════════════════════════
+
+  function getCookie(name) {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length == 2) return parts.pop().split(";").shift();
+  }
+
   function loadIngredientsFromAPI() {
-    var token = localStorage.getItem('accessToken');
+    var token = getCookie('accessToken');
     fetch('/api/ingredients?type=1', {
       headers: token ? { 'Authorization': 'Bearer ' + token } : {}
     })
@@ -321,7 +328,7 @@
   }
 
   function loadSaucesFromAPI() {
-    var token = localStorage.getItem('accessToken');
+    var token = getCookie('accessToken');
     fetch('/api/ingredients?type=2', {
       headers: token ? { 'Authorization': 'Bearer ' + token } : {}
     })
@@ -338,7 +345,7 @@
   }
 
   function addIngredientToAPI(name, amount, unit, type) {
-    var token = localStorage.getItem('accessToken');
+    var token = getCookie('accessToken');
     return fetch('/api/ingredients', {
       method: 'POST',
       headers: { 
@@ -351,7 +358,7 @@
   }
 
   function deleteIngredientFromAPI(id) {
-    var token = localStorage.getItem('accessToken');
+    var token = getCookie('accessToken');
     return fetch('/api/ingredients/' + id, { 
       method: 'DELETE',
       headers: token ? { 'Authorization': 'Bearer ' + token } : {}
