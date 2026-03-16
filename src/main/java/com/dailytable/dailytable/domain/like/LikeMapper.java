@@ -2,7 +2,7 @@ package com.dailytable.dailytable.domain.like;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
+//LikeMapper
 @Mapper
 public interface LikeMapper {
 
