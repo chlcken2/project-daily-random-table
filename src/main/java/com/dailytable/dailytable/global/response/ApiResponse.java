@@ -29,4 +29,8 @@ public class ApiResponse<T> {
                 errorCode.name()
         );
     }
+
+    public static <T> ApiResponse<T> error(String message){
+        return new ApiResponse<>(false, message, null, null);
+    }
 }
