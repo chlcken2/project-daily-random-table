@@ -26,9 +26,9 @@ public class RecipeDetailDto {
 	private int likeCount;
 	private int popularityScore;
 	private boolean isLiked;
-	private List<RecipeStepDto> steps;
+//	private List<RecipeStepDto> steps;
 	private List<IngredientDto> ingredients;
-	private List<RecipeNutrientDto> nutrients;
+//	private List<RecipeNutrientDto> nutrients;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 	private LocalDateTime deletedAt;

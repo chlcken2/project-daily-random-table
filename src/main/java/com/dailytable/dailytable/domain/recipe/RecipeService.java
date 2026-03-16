@@ -53,6 +53,9 @@ public class RecipeService {
         RecipeEntity recipe = recipeRepository.findById(id);
         if (recipe == null) return null;
 
+        // 상세페이지 진입 시 조회수 증가 (API, Web 공통)
+        recipeRepository.incrementViewCount(id);
+
         recipe.setIngredients(recipeRepository.findIngredientsByRecipeId(id));
         recipe.setSteps(recipeRepository.findStepsByRecipeId(id));
         recipe.setNutrients(recipeRepository.findNutrientsByRecipeId(id));
@@ -69,52 +72,12 @@ public class RecipeService {
         return recipeRepository.findPublicRecipes();
     }
 
-    public List<RecipeDto> getAllPublicRecipes() {
-        return recipeRepository.findAllPublicRecipes();
-    }
-
-    public List<RecipeDto> getMyRecipes(Long userId) {
-        return recipeRepository.findByUserId(userId);
-    }
-
-    public List<RecipeDto> getLikedRecipes(Long userId) {
-        return recipeRepository.findLikedRecipesByUserId(userId);
-    }
-
-    public RecipeDetailDto getRecipeDetail(Long id, Long userId) {
-        RecipeEntity recipe = getRecipeDetail(id);
-        if (recipe == null) return null;
-        
-        // Convert to RecipeDetailDto
-        return convertToDetailDto(recipe, userId);
-    }
-
     public void updateVisibility(Long id, Long userId, boolean isPublic) {
         // Check if recipe belongs to user
         RecipeEntity recipe = recipeRepository.findById(id);
         if (recipe == null || !recipe.getUserId().equals(userId)) {
-            throw new RuntimeException("레시피를 찾을 수 없거나 권한이 없습니다.");
+            throw new RuntimeException("レシピが見つからないか、権限がありません。");
         }
         recipeRepository.updatePublicStatus(id, isPublic);
-    }
-
-    private RecipeDetailDto convertToDetailDto(RecipeEntity recipe, Long userId) {
-        // Conversion logic here - simplified version
-        RecipeDetailDto dto = new RecipeDetailDto();
-        dto.setId(recipe.getId());
-        dto.setUserId(recipe.getUserId());
-        dto.setTitle(recipe.getTitle());
-        dto.setTitleImage(recipe.getTitleImage());
-        dto.setDescription(recipe.getDescription());
-        dto.setCookingTime(recipe.getCookingTime());
-        dto.setAiGenerated(recipe.getIsAiGenerated() != null ? recipe.getIsAiGenerated() : false);
-        dto.setPublic(recipe.getIsPublic() != null ? recipe.getIsPublic() : false);
-        dto.setViewCount(recipe.getViewCount());
-        dto.setCommentCount(recipe.getCommentCount());
-        dto.setLikeCount(recipe.getLikeCount());
-        dto.setPopularityScore(recipe.getPopularityScore());
-        dto.setCreatedAt(recipe.getCreatedAt());
-        dto.setUpdatedAt(recipe.getUpdatedAt());
-        return dto;
     }
 }

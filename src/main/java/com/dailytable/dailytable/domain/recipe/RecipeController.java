@@ -23,12 +23,10 @@ public class RecipeController {
     private final RecipeService recipeService;
 
     /**
-     * [모두의 식탁] 공개 레시피 목록 조회
+     * 홈 - [모두의 식탁] 공개 레시피 목록 조회
      * type 파라미터에 따라 다른 목록 반환:
      * - publicAll: 모든 공개 레시피 (홈 화면 'みんなの食卓' 탭)
-     * - my: 내가 작성한 레시피 (마이페이지)
-     * - liked: 내가 좋아요한 레시피 (마이페이지)
-     * 
+
      * JWT 토큰에서 userId 추출 → 해당 사용자의 데이터만 필터링
      */
     @GetMapping
@@ -37,32 +35,10 @@ public class RecipeController {
             @RequestParam(required = false) String type) {
         log.info("GET /api/recipes, userId: {}, type: {}", userId, type);
 
-        List<RecipeDto> recipes;
-        if ("publicAll".equals(type)) {
-            recipes = recipeService.getPublicRecipes();
-        } else if ("my".equals(type)) {
-            recipes = recipeService.getMyRecipes(userId);
-        } else if ("liked".equals(type)) {
-            recipes = recipeService.getLikedRecipes(userId);
-        } else {
-            recipes = recipeService.getAllPublicRecipes();
-        }
+        List<RecipeDto> recipes = recipeService.getPublicRecipes();
         return ResponseEntity.ok(ApiResponse.success(recipes));
     }
 
-    /**
-     * 레시피 상세 조회
-     * path variable로 레시피 ID 받아서 상세 정보 반환
-     * RecipeDetailDto: 재료, 조리步骤, 영양정보 포함
-     */
-    @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<RecipeDetailDto>> getRecipeDetail(
-            @PathVariable Long id,
-            @AuthenticationPrincipal Long userId) {
-        log.info("GET /api/recipes/{}, userId: {}", id, userId);
-        RecipeDetailDto recipe = recipeService.getRecipeDetail(id, userId);
-        return ResponseEntity.ok(ApiResponse.success(recipe));
-    }
 
     /**
      * 레시피 공개/비공개 상태 변경

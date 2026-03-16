@@ -117,7 +117,7 @@
     </select>
 
     <!-- 
-        [마이페이지] 내가 좋아요한 레시피 목록
+        [마이페이지] 내가 좋아요한 레시피 목록임
         recipe_likes 테이블과 JOIN하여 현재 사용자가 좋아요한 레시피만 조회
     -->
     <select id="findLikedRecipesByUserId" resultType="com.dailytable.dailytable.domain.recipe.RecipeDto">

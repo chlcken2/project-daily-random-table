@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +21,9 @@ public class IngredientService {
     private final GeminiClient geminiClient;
     private final ObjectMapper objectMapper;
 
-    // Regex: only allow Korean/English letters, numbers, spaces, hyphens
+    // Regex: allow ONLY Korean/English/Japanese/Chinese letters, spaces
     private static final Pattern VALID_INGREDIENT_PATTERN =
-            Pattern.compile("^[가-힣a-zA-Z0-9\\s\\-()]+$");
+            Pattern.compile("^[가-힣a-zA-Z\\u3040-\\u309F\\u30A0-\\u30FF\\u4E00-\\u9FAF\\s]+$");
 
     // Known non-food keywords to reject
     private static final Set<String> BLACKLIST = Set.of(
@@ -34,9 +35,10 @@ public class IngredientService {
 
     // Unit words to strip during normalization (stage 1)
     private static final Set<String> UNIT_WORDS = Set.of(
-            "개", "쪽", "큰술", "작은술", "티스푼", "스푼", "컵", "줌", "꼬집",
+            "개", "쪽", "큰술", "작은술", "티스푼", "스푼", "컵", "줌", "꼬집", "팩", "봉지", "마리",
             "g", "ml", "kg", "l", "oz", "lb", "cup", "cups", "tbsp", "tsp",
-            "cloves", "clove", "pieces", "piece", "slices", "slice"
+            "cloves", "clove", "pieces", "piece", "slices", "slice",
+            "個", "個入り", "本", "枚", "杯", "大さじ", "小さじ", "袋", "パック", "箱", "缶", "瓶"
     );
 
     // Adjectives/states to strip
@@ -44,7 +46,8 @@ public class IngredientService {
             "큰", "작은", "다진", "썬", "잘게", "굵게", "얇게", "두껍게",
             "신선한", "냉동", "해동", "삶은", "구운", "볶은", "데친",
             "large", "small", "big", "fresh", "organic", "frozen", "chopped",
-            "minced", "sliced", "diced", "grilled", "boiled", "fried"
+            "minced", "sliced", "diced", "grilled", "boiled", "fried",
+            "大きい", "小さい", "刻み", "切り", "スライス", "新鮮な", "冷凍", "ボイル"
     );
 
     public IngredientService(IngredientRepository ingredientRepository,
@@ -71,7 +74,7 @@ public class IngredientService {
             // Check regex pattern
             if (!VALID_INGREDIENT_PATTERN.matcher(name).matches()) {
                 results.add(GachaDto.ValidationResult.builder()
-                        .valid(false).name(name).reason("허용되지 않는 문자가 포함되어 있습니다").build());
+                        .valid(false).name(name).reason("許可されていない文字が含まれています").build());
                 continue;
             }
 
@@ -81,14 +84,14 @@ public class IngredientService {
                     .anyMatch(word -> lowerName.contains(word));
             if (blacklisted) {
                 results.add(GachaDto.ValidationResult.builder()
-                        .valid(false).name(name).reason("재료가 아닌 항목입니다").build());
+                        .valid(false).name(name).reason("素材ではない項目です").build());
                 continue;
             }
 
             // Check minimum length
-            if (name.length() < 1 || name.length() > 50) {
+            if (name != null && (name.length() < 1 || name.length() > 50)) {
                 results.add(GachaDto.ValidationResult.builder()
-                        .valid(false).name(name).reason("재료명은 1~50자여야 합니다").build());
+                        .valid(false).name(name).reason("素材名は1～50文字である必要があります").build());
                 continue;
             }
 
@@ -107,7 +110,7 @@ public class IngredientService {
      */
     public String normalize(String rawName) {
         if (rawName == null || rawName.trim().isEmpty()) {
-            return rawName;
+            return rawName != null ? rawName.trim() : "";
         }
 
         // Stage 1: Code preprocessing
@@ -120,7 +123,7 @@ public class IngredientService {
         }
 
         // Also try the raw name for alias
-        if (!cleaned.equals(rawName.trim())) {
+        if (cleaned != null && rawName != null && !cleaned.equals(rawName.trim())) {
             aliasResult = ingredientRepository.findNormalizedByAlias(rawName.trim());
             if (aliasResult != null && !aliasResult.isEmpty()) {
                 return aliasResult;
@@ -131,7 +134,12 @@ public class IngredientService {
         try {
             String aiResult = geminiClient.normalizeIngredient(rawName);
             JsonNode node = objectMapper.readTree(aiResult);
-            String normalized = node.path("normalized").asText(cleaned);
+            String normalized = node.path("normalized").asText("").trim();
+
+            if (normalized.isEmpty()) {
+                normalized = cleaned;
+            }
+
             if (!normalized.isEmpty()) {
                 // Save to alias table for future lookups
                 IngredientEntity.Alias alias = IngredientEntity.Alias.builder()
@@ -150,13 +158,16 @@ public class IngredientService {
             log.warn("AI normalization failed for '{}': {}", rawName, e.getMessage());
         }
 
-        return cleaned;
+        // Fallback: return cleaned name or original name if cleaned is empty
+        return (cleaned != null && !cleaned.trim().isEmpty()) ? cleaned : rawName.trim();
     }
 
     /**
      * Stage 1: Code-based preprocessing
      */
     private String preprocessName(String name) {
+        if (name == null) return "";
+
         String result = name;
 
         // Remove numbers (including decimals)
@@ -165,8 +176,8 @@ public class IngredientService {
         // Remove unit words
         for (String unit : UNIT_WORDS) {
             result = result.replaceAll("(?i)\\b" + Pattern.quote(unit) + "\\b", "").trim();
-            // Also handle Korean unit words without word boundaries
-            if (unit.matches("[가-힣]+")) {
+            // Also handle Korean/Japanese unit words without word boundaries
+            if (unit.matches("[가-힣\\u3040-\\u309F\\u30A0-\\u30FF\\u4E00-\\u9FAF]+")) {
                 result = result.replace(unit, "").trim();
             }
         }
@@ -174,7 +185,7 @@ public class IngredientService {
         // Remove adjectives
         for (String adj : ADJECTIVES) {
             result = result.replaceAll("(?i)\\b" + Pattern.quote(adj) + "\\b", "").trim();
-            if (adj.matches("[가-힣]+")) {
+            if (adj.matches("[가-힣\\u3040-\\u309F\\u30A0-\\u30FF\\u4E00-\\u9FAF]+")) {
                 result = result.replace(adj, "").trim();
             }
         }
@@ -193,30 +204,34 @@ public class IngredientService {
     }
 
     /**
-     * Add ingredient to user's fridge with 3-stage normalization
+     * Add or update ingredient
      */
-    public IngredientRepository.UserIngredient addIngredient(Long userId, String name, double quantity, String unit, int type) {
-        // Stage 1-3: Normalize ingredient name
-        String normalizedName = normalize(name);
+    @Transactional
+    public IngredientRepository.UserIngredient addIngredient(Long userId, String name, Double quantity, String unit, Integer type) {
+        // 1. Normalize
+        String normalized = normalize(name);
 
-        // Create user ingredient
+        // 2. Insert or update
         IngredientRepository.UserIngredient ingredient = IngredientRepository.UserIngredient.builder()
                 .userId(userId)
-                .name(name.trim())
-                .normalizedName(normalizedName)
+                .name(name)
+                .normalizedName(normalized)
                 .quantity(quantity)
                 .unit(unit)
                 .type(type)
                 .build();
 
         ingredientRepository.insertUserIngredient(ingredient);
+
         return ingredient;
     }
 
     /**
-     * Delete user ingredient (soft delete)
+     * Soft delete ingredient
      */
-    public boolean deleteIngredient(Long userId, Long ingredientId) {
-        return ingredientRepository.deleteUserIngredient(ingredientId, userId) > 0;
+    @Transactional
+    public boolean deleteIngredient(Long userId, Long id) {
+        int updated = ingredientRepository.deleteUserIngredient(id, userId);
+        return updated > 0;
     }
 }

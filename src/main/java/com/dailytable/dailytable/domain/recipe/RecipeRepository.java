@@ -1,5 +1,6 @@
 package com.dailytable.dailytable.domain.recipe;
 
+import com.dailytable.dailytable.domain.comment.CommentDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -29,9 +30,5 @@ public interface RecipeRepository {
     // For RecipeController - public recipes
     List<RecipeDto> findPublicRecipes();
 
-    List<RecipeDto> findAllPublicRecipes();
-
-    List<RecipeDto> findByUserId(@Param("userId") Long userId);
-
-    List<RecipeDto> findLikedRecipesByUserId(@Param("userId") Long userId);
+    void incrementViewCount(@Param("id") Long id);
 }

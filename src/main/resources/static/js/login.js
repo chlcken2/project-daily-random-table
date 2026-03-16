@@ -40,9 +40,15 @@
       .then(function(res) { return res.json(); })
       .then(function(result) {
         if (result.success && result.data) {
-          if (result.data.accessToken) localStorage.setItem('accessToken', result.data.accessToken);
-          if (result.data.refreshToken) localStorage.setItem('refreshToken', result.data.refreshToken);
-          window.location.href = '/';
+            if (result.data.accessToken) {
+                document.cookie = 'accessToken=' + result.data.accessToken + '; path=/; max-age=3600'; // 1시간
+                localStorage.setItem('accessToken', result.data.accessToken);
+            }
+            if (result.data.refreshToken) {
+                document.cookie = 'refreshToken=' + result.data.refreshToken + '; path=/; max-age=604800'; // 7일
+                localStorage.setItem('refreshToken', result.data.refreshToken);
+            }
+            window.location.href = '/gacha/home';
         } else {
           alert(result.message || 'ログインに失敗しました');
           loginBtn.disabled = false;
