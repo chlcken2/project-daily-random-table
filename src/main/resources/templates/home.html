@@ -1,255 +1,339 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ja">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ホーム - 一人暮らしレシピ</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" th:href="@{/css/recipe.css}"/>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ホーム - 一人暮らしレシピ</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" th:href="@{/css/recipe.css}" />
 </head>
-<body class="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100">
-  <div class="min-h-screen pb-20">
-    <!-- ヘッダー -->
-    <header class="bg-gradient-to-r from-amber-700 to-amber-800 text-white sticky top-0 z-50 shadow-lg">
-      <div class="max-w-7xl mx-auto px-4 py-4">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <div class="bg-amber-600 p-2 rounded-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            </div>
-            <div>
-              <h1 class="text-xl font-bold">🏠 一人暮らしレシピ</h1>
-              <p class="text-xs text-amber-200">ようこそ！</p>
-            </div>
-          </div>
-          <div class="flex items-center gap-2">
-            <a th:href="@{/mypage}" href="/mypage" class="bg-amber-600 hover:bg-amber-500 p-2 rounded-lg transition-colors flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            </a>
-            <a th:href="@{/login}" href="/login" class="bg-red-600 hover:bg-red-500 p-2 rounded-lg transition-colors flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-            </a>
-          </div>
-        </div>
-      </div>
-    </header>
+<body
+	class="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100">
+	<div class="min-h-screen pb-20">
+		<!-- ヘッダー -->
+		<header
+			class="bg-gradient-to-r from-amber-700 to-amber-800 text-white sticky top-0 z-50 shadow-lg">
+			<div class="max-w-7xl mx-auto px-4 py-4">
+				<div class="flex items-center justify-between">
+					<div class="flex items-center gap-3">
+						<div class="bg-amber-600 p-2 rounded-lg">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+								viewBox="0 0 24 24" fill="none" stroke="currentColor"
+								stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+								class="text-white">
+								<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+								<polyline points="9 22 9 12 15 12 15 22" /></svg>
+						</div>
+						<div>
+							<h1 class="text-xl font-bold">🏠 一人暮らしレシピ</h1>
+							<p class="text-xs text-amber-200">ようこそ！</p>
+						</div>
+					</div>
+					<div class="flex items-center gap-2">
+						<a th:href="@{/mypage}" href="/mypage"
+							class="bg-amber-600 hover:bg-amber-500 p-2 rounded-lg transition-colors flex items-center justify-center">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+								viewBox="0 0 24 24" fill="none" stroke="currentColor"
+								stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+								<circle cx="12" cy="7" r="4" /></svg>
+						</a> <a th:href="@{/login}" href="/login"
+							class="bg-red-600 hover:bg-red-500 p-2 rounded-lg transition-colors flex items-center justify-center">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+								viewBox="0 0 24 24" fill="none" stroke="currentColor"
+								stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+								<polyline points="16 17 21 12 16 7" />
+								<line x1="21" y1="12" x2="9" y2="12" /></svg>
+						</a>
+					</div>
+				</div>
+			</div>
+		</header>
 
-    <div class="max-w-7xl mx-auto px-4 py-6">
-      <!-- ガチャメインバナー -->
-      <a th:href="@{/gacha/home}" href="/gacha/home" class="gacha-banner block mb-6 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 rounded-2xl p-6 shadow-2xl cursor-pointer hover:shadow-3xl transition-all duration-300 relative overflow-hidden group animate-fade-in-up">
-        <div class="gacha-banner-overlay absolute inset-0 bg-cover bg-center opacity-10 group-hover:opacity-20 transition-opacity duration-300" style="background-image: url('https://images.unsplash.com/photo-1768501391108-ba094c8a6894?w=1080');"></div>
-        <div class="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div class="flex items-center gap-4">
-            <div class="animate-dice-wiggle bg-white/20 backdrop-blur-sm p-4 rounded-xl flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><rect width="12" height="12" x="2" y="10" rx="2" ry="2"/><path d="m17.92 14 3.5-3.5a2.24 2.24 0 0 0 0-3l-5-4.92a2.24 2.24 0 0 0-3 0L10 6"/><path d="M6 18h.01"/><path d="M10 14h.01"/><path d="M15 6h.01"/><path d="M18 9h.01"/></svg>
-            </div>
-            <div class="text-white">
-              <h2 class="text-2xl sm:text-3xl font-bold mb-1">🎰 食事ガチャに挑戦！</h2>
-              <p class="text-pink-100 text-sm">冷蔵庫の食材でランダムレシピを引いてみよう ✨</p>
-            </div>
-          </div>
-          <span class="gacha-btn bg-white text-purple-600 px-6 py-3 rounded-full font-bold text-base sm:text-lg shadow-lg transition-all duration-300 inline-block">ガチャへ行く →</span>
-        </div>
-      </a>
+		<div class="max-w-7xl mx-auto px-4 py-6">
+			<!-- ガチャメインバナー -->
+			<a th:href="@{/gacha/home}" href="/gacha/home"
+				class="gacha-banner block mb-6 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 rounded-2xl p-6 shadow-2xl cursor-pointer hover:shadow-3xl transition-all duration-300 relative overflow-hidden group animate-fade-in-up">
+				<div
+					class="gacha-banner-overlay absolute inset-0 bg-cover bg-center opacity-10 group-hover:opacity-20 transition-opacity duration-300"
+					style="background-image: url('https://images.unsplash.com/photo-1768501391108-ba094c8a6894?w=1080');"></div>
+				<div
+					class="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+					<div class="flex items-center gap-4">
+						<div
+							class="animate-dice-wiggle bg-white/20 backdrop-blur-sm p-4 rounded-xl flex items-center justify-center">
+							<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"
+								viewBox="0 0 24 24" fill="none" stroke="currentColor"
+								stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+								class="text-white">
+								<rect width="12" height="12" x="2" y="10" rx="2" ry="2" />
+								<path
+									d="m17.92 14 3.5-3.5a2.24 2.24 0 0 0 0-3l-5-4.92a2.24 2.24 0 0 0-3 0L10 6" />
+								<path d="M6 18h.01" />
+								<path d="M10 14h.01" />
+								<path d="M15 6h.01" />
+								<path d="M18 9h.01" /></svg>
+						</div>
+						<div class="text-white">
+							<h2 class="text-2xl sm:text-3xl font-bold mb-1">🎰 食事ガチャに挑戦！</h2>
+							<p class="text-pink-100 text-sm">冷蔵庫の食材でランダムレシピを引いてみよう ✨</p>
+						</div>
+					</div>
+					<span
+						class="gacha-btn bg-white text-purple-600 px-6 py-3 rounded-full font-bold text-base sm:text-lg shadow-lg transition-all duration-300 inline-block">ガチャへ行く
+						→</span>
+				</div>
+			</a>
 
-      <!-- 今日の食卓 + 名誉の食卓 -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <section class="bg-white rounded-2xl shadow-lg p-6">
-          <div class="flex items-center gap-2 mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-amber-600"><path d="M6 14c.5.5 1 1 2 1s1.5-.5 2-1"/><path d="M17 20a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-1"/><path d="M6 11V9a2 2 0 0 1 2-2h1"/><path d="M6 20a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1"/><path d="M2 10h20"/></svg>
-            <h2 class="text-xl font-bold">🍳 今日何食べる？</h2>
-            <span class="text-sm text-gray-500 ml-auto">リアルタイム人気 🔥</span>
-          </div>
-          <div class="space-y-3">
-            <a th:href="@{/recipes/1}" href="/recipe/detail/1" class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-amber-50 transition-colors text-left block">
-              <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-lg flex items-center justify-center text-white font-medium">1</div>
-              <div class="flex-1 min-w-0">
-                <h3 class="font-medium truncate">簡単キムチチャーハン</h3>
-                <div class="flex items-center gap-3 text-xs text-gray-500">
-                  <span>❤ 245</span>
-                  <span>💬 32</span><span>👀 1203</span>
-                </div>
-              </div>
-            </a>
-            <a th:href="@{/recipe/detail/2}" href="/recipe/detail/2" class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-amber-50 transition-colors text-left block">
-              <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-lg flex items-center justify-center text-white font-medium">2</div>
-              <div class="flex-1 min-w-0">
-                <h3 class="font-medium truncate">栄養満点ビビンバ</h3>
-                <div class="flex items-center gap-3 text-xs text-gray-500">
-                  <span>❤ 189</span><span>💬 24</span><span>👀 892</span>
-                </div>
-              </div>
-            </a>
-            <a th:href="@{/recipe/detail/3}" href="/recipe/detail/3" class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-amber-50 transition-colors text-left block">
-              <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-lg flex items-center justify-center text-white font-medium">3</div>
-              <div class="flex-1 min-w-0">
-                <h3 class="font-medium truncate">激辛ラーメン炒め</h3>
-                <div class="flex items-center gap-3 text-xs text-gray-500">
-                  <span>❤ 312</span><span>💬 45</span><span>👀 1567</span>
-                </div>
-              </div>
-            </a>
-            <a th:href="@{/recipe/detail/4}" href="/recipe/detail/4" class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-amber-50 transition-colors text-left block">
-              <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-lg flex items-center justify-center text-white font-medium">4</div>
-              <div class="flex-1 min-w-0">
-                <h3 class="font-medium truncate">チーズキンパ</h3>
-                <div class="flex items-center gap-3 text-xs text-gray-500">
-                  <span>❤ 278</span><span>💬 38</span><span>👀 1345</span>
-                </div>
-              </div>
-            </a>
-            <a th:href="@{/recipe/detail/5}" href="/recipe/detail/5" class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-amber-50 transition-colors text-left block">
-              <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-lg flex items-center justify-center text-white font-medium">5</div>
-              <div class="flex-1 min-w-0">
-                <h3 class="font-medium truncate">テンジャンチゲ</h3>
-                <div class="flex items-center gap-3 text-xs text-gray-500">
-                  <span>❤ 156</span><span>💬 19</span><span>👀 734</span>
-                </div>
-              </div>
-            </a>
-          </div>
-        </section>
+			<!-- 今日の食卓 + 名誉の食卓 -->
+			<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+				<section class="bg-white rounded-2xl shadow-lg p-6">
+					<div class="flex items-center gap-2 mb-4">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+							viewBox="0 0 24 24" fill="none" stroke="currentColor"
+							stroke-width="2" class="text-amber-600">
+							<path d="M6 14c.5.5 1 1 2 1s1.5-.5 2-1" />
+							<path d="M17 20a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-1" />
+							<path d="M6 11V9a2 2 0 0 1 2-2h1" />
+							<path d="M6 20a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1" />
+							<path d="M2 10h20" /></svg>
+						<h2 class="text-xl font-bold">🍳 今日何食べる？</h2>
+						<span class="text-sm text-gray-500 ml-auto">リアルタイム人気 🔥</span>
+					</div>
+					<div class="space-y-3">
+						<a th:href="@{/recipes/{id}(id=${recipe.id})}"
+							class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-amber-50 transition-colors text-left block">
+							<div
+								class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-lg flex items-center justify-center text-white font-medium">1</div>
+							<div class="flex-1 min-w-0">
+								<h3 class="font-medium truncate">簡単キムチチャーハン</h3>
+								<div class="flex items-center gap-3 text-xs text-gray-500">
+									<span>❤ 245</span> <span>💬 32</span><span>👀 1203</span>
+								</div>
+							</div>
+						</a> <a th:href="@{/recipe/detail/2}" href="/recipe/detail/2"
+							class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-amber-50 transition-colors text-left block">
+							<div
+								class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-lg flex items-center justify-center text-white font-medium">2</div>
+							<div class="flex-1 min-w-0">
+								<h3 class="font-medium truncate">栄養満点ビビンバ</h3>
+								<div class="flex items-center gap-3 text-xs text-gray-500">
+									<span>❤ 189</span><span>💬 24</span><span>👀 892</span>
+								</div>
+							</div>
+						</a> <a th:href="@{/recipe/detail/3}" href="/recipe/detail/3"
+							class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-amber-50 transition-colors text-left block">
+							<div
+								class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-lg flex items-center justify-center text-white font-medium">3</div>
+							<div class="flex-1 min-w-0">
+								<h3 class="font-medium truncate">激辛ラーメン炒め</h3>
+								<div class="flex items-center gap-3 text-xs text-gray-500">
+									<span>❤ 312</span><span>💬 45</span><span>👀 1567</span>
+								</div>
+							</div>
+						</a> <a th:href="@{/recipe/detail/4}" href="/recipe/detail/4"
+							class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-amber-50 transition-colors text-left block">
+							<div
+								class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-lg flex items-center justify-center text-white font-medium">4</div>
+							<div class="flex-1 min-w-0">
+								<h3 class="font-medium truncate">チーズキンパ</h3>
+								<div class="flex items-center gap-3 text-xs text-gray-500">
+									<span>❤ 278</span><span>💬 38</span><span>👀 1345</span>
+								</div>
+							</div>
+						</a> <a th:href="@{/recipe/detail/5}" href="/recipe/detail/5"
+							class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-amber-50 transition-colors text-left block">
+							<div
+								class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-lg flex items-center justify-center text-white font-medium">5</div>
+							<div class="flex-1 min-w-0">
+								<h3 class="font-medium truncate">テンジャンチゲ</h3>
+								<div class="flex items-center gap-3 text-xs text-gray-500">
+									<span>❤ 156</span><span>💬 19</span><span>👀 734</span>
+								</div>
+							</div>
+						</a>
+					</div>
+				</section>
 
-        <section class="bg-white rounded-2xl shadow-lg p-6">
-          <div class="flex items-center gap-2 mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-amber-600"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
-            <h2 class="text-xl font-bold">🏆 伝説のグルメ</h2>
-            <span class="text-sm text-gray-500 ml-auto">歴代ベスト 👑</span>
-          </div>
-          <div class="space-y-3">
-            <a th:href="@{/recipe/detail/3}" href="/recipe/detail/3" class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-yellow-50 transition-colors text-left block">
-              <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center text-white font-medium">1</div>
-              <div class="flex-1 min-w-0">
-                <h3 class="font-medium truncate">激辛ラーメン炒め</h3>
-                <div class="flex items-center gap-3 text-xs text-gray-500">
-                  <span>❤ 312</span><span>辛党</span>
-                </div>
-              </div>
-            </a>
-            <a th:href="@{/recipe/detail/4}" href="/recipe/detail/4" class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-yellow-50 transition-colors text-left block">
-              <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-gray-300 to-gray-500 rounded-lg flex items-center justify-center text-white font-medium">2</div>
-              <div class="flex-1 min-w-0">
-                <h3 class="font-medium truncate">チーズキンパ</h3>
-                <div class="flex items-center gap-3 text-xs text-gray-500">
-                  <span>❤ 278</span><span>キンパマスター</span>
-                </div>
-              </div>
-            </a>
-            <a th:href="@{/recipe/detail/1}" href="/recipe/detail/1" class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-yellow-50 transition-colors text-left block">
-              <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-amber-600 to-amber-800 rounded-lg flex items-center justify-center text-white font-medium">3</div>
-              <div class="flex-1 min-w-0">
-                <h3 class="font-medium truncate">簡単キムチチャーハン</h3>
-                <div class="flex items-center gap-3 text-xs text-gray-500">
-                  <span>❤ 245</span><span>一人飯の王</span>
-                </div>
-              </div>
-            </a>
-          </div>
-        </section>
-      </div>
+				<section class="bg-white rounded-2xl shadow-lg p-6">
+					<div class="flex items-center gap-2 mb-4">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+							viewBox="0 0 24 24" fill="none" stroke="currentColor"
+							stroke-width="2" class="text-amber-600">
+							<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+							<path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+							<path d="M4 22h16" />
+							<path
+								d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+							<path
+								d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+							<path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" /></svg>
+						<h2 class="text-xl font-bold">🏆 伝説のグルメ</h2>
+						<span class="text-sm text-gray-500 ml-auto">歴代ベスト 👑</span>
+					</div>
+					<div class="space-y-3">
+						<a th:href="@{/recipe/detail/3}" href="/recipe/detail/3"
+							class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-yellow-50 transition-colors text-left block">
+							<div
+								class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center text-white font-medium">1</div>
+							<div class="flex-1 min-w-0">
+								<h3 class="font-medium truncate">激辛ラーメン炒め</h3>
+								<div class="flex items-center gap-3 text-xs text-gray-500">
+									<span>❤ 312</span><span>辛党</span>
+								</div>
+							</div>
+						</a> <a th:href="@{/recipe/detail/4}" href="/recipe/detail/4"
+							class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-yellow-50 transition-colors text-left block">
+							<div
+								class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-gray-300 to-gray-500 rounded-lg flex items-center justify-center text-white font-medium">2</div>
+							<div class="flex-1 min-w-0">
+								<h3 class="font-medium truncate">チーズキンパ</h3>
+								<div class="flex items-center gap-3 text-xs text-gray-500">
+									<span>❤ 278</span><span>キンパマスター</span>
+								</div>
+							</div>
+						</a> <a th:href="@{/recipe/detail/1}" href="/recipe/detail/1"
+							class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-yellow-50 transition-colors text-left block">
+							<div
+								class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-amber-600 to-amber-800 rounded-lg flex items-center justify-center text-white font-medium">3</div>
+							<div class="flex-1 min-w-0">
+								<h3 class="font-medium truncate">簡単キムチチャーハン</h3>
+								<div class="flex items-center gap-3 text-xs text-gray-500">
+									<span>❤ 245</span><span>一人飯の王</span>
+								</div>
+							</div>
+						</a>
+					</div>
+				</section>
+			</div>
 
-      <!-- タブナビゲーション -->
-      <div class="bg-white rounded-t-2xl shadow-lg">
-        <div class="flex border-b border-gray-200">
-          <button type="button" class="flex-1 flex items-center justify-center gap-2 py-4 transition-colors text-gray-600">
-            🌐 みんなの食卓を見る
-          </button>
-        </div>
+			<!-- タブナビゲーション -->
+			<div class="bg-white rounded-t-2xl shadow-lg">
+				<div class="flex border-b border-gray-200">
+					<button type="button"
+						class="flex-1 flex items-center justify-center gap-2 py-4 transition-colors text-gray-600">
+						🌐 みんなの食卓を見る</button>
+				</div>
 
-        <div class="p-6">
-          <!-- レシピグリッド - 全体 -->
-          <div id="tab-all" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <a th:href="@{/recipe/detail/1}" href="/recipe/detail/1" class="recipe-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow text-left block border border-gray-100">
-              <div class="aspect-video bg-gray-200 overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1600688654899-379ec76aca42?w=400" alt="簡単キムチチャーハン" class="w-full h-full object-cover"/>
-              </div>
-              <div class="p-4">
-                <h3 class="font-medium mb-2">簡単キムチチャーハン</h3>
-                <p class="text-sm text-gray-600 line-clamp-2 mb-3">冷蔵庫のキムチで5分で完成する満腹の一食！</p>
-                <div class="flex items-center gap-2 mb-3">
-                  <span class="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded">🔪 低</span>
-                  <span class="text-xs text-gray-500">⏱ 10分</span>
-                </div>
-                <div class="flex items-center justify-between text-sm text-gray-500">
-                  <span>❤ 245</span><span>💬 32</span><span>👀 1203</span>
-                </div>
-              </div>
-            </a>
-            <a th:href="@{/recipe/detail/2}" href="/recipe/detail/2" class="recipe-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow text-left block border border-gray-100">
-              <div class="aspect-video bg-gray-200 overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1741295017668-c8132acd6fc0?w=400" alt="栄養満点ビビンバ" class="w-full h-full object-cover"/>
-              </div>
-              <div class="p-4">
-                <h3 class="font-medium mb-2">栄養満点ビビンバ</h3>
-                <p class="text-sm text-gray-600 line-clamp-2 mb-3">各種ナムルとコチュジャンで作るヘルシーなビビンバ。</p>
-                <div class="flex items-center gap-2 mb-3">
-                  <span class="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded">🔪 中</span>
-                  <span class="text-xs text-gray-500">⏱ 20分</span>
-                </div>
-                <div class="flex items-center justify-between text-sm text-gray-500">
-                  <span>❤ 189</span><span>💬 24</span><span>👀 892</span>
-                </div>
-              </div>
-            </a>
-            <a th:href="@{/recipe/detail/3}" href="/recipe/detail/3" class="recipe-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow text-left block border border-gray-100">
-              <div class="aspect-video bg-gray-200 overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1653697469316-955d5ebe5994?w=400" alt="激辛ラーメン炒め" class="w-full h-full object-cover"/>
-              </div>
-              <div class="p-4">
-                <h3 class="font-medium mb-2">激辛ラーメン炒め</h3>
-                <p class="text-sm text-gray-600 line-clamp-2 mb-3">ラーメンをスープなしで炒めてさらに美味しく！</p>
-                <div class="flex items-center gap-2 mb-3">
-                  <span class="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded">🔪 低</span>
-                  <span class="text-xs text-gray-500">⏱ 15分</span>
-                </div>
-                <div class="flex items-center justify-between text-sm text-gray-500">
-                  <span>❤ 312</span><span>💬 45</span><span>👀 1567</span>
-                </div>
-              </div>
-            </a>
-            <a th:href="@{/recipe/detail/4}" href="/recipe/detail/4" class="recipe-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow text-left block border border-gray-100">
-              <div class="aspect-video bg-gray-200 overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1628532429788-c35922b5e6c1?w=400" alt="チーズキンパ" class="w-full h-full object-cover"/>
-              </div>
-              <div class="p-4">
-                <h3 class="font-medium mb-2">チーズキンパ</h3>
-                <p class="text-sm text-gray-600 line-clamp-2 mb-3">具材にチーズをたっぷり入れた満足感のあるキンパ。</p>
-                <div class="flex items-center gap-2 mb-3">
-                  <span class="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded">🔪 中</span>
-                  <span class="text-xs text-gray-500">⏱ 25分</span>
-                </div>
-                <div class="flex items-center justify-between text-sm text-gray-500">
-                  <span>❤ 278</span><span>💬 38</span><span>👀 1345</span>
-                </div>
-              </div>
-            </a>
-            <a th:href="@{/recipe/detail/5}" href="/recipe/detail/5" class="recipe-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow text-left block border border-gray-100">
-              <div class="aspect-video bg-gray-200 overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1573470571028-a0ca7a723959?w=400" alt="テンジャンチゲ" class="w-full h-full object-cover"/>
-              </div>
-              <div class="p-4">
-                <h3 class="font-medium mb-2">テンジャンチゲ</h3>
-                <p class="text-sm text-gray-600 line-clamp-2 mb-3">香ばしいテンジャンに豆腐と野菜を入れた温かいスープ料理。</p>
-                <div class="flex items-center gap-2 mb-3">
-                  <span class="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded">🔪 低</span>
-                  <span class="text-xs text-gray-500">⏱ 15分</span>
-                </div>
-                <div class="flex items-center justify-between text-sm text-gray-500">
-                  <span>❤ 156</span><span>💬 19</span><span>👀 734</span>
-                </div>
-              </div>
-            </a>
-          </div>
+				<div class="p-6">
+					<!-- レシピグリッド - 全体 -->
+					<div id="tab-all"
+						class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+						<a th:href="@{/recipe/detail/1}" href="/recipe/detail/1"
+							class="recipe-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow text-left block border border-gray-100">
+							<div class="aspect-video bg-gray-200 overflow-hidden">
+								<img
+									src="https://images.unsplash.com/photo-1600688654899-379ec76aca42?w=400"
+									alt="簡単キムチチャーハン" class="w-full h-full object-cover" />
+							</div>
+							<div class="p-4">
+								<h3 class="font-medium mb-2">簡単キムチチャーハン</h3>
+								<p class="text-sm text-gray-600 line-clamp-2 mb-3">冷蔵庫のキムチで5分で完成する満腹の一食！</p>
+								<div class="flex items-center gap-2 mb-3">
+									<span
+										class="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded">🔪
+										低</span> <span class="text-xs text-gray-500">⏱ 10分</span>
+								</div>
+								<div
+									class="flex items-center justify-between text-sm text-gray-500">
+									<span>❤ 245</span><span>💬 32</span><span>👀 1203</span>
+								</div>
+							</div>
+						</a> <a th:href="@{/recipe/detail/2}" href="/recipe/detail/2"
+							class="recipe-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow text-left block border border-gray-100">
+							<div class="aspect-video bg-gray-200 overflow-hidden">
+								<img
+									src="https://images.unsplash.com/photo-1741295017668-c8132acd6fc0?w=400"
+									alt="栄養満点ビビンバ" class="w-full h-full object-cover" />
+							</div>
+							<div class="p-4">
+								<h3 class="font-medium mb-2">栄養満点ビビンバ</h3>
+								<p class="text-sm text-gray-600 line-clamp-2 mb-3">各種ナムルとコチュジャンで作るヘルシーなビビンバ。</p>
+								<div class="flex items-center gap-2 mb-3">
+									<span
+										class="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded">🔪
+										中</span> <span class="text-xs text-gray-500">⏱ 20分</span>
+								</div>
+								<div
+									class="flex items-center justify-between text-sm text-gray-500">
+									<span>❤ 189</span><span>💬 24</span><span>👀 892</span>
+								</div>
+							</div>
+						</a> <a th:href="@{/recipe/detail/3}" href="/recipe/detail/3"
+							class="recipe-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow text-left block border border-gray-100">
+							<div class="aspect-video bg-gray-200 overflow-hidden">
+								<img
+									src="https://images.unsplash.com/photo-1653697469316-955d5ebe5994?w=400"
+									alt="激辛ラーメン炒め" class="w-full h-full object-cover" />
+							</div>
+							<div class="p-4">
+								<h3 class="font-medium mb-2">激辛ラーメン炒め</h3>
+								<p class="text-sm text-gray-600 line-clamp-2 mb-3">ラーメンをスープなしで炒めてさらに美味しく！</p>
+								<div class="flex items-center gap-2 mb-3">
+									<span
+										class="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded">🔪
+										低</span> <span class="text-xs text-gray-500">⏱ 15分</span>
+								</div>
+								<div
+									class="flex items-center justify-between text-sm text-gray-500">
+									<span>❤ 312</span><span>💬 45</span><span>👀 1567</span>
+								</div>
+							</div>
+						</a> <a th:href="@{/recipe/detail/4}" href="/recipe/detail/4"
+							class="recipe-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow text-left block border border-gray-100">
+							<div class="aspect-video bg-gray-200 overflow-hidden">
+								<img
+									src="https://images.unsplash.com/photo-1628532429788-c35922b5e6c1?w=400"
+									alt="チーズキンパ" class="w-full h-full object-cover" />
+							</div>
+							<div class="p-4">
+								<h3 class="font-medium mb-2">チーズキンパ</h3>
+								<p class="text-sm text-gray-600 line-clamp-2 mb-3">具材にチーズをたっぷり入れた満足感のあるキンパ。</p>
+								<div class="flex items-center gap-2 mb-3">
+									<span
+										class="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded">🔪
+										中</span> <span class="text-xs text-gray-500">⏱ 25分</span>
+								</div>
+								<div
+									class="flex items-center justify-between text-sm text-gray-500">
+									<span>❤ 278</span><span>💬 38</span><span>👀 1345</span>
+								</div>
+							</div>
+						</a> <a th:href="@{/recipe/detail/5}" href="/recipe/detail/5"
+							class="recipe-card bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow text-left block border border-gray-100">
+							<div class="aspect-video bg-gray-200 overflow-hidden">
+								<img
+									src="https://images.unsplash.com/photo-1573470571028-a0ca7a723959?w=400"
+									alt="テンジャンチゲ" class="w-full h-full object-cover" />
+							</div>
+							<div class="p-4">
+								<h3 class="font-medium mb-2">テンジャンチゲ</h3>
+								<p class="text-sm text-gray-600 line-clamp-2 mb-3">香ばしいテンジャンに豆腐と野菜を入れた温かいスープ料理。</p>
+								<div class="flex items-center gap-2 mb-3">
+									<span
+										class="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded">🔪
+										低</span> <span class="text-xs text-gray-500">⏱ 15分</span>
+								</div>
+								<div
+									class="flex items-center justify-between text-sm text-gray-500">
+									<span>❤ 156</span><span>💬 19</span><span>👀 734</span>
+								</div>
+							</div>
+						</a>
+					</div>
 
-                  </div>
-      </div>
-    </div>
+				</div>
+			</div>
+		</div>
 
-    <!-- フローティングガチャボタン -->
-    <a th:href="@{/gacha/home}" href="/gacha/home" id="floating-gacha" class="fixed bottom-8 right-8 w-32 h-32 flex items-center justify-center z-50 transition-all duration-300 hover:scale-110 hover:rotate-12">
-      <img src="https://i.ibb.co/4wgmvdV3/AI.png" alt="GACHA" class="w-32 h-32 object-cover">
-    </a>
-  </div>
-  <script th:src="@{/js/home.js}"></script>
+		<!-- フローティングガチャボタン -->
+		<a th:href="@{/gacha/home}" href="/gacha/home" id="floating-gacha"
+			class="fixed bottom-8 right-8 w-32 h-32 flex items-center justify-center z-50 transition-all duration-300 hover:scale-110 hover:rotate-12">
+			<img src="https://i.ibb.co/4wgmvdV3/AI.png" alt="GACHA"
+			class="w-32 h-32 object-cover">
+		</a>
+	</div>
+	<script th:src="@{/js/home.js}"></script>
 </body>
 </html>
