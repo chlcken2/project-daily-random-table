@@ -4,6 +4,7 @@
 <mapper
 	namespace="com.dailytable.dailytable.domain.like.LikeMapper">
 
+<!--LikeMapper.xml -->
 	<insert id="insertLike">
 		INSERT INTO recipe_likes (user_id, recipe_id, created_at)
 		VALUES (#{userId}, #{recipeId}, NOW())
