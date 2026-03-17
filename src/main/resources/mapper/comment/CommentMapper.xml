@@ -18,7 +18,7 @@
 		resultType="com.dailytable.dailytable.domain.comment.dto.CommentResponseDto">
 		SELECT
 		c.id AS commentId,
-		c.user_id AS userId,    <!-- 추가 -->
+		c.user_id AS userId,
 		u.nickname,
 		c.content,
 		c.created_at AS createdAt
