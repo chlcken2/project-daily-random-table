@@ -1,4 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    ============================================
+    랭킹 시스템 MyBatis 매퍼 (RankingMapper.xml)
+    ============================================
+    
+    [파일 역할]
+    - 랭킹 시스템 SQL 쿼리 정의
+    - 오늘의 식단(당일 인기글) / 명예의 식단(주간 인기글) 조회
+    
+    [주요 테이블]
+    - recipes      : 레시피 메인 정보 (좋아요, 댓글, 조회수)
+    - users        : 작성자 닉네임 조회용
+    - difficulties : 난이도명 조회용
+    
+    [인기도 계산식]
+    popularityScore = (like_count × 3) + (comment_count × 2) + (view_count × 1)
+    
+    [데이터 흐름]
+    Java(Controller/Service) → MyBatis → SQL 실행 → DB
+         ↑                                        ↓
+    RecipeRankingDto ←── ResultType 매핑 ←── 결과
+-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dailytable.dailytable.domain.ranking.RankingRepository">
@@ -47,6 +69,7 @@
         - 공개 레시피만: is_public = 1
         - 삭제되지 않은 레시피: deleted_at IS NULL
         - 정렬: 인기도 점수 내림차순 → 생성일 내림차순
+        - 참고: 오늘 생성된 레시피도 주간 인기도에 따라 명예의 식단에 표시될 수 있음
     -->
     <select id="selectWeeklyBestRecipes" resultType="com.dailytable.dailytable.domain.ranking.RecipeRankingDto">
         SELECT <include refid="rankingColumns"/>
