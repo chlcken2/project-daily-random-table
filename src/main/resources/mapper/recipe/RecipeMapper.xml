@@ -217,7 +217,8 @@
 		SELECT 1
 		FROM recipe_view_log
 		WHERE user_id = #{userId}
-		AND recipe_id = #{recipeId}
+		AND recipe_id =
+		#{recipeId}
 		)
 	</select>
 
@@ -248,6 +249,10 @@
 		r.popularity_score DESC, r.created_at DESC
 	</select>
 
+	<update id="deleteRecipe">
+		UPDATE recipes SET deleted_at = NOW()
+		WHERE id = #{id} AND user_id = #{userId}
+	</update>
 
 
 </mapper>
