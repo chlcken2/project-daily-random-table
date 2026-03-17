@@ -36,5 +36,7 @@ public interface CommentMapper {
 			@Param("commentEditDto") CommentEditDto dto,
 			@Param("userId") Long userId
 			);
+	
+	int selectCommentCount(@Param("recipeId") Long recipeId);
 
 }
