@@ -26,6 +26,9 @@
     }
   }
 
+  const params = new URLSearchParams(window.location.search);
+  const redirectAfterLogin = params.get('redirect') || '/gacha/home';
+
   loginBtn.addEventListener('click', function() {
     if (loginBtn.classList.contains('opacity-60')) return;
     var email = emailInput.value.trim();
@@ -40,15 +43,13 @@
       .then(function(res) { return res.json(); })
       .then(function(result) {
         if (result.success && result.data) {
-            if (result.data.accessToken) {
-                document.cookie = 'accessToken=' + result.data.accessToken + '; path=/; max-age=3600'; // 1시간
-                localStorage.setItem('accessToken', result.data.accessToken);
-            }
-            if (result.data.refreshToken) {
-                document.cookie = 'refreshToken=' + result.data.refreshToken + '; path=/; max-age=604800'; // 7일
-                localStorage.setItem('refreshToken', result.data.refreshToken);
-            }
-            window.location.href = '/gacha/home';
+          if (result.data.accessToken) {
+            document.cookie = 'accessToken=' + result.data.accessToken + '; path=/; max-age=3600'; // 1시간
+          }
+          if (result.data.refreshToken) {
+            document.cookie = 'refreshToken=' + result.data.refreshToken + '; path=/; max-age=604800'; // 7일
+          }
+          window.location.href = redirectAfterLogin;
         } else {
           alert(result.message || 'ログインに失敗しました');
           loginBtn.disabled = false;
