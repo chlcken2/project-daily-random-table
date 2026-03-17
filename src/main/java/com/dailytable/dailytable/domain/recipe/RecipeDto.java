@@ -1,5 +1,6 @@
 package com.dailytable.dailytable.domain.recipe;
 
+import java.time.LocalDateTime;
 import lombok.Data;
 
 @Data
@@ -12,6 +13,7 @@ public class RecipeDto {
     private int likeCount;
     private int commentCount;
     private int viewCount;
+    private LocalDateTime createdAt;
     private boolean isPublic;
     private boolean isAiGenerated;
     private String authorNickname;
