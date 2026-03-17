@@ -22,42 +22,42 @@ public class RecipeService {
 
 	private final RecipeMapper recipeMapper;
 
-    @Transactional
-    public void saveFullRecipe(RecipeEntity recipe) {
-        // Insert main recipe
-        recipeMapper.insertRecipe(recipe);
-        Long recipeId = recipe.getId();
+	@Transactional
+	public void saveFullRecipe(RecipeEntity recipe) {
+		// Insert main recipe
+		recipeMapper.insertRecipe(recipe);
+		Long recipeId = recipe.getId();
 
-        // Insert ingredients
-        if (recipe.getIngredients() != null) {
-            for (RecipeEntity.RecipeIngredient ingredient : recipe.getIngredients()) {
-                ingredient.setRecipeId(recipeId);
-                recipeMapper.insertRecipeIngredient(ingredient);
-            }
-        }
+		// Insert ingredients
+		if (recipe.getIngredients() != null) {
+			for (RecipeEntity.RecipeIngredient ingredient : recipe.getIngredients()) {
+				ingredient.setRecipeId(recipeId);
+				recipeMapper.insertRecipeIngredient(ingredient);
+			}
+		}
 
-        // Insert steps
-        if (recipe.getSteps() != null) {
-            for (RecipeEntity.RecipeStep step : recipe.getSteps()) {
-                step.setRecipeId(recipeId);
-                recipeMapper.insertRecipeStep(step);
-            }
-        }
+		// Insert steps
+		if (recipe.getSteps() != null) {
+			for (RecipeEntity.RecipeStep step : recipe.getSteps()) {
+				step.setRecipeId(recipeId);
+				recipeMapper.insertRecipeStep(step);
+			}
+		}
 
-        // Insert nutrients
-        if (recipe.getNutrients() != null) {
-            for (RecipeEntity.RecipeNutrient nutrient : recipe.getNutrients()) {
-                nutrient.setRecipeId(recipeId);
-                recipeMapper.insertRecipeNutrient(nutrient);
-            }
-        }
+		// Insert nutrients
+		if (recipe.getNutrients() != null) {
+			for (RecipeEntity.RecipeNutrient nutrient : recipe.getNutrients()) {
+				nutrient.setRecipeId(recipeId);
+				recipeMapper.insertRecipeNutrient(nutrient);
+			}
+		}
 
-    }
+	}
 
 	@Transactional
 	public RecipeDetailDto getRecipeDetail(Long recipeId, Long userId) {
 		// 1 기본 레시피 조회
-        RecipeDetailDto recipe = recipeMapper.findById(recipeId);
+		RecipeDetailDto recipe = recipeMapper.findById(recipeId);
 		if (recipe == null) {
 			throw new BaseException(ErrorCode.RECIPE_NOT_FOUND);
 		}
@@ -100,13 +100,22 @@ public class RecipeService {
 		return recipe;
 	}
 
-    // note: 추후 기능 체크할 것
-    public void updateVisibility(Long id, Long userId, boolean isPublic) {
-        recipeMapper.updatePublicStatus(id, isPublic);
-    }
+	// note: 추후 기능 체크할 것
+	public void updateVisibility(Long id, Long userId, boolean isPublic) {
+		recipeMapper.updatePublicStatus(id, isPublic);
+	}
 
 	// Methods for RecipeController
 	public List<RecipeRankingDto> getPublicRecipes() {
 		return recipeMapper.findPublicRecipes();
+	}
+
+	public void togglePublicStatus(Long recipeId, Long userId) {
+		RecipeDetailDto recipe = recipeMapper.findById(recipeId);
+		recipeMapper.updatePublicStatus(recipeId, !recipe.isPublic());
+	}
+
+	public void deleteRecipe(Long recipeId, Long userId) {
+		recipeMapper.deleteRecipe(recipeId, userId);
 	}
 }
