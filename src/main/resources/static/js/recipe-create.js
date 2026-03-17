@@ -536,7 +536,7 @@
 
     fetch('/gacha/generate', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': getCookie('accessToken') ? 'Bearer ' + getCookie('accessToken') : '' },
       body: JSON.stringify({
         ingredients: ingredients.map(function(i){ return { name:i.name, amount:i.amount, unit:i.unit }; }),
         sauces:      sauces.map(function(s){ return { name:s.name, amount:s.amount, unit:s.unit }; }),
@@ -596,7 +596,7 @@
       });
     }
 
-    document.getElementById('btn-detail').href = '/gacha/recipe/' + recipe.id;
+    document.getElementById('btn-detail').href = '/recipes/' + recipe.id;
     gachaResult.scrollIntoView({ behavior:'smooth', block:'center' });
   }
 
@@ -605,7 +605,11 @@
   // ═══════════════════════════════════════════════════════════════
   document.getElementById('btn-private').addEventListener('click', function(){
     if (!currentRecipeId) return;
-    fetch('/gacha/publish/'+currentRecipeId+'?isPublic=false', { method:'POST' })
+    var token = getCookie('accessToken');
+    fetch('/recipes/'+currentRecipeId+'/visibility?isPublic=false', {
+      method:'PATCH',
+      headers: token ? { 'Authorization': 'Bearer ' + token } : {}
+    })
       .then(function(r){ return r.json(); })
       .then(function(res){
         if (res.success) window.location.href = '/mypage';
@@ -616,11 +620,18 @@
 
   document.getElementById('btn-public').addEventListener('click', function(){
     if (!currentRecipeId) return;
-    fetch('/gacha/publish/'+currentRecipeId+'?isPublic=true', { method:'POST' })
+    var token = getCookie('accessToken');
+    fetch('/recipes/'+currentRecipeId+'/visibility?isPublic=true', {
+      method:'PATCH',
+      headers: token ? { 'Authorization': 'Bearer ' + token } : {}
+    })
       .then(function(r){ return r.json(); })
       .then(function(res){
-        if (res.success) alert('みんなの食卓に登録されました！🎉');
-        else showError(res.message);
+        if (res.success) {
+            alert('みんなの食卓に登録されました！🎉');
+            window.location.href = '/mypage';
+        } else showError(res.message);
+
       })
       .catch(function(){ showError('登録に失敗しました。'); });
   });
