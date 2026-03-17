@@ -83,5 +83,11 @@ public class CommentController {
 
 		return "編集できました。";
 	}
-
+	
+	@GetMapping("/{recipeId}/comments/count")
+	@ResponseBody
+	public int getCommentCount(@PathVariable Long recipeId) {
+	    return commentService.getCommentCount(recipeId);
+	}
+	
 }
