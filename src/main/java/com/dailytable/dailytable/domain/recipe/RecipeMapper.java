@@ -11,7 +11,7 @@ import com.dailytable.dailytable.domain.recipe.dto.RecipeStepDto;
 
 import java.util.List;
 
-@Mapper
+@Mapper 
 public interface RecipeMapper {
 
 	void insertRecipe(RecipeEntity recipe);
