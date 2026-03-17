@@ -62,7 +62,7 @@
           <p class="font-medium text-lg" th:text="${recipe.cookingTime} + '分'">30分</p>
         </div>
 
-        <!-- 좋아요 (표시만, 하단 버튼과 연동) -->
+        <!-- 좋아요 -->
         <div class="bg-pink-50 p-4 rounded-lg text-center">
           <svg id="heartEmpty" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mx-auto mb-1 text-pink-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                th:classappend="${recipe.isLiked} ? 'hidden' : ''">
@@ -96,8 +96,8 @@
         <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm" th:text="'#' + ${recipe.difficultyLabel}">#中</span>
       </div>
 
-      <!-- Action Buttons -->
-      <div class="grid grid-cols-3 gap-3">
+      <!-- ── 본인 레시피: 좋아요 / 공개·비공개 / 삭제 (3개) ── -->
+      <div th:if="${recipe.userId == #authentication.principal}" class="grid grid-cols-3 gap-3">
 
         <!-- 좋아요 버튼 -->
         <button type="button" id="likeBtn" onclick="toggleLike()"
@@ -114,27 +114,54 @@
           좋아요
         </button>
 
-        <!-- 도감에 저장 -->
-        <button type="button"
-                class="flex items-center justify-center gap-2 py-2.5 rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
-            <polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
+        <!-- 공개/비공개 버튼 -->
+        <button type="button" id="publicBtn" onclick="togglePublic()"
+                class="flex items-center justify-center gap-2 py-2.5 rounded-lg border text-sm font-medium transition-all duration-200"
+                th:classappend="${recipe.isPublic} ? 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50' : 'bg-amber-50 border-amber-300 text-amber-700 hover:bg-amber-100'">
+          <svg id="iconPublic" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               th:classappend="${recipe.isPublic} ? '' : 'hidden'">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
           </svg>
-          도감에 저장
+          <svg id="iconPrivate" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               th:classappend="${recipe.isPublic} ? 'hidden' : ''">
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+            <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+            <line x1="1" y1="1" x2="23" y2="23"/>
+          </svg>
+          <span id="publicBtnText" th:text="${recipe.isPublic} ? '공개 중' : '비공개'">공개 중</span>
         </button>
 
-        <!-- 공유 -->
-        <button type="button" onclick="shareRecipe()"
-                class="flex items-center justify-center gap-2 py-2.5 rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
+        <!-- 레시피 삭제 버튼 -->
+        <button type="button" onclick="deleteRecipe()"
+                class="flex items-center justify-center gap-2 py-2.5 rounded-lg border border-red-200 bg-white text-sm font-medium text-red-500 hover:bg-red-50 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/>
-            <path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/>
+            <polyline points="3 6 5 6 21 6"/>
+            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+            <path d="M10 11v6"/><path d="M14 11v6"/>
+            <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
           </svg>
-          공유
+          레시피 삭제
         </button>
 
       </div>
+
+      <!-- ── 다른 사람 레시피: 좋아요 버튼만 (전체 너비) ── -->
+      <div th:unless="${recipe.userId == #authentication.principal}">
+        <button type="button" id="likeBtn" onclick="toggleLike()"
+                class="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg border text-sm font-medium transition-all duration-200"
+                th:classappend="${recipe.isLiked} ? 'bg-red-500 border-red-500 text-white' : 'bg-white border-gray-200 text-gray-600 hover:bg-red-50'">
+          <svg id="btnHeartEmpty" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               th:classappend="${recipe.isLiked} ? 'hidden' : ''">
+            <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/>
+          </svg>
+          <svg id="btnHeartFilled" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"
+               th:classappend="${recipe.isLiked} ? '' : 'hidden'">
+            <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/>
+          </svg>
+          좋아요
+        </button>
+      </div>
+
     </section>
 
     <!-- Nutrients -->
@@ -185,7 +212,6 @@
     <section class="bg-white rounded-2xl shadow-lg p-6 mb-6">
       <h2 class="text-2xl font-bold mb-4">
         💬 コメント
-        <!-- id 추가 -->
         <span class="text-sm text-gray-500" id="commentCount"
               th:text="'(' + ${recipe.commentCount} + ')'"></span>
       </h2>
@@ -213,9 +239,10 @@
 
   <script th:inline="javascript">
     const recipeId = /*[[${recipe.id}]]*/ 0;
-    const currentUserId = /*[[${recipe.userId}]]*/ null;
+    const currentUserId = /*[[${loginUserId}]]*/ null;
     let liked = /*[[${recipe.isLiked}]]*/ false;
     let likeCount = /*[[${recipe.likeCount}]]*/ 0;
+    let isPublic = /*[[${recipe.isPublic}]]*/ false;
 
     /* ── 댓글 수 서버에서 갱신 ── */
     function fetchCommentCount() {
@@ -248,22 +275,46 @@
           document.getElementById('btnHeartEmpty').classList.toggle('hidden', liked);
           document.getElementById('btnHeartFilled').classList.toggle('hidden', !liked);
           if (liked) {
-            btn.className = 'flex items-center justify-center gap-2 py-2.5 rounded-lg border text-sm font-medium transition-all duration-200 bg-red-500 border-red-500 text-white';
+            btn.className = btn.className.replace(/bg-white.*?hover:bg-red-50/, 'bg-red-500 border-red-500 text-white');
           } else {
-            btn.className = 'flex items-center justify-center gap-2 py-2.5 rounded-lg border text-sm font-medium transition-all duration-200 bg-white border-gray-200 text-gray-600 hover:bg-red-50';
+            btn.className = btn.className.replace(/bg-red-500 border-red-500 text-white/, 'bg-white border-gray-200 text-gray-600 hover:bg-red-50');
           }
         })
         .catch(() => alert('로그인이 필요합니다.'));
     }
 
-    /* ── 공유 ── */
-    function shareRecipe() {
-      if (navigator.share) {
-        navigator.share({ title: document.title, url: window.location.href });
-      } else {
-        navigator.clipboard.writeText(window.location.href);
-        alert('링크가 복사되었습니다!');
-      }
+    /* ── 공개/비공개 토글 ── */
+    function togglePublic() {
+      fetch(`/recipes/${recipeId}/public`, { method: 'PUT' })
+        .then(res => {
+          if (!res.ok) throw new Error('failed');
+
+          isPublic = !isPublic;
+
+          document.getElementById('iconPublic').classList.toggle('hidden', !isPublic);
+          document.getElementById('iconPrivate').classList.toggle('hidden', isPublic);
+          document.getElementById('publicBtnText').textContent = isPublic ? '공개 중' : '비공개';
+
+          const btn = document.getElementById('publicBtn');
+          if (isPublic) {
+            btn.className = 'flex items-center justify-center gap-2 py-2.5 rounded-lg border text-sm font-medium transition-all duration-200 bg-white border-gray-200 text-gray-600 hover:bg-gray-50';
+          } else {
+            btn.className = 'flex items-center justify-center gap-2 py-2.5 rounded-lg border text-sm font-medium transition-all duration-200 bg-amber-50 border-amber-300 text-amber-700 hover:bg-amber-100';
+          }
+        })
+        .catch(() => alert('로그인이 필요합니다.'));
+    }
+
+    /* ── 레시피 삭제 ── */
+    function deleteRecipe() {
+      if (!confirm('레시피를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) return;
+
+      fetch(`/recipes/${recipeId}`, { method: 'DELETE' })
+        .then(res => {
+          if (!res.ok) throw new Error('failed');
+          window.location.href = '/gacha/home';
+        })
+        .catch(() => alert('삭제에 실패했습니다.'));
     }
 
     /* ── 댓글 로드 ── */
@@ -329,7 +380,7 @@
       }).then(res => {
         if (!res.ok) throw new Error('failed');
         input.value = '';
-        fetchCommentCount();  // 서버에서 최신 댓글 수 갱신
+        fetchCommentCount();
         loadComments();
       }).catch(() => alert('로그인이 필요합니다.'));
     }
@@ -369,7 +420,7 @@
         method: 'DELETE'
       }).then(res => {
         if (!res.ok) throw new Error('failed');
-        fetchCommentCount();  // 서버에서 최신 댓글 수 갱신
+        fetchCommentCount();
         loadComments();
       });
     }
