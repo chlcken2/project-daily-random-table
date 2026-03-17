@@ -1,8 +1,45 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    ============================================
+    레시피 MyBatis 매퍼 (RecipeMapper.xml)
+    ============================================
+    
+    [파일 역할]
+    - MyBatis를 사용한 SQL 쿼리 정의
+    - Java 객체와 DB 테이블 간의 매핑 담당
+    - 레시피 CRUD 및 관련 데이터(재료, 단계, 영양소) 관리
+    
+    [주요 테이블]
+    - recipes         : 레시피 메인 정보
+    - recipe_ingredients : 레시피 재료 목록
+    - recipe_steps    : 조리 단계
+    - recipe_nutrients : 영양소 정보
+    - recipe_likes    : 좋아요 기록
+    - recipe_view_log : 조회 기록 (중복 조회 방지)
+    - users           : 작성자 정보
+    - difficulties    : 난이도 정보
+    
+    [데이터 흐름]
+    1. Java(Controller/Service) → MyBatis → SQL 실행 → DB
+    2. DB 결과 → MyBatis → Java 객체(ResultType)로 매핑
+    
+    [네임스페이스]
+    namespace="com.dailytable.dailytable.domain.recipe.RecipeRepository"
+    → Java 인터페이스와 연결됨
+-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dailytable.dailytable.domain.recipe.RecipeRepository">
 
+    <!-- 
+        [레시피 생성] 새로운 레시피 DB에 저장
+        useGeneratedKeys="true" : MySQL의 AUTO_INCREMENT ID를 Java 객체에 자동 설정
+        keyProperty="id"        : 생성된 ID를 RecipeEntity의 id 필드에 저장
+        
+        호출 출처: RecipeService.saveFullRecipe()
+        파라미터: RecipeEntity (title, cookingTime, difficultyId 등)
+        반환:     생성된 레시피 ID (useGeneratedKeys로 자동 설정)
+    -->
     <insert id="insertRecipe" parameterType="com.dailytable.dailytable.domain.recipe.RecipeEntity"
             useGeneratedKeys="true" keyProperty="id">
         INSERT INTO recipes (user_id, title, title_image, description, cooking_time,
@@ -72,6 +109,7 @@
     <select id="findPublicRecipes" resultType="com.dailytable.dailytable.domain.recipe.RecipeDto">
         SELECT r.id, r.title, r.title_image as titleImage, r.description, r.cooking_time as cookingTime,
                r.like_count as likeCount, r.comment_count as commentCount, r.view_count as viewCount,
+               r.created_at as createdAt,
                r.is_public as isPublic, r.is_ai_generated as isAiGenerated,
                u.nickname as authorNickname, d.name as difficultyName
         FROM recipes r
@@ -89,6 +127,7 @@
     <select id="findAllPublicRecipes" resultType="com.dailytable.dailytable.domain.recipe.RecipeDto">
         SELECT r.id, r.title, r.title_image as titleImage, r.description, r.cooking_time as cookingTime,
                r.like_count as likeCount, r.comment_count as commentCount, r.view_count as viewCount,
+               r.created_at as createdAt,
                r.is_public as isPublic, r.is_ai_generated as isAiGenerated,
                u.nickname as authorNickname, d.name as difficultyName
         FROM recipes r
@@ -106,6 +145,7 @@
     <select id="findByUserId" resultType="com.dailytable.dailytable.domain.recipe.RecipeDto">
         SELECT r.id, r.title, r.title_image as titleImage, r.description, r.cooking_time as cookingTime,
                r.like_count as likeCount, r.comment_count as commentCount, r.view_count as viewCount,
+               r.created_at as createdAt,
                r.is_public as isPublic, r.is_ai_generated as isAiGenerated,
                u.nickname as authorNickname, d.name as difficultyName
         FROM recipes r
@@ -123,6 +163,7 @@
     <select id="findLikedRecipesByUserId" resultType="com.dailytable.dailytable.domain.recipe.RecipeDto">
         SELECT r.id, r.title, r.title_image as titleImage, r.description, r.cooking_time as cookingTime,
                r.like_count as likeCount, r.comment_count as commentCount, r.view_count as viewCount,
+               r.created_at as createdAt,
                r.is_public as isPublic, r.is_ai_generated as isAiGenerated,
                u.nickname as authorNickname, d.name as difficultyName
         FROM recipes r
