@@ -56,5 +56,9 @@ public class CommentService {
 		commentMapper.updateComment(commentEditDto, userId);
 
 	}
+	
+	public int getCommentCount(Long recipeId) {
+	    return commentMapper.selectCommentCount(recipeId);
+	}
 
 }
