@@ -46,7 +46,7 @@ public class GachaService {
                 .build();
     }
 
-    public GachaDto.GenerateResponse generate(GachaDto.GenerateRequest request, Long userId) {
+    public GachaDto.GenerateResponse generate(GachaDto.GenerateRequest request, Long userId) throws Exception {
         // Check daily limit
         int todayCount = gachaMapper.countTodayGenerations(userId);
         if (todayCount >= MAX_DAILY) {
@@ -72,10 +72,10 @@ public class GachaService {
                     .collect(Collectors.joining(", "));
         }
 
-        String purpose = request.getPurpose() != null ? request.getPurpose() : "속세의맛";
-        String cuisine = request.getCuisine() != null ? request.getCuisine() : "상관없음";
-        String difficulty = request.getDifficulty() != null ? request.getDifficulty() : "상관없음";
-        String aiDifficulty = RecipeMapConverter.DIFFICULTY_AI_MAP.getOrDefault(difficulty, "ANY");
+        String purpose = request.getPurpose() != null ? request.getPurpose() : "ガッツリ系";
+        String cuisine = request.getCuisine() != null ? request.getCuisine() : "なんでも";
+        String difficulty = request.getDifficulty() != null ? request.getDifficulty() : "なんでも";
+        String aiDifficulty = RecipeMapConverter.DIFFICULTY_AI_MAP.getOrDefault(difficulty, "なんでも");
 
         // Call Gemini with retry
         JsonNode recipeJson = null;
@@ -106,7 +106,7 @@ public class GachaService {
 
         // Parse AI response
         JsonNode recipe = recipeJson.get(RECIPE_TYPE.getName());
-        String title = recipe.path("title").asText("AI 레시피");
+        String title = recipe.path("title").asText("AI recipe");
         String summary = recipe.path("summary").asText("");
         String aiDifficultyResult = recipe.path("difficulty").asText("MEDIUM");
         int estimatedTime = recipe.path("estimatedTimeMinutes").asInt(30);
@@ -223,7 +223,7 @@ public class GachaService {
                 .note(nutrientNote)
                 .build();
 
-        String diffLabel = DIFFICULTY_LABEL_MAP.getOrDefault(aiDifficultyResult, "중");
+        String diffLabel = DIFFICULTY_LABEL_MAP.getOrDefault(aiDifficultyResult, "中");
 
         GachaDto.RecipeResult result = GachaDto.RecipeResult.builder()
                 .id(recipeEntity.getId())

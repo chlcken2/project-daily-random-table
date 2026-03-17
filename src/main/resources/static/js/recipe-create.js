@@ -19,7 +19,8 @@
   var errorToastMsg     = document.getElementById('error-toast-msg');
 
   function esc(str) {
-    if (!str) return '';
+    if (str == null) return '';
+    if (typeof str !== 'string') str = String(str);
     return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
@@ -300,6 +301,72 @@
   }
 
   // ═══════════════════════════════════════════════════════════════
+  //  I N G R E D I E N T   A P I   I N T E G R A T I O N
+  // ═══════════════════════════════════════════════════════════════
+
+  function getCookie(name) {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length == 2) return parts.pop().split(";").shift();
+  }
+
+  function loadIngredientsFromAPI() {
+    var token = getCookie('accessToken');
+    fetch('/api/ingredients?type=1', {
+      headers: token ? { 'Authorization': 'Bearer ' + token } : {}
+    })
+      .then(function(r){ return r.json(); })
+      .then(function(res){
+        if (res.success && res.data) {
+          ingredients = res.data.map(function(item) {
+            return { id: item.id, name: item.name, amount: item.quantity, unit: item.unit };
+          });
+          renderIngredientList(); updateGachaBtn();
+        }
+      })
+      .catch(function(err){ console.error('Failed to load ingredients:', err); });
+  }
+
+  function loadSaucesFromAPI() {
+    var token = getCookie('accessToken');
+    fetch('/api/ingredients?type=2', {
+      headers: token ? { 'Authorization': 'Bearer ' + token } : {}
+    })
+      .then(function(r){ return r.json(); })
+      .then(function(res){
+        if (res.success && res.data) {
+          sauces = res.data.map(function(item) {
+            return { id: item.id, name: item.name, amount: item.quantity, unit: item.unit };
+          });
+          renderSauceList();
+        }
+      })
+      .catch(function(err){ console.error('Failed to load sauces:', err); });
+  }
+
+  function addIngredientToAPI(name, amount, unit, type) {
+    var token = getCookie('accessToken');
+    return fetch('/api/ingredients', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': token ? 'Bearer ' + token : ''
+      },
+      body: JSON.stringify({ name: name, quantity: parseFloat(amount), unit: unit, type: type })
+    })
+    .then(function(r){ return r.json(); });
+  }
+
+  function deleteIngredientFromAPI(id) {
+    var token = getCookie('accessToken');
+    return fetch('/api/ingredients/' + id, { 
+      method: 'DELETE',
+      headers: token ? { 'Authorization': 'Bearer ' + token } : {}
+    })
+      .then(function(r){ return r.json(); });
+  }
+
+  // ═══════════════════════════════════════════════════════════════
   //  I N G R E D I E N T  /  S A U C E   R E N D E R I N G
   // ═══════════════════════════════════════════════════════════════
   function renderIngredientList() {
@@ -313,10 +380,19 @@
           + '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
           + '</button></div>';
       }).join('');
-      ingredientList.querySelectorAll('.remove-ingredient').forEach(function(btn){
+  ingredientList.querySelectorAll('.remove-ingredient').forEach(function(btn){
         btn.addEventListener('click', function(){
-          ingredients = ingredients.filter(function(i){ return i.id !== btn.getAttribute('data-id'); });
-          renderIngredientList(); updateGachaBtn();
+          var id = btn.getAttribute('data-id');
+          deleteIngredientFromAPI(id)
+            .then(function(res) {
+              if (res.success) {
+                ingredients = ingredients.filter(function(i){ return i.id != id; });
+                renderIngredientList(); updateGachaBtn();
+              } else {
+                showError(res.message || '食材の削除に失敗しました。');
+              }
+            })
+            .catch(function() { showError('食材削除中にエラーが発生しました。'); });
         });
       });
     }
@@ -336,8 +412,17 @@
       }).join('');
       sauceList.querySelectorAll('.remove-sauce').forEach(function(btn){
         btn.addEventListener('click', function(){
-          sauces = sauces.filter(function(s){ return s.id !== btn.getAttribute('data-id'); });
-          renderSauceList();
+          var id = btn.getAttribute('data-id');
+          deleteIngredientFromAPI(id)
+            .then(function(res) {
+              if (res.success) {
+                sauces = sauces.filter(function(s){ return s.id != id; });
+                renderSauceList();
+              } else {
+                showError(res.message || '調味料の削除に失敗しました。');
+              }
+            })
+            .catch(function() { showError('調味料削除中にエラーが発生しました。'); });
         });
       });
     }
@@ -359,10 +444,18 @@
     var amount = document.getElementById('ingredient-amount').value.trim();
     var unit   = document.getElementById('ingredient-unit').value;
     if (name && amount) {
-      ingredients.push({ id: Date.now().toString(), name: name, amount: amount, unit: unit });
-      document.getElementById('ingredient-name').value   = '';
-      document.getElementById('ingredient-amount').value = '';
-      renderIngredientList(); updateGachaBtn();
+      addIngredientToAPI(name, amount, unit, 1)
+        .then(function(res) {
+          if (res.success && res.data) {
+            ingredients.push({ id: res.data.id, name: res.data.name, amount: res.data.quantity, unit: res.data.unit });
+            document.getElementById('ingredient-name').value   = '';
+            document.getElementById('ingredient-amount').value = '';
+            renderIngredientList(); updateGachaBtn();
+          } else {
+            showError(res.message || '食材の追加に失敗しました。');
+          }
+        })
+        .catch(function() { showError('食材追加中にエラーが発生しました。'); });
     }
   });
   document.getElementById('ingredient-name').addEventListener('keypress', function(e){
@@ -374,10 +467,18 @@
     var amount = document.getElementById('sauce-amount').value.trim();
     var unit   = document.getElementById('sauce-unit').value;
     if (name && amount) {
-      sauces.push({ id: Date.now().toString(), name: name, amount: amount, unit: unit });
-      document.getElementById('sauce-name').value   = '';
-      document.getElementById('sauce-amount').value = '';
-      renderSauceList();
+      addIngredientToAPI(name, amount, unit, 2)
+        .then(function(res) {
+          if (res.success && res.data) {
+            sauces.push({ id: res.data.id, name: res.data.name, amount: res.data.quantity, unit: res.data.unit });
+            document.getElementById('sauce-name').value   = '';
+            document.getElementById('sauce-amount').value = '';
+            renderSauceList();
+          } else {
+            showError(res.message || '調味料の追加に失敗しました。');
+          }
+        })
+        .catch(function() { showError('調味料追加中にエラーが発生しました。'); });
     }
   });
   document.getElementById('sauce-name').addEventListener('keypress', function(e){
@@ -435,7 +536,7 @@
 
     fetch('/gacha/generate', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': getCookie('accessToken') ? 'Bearer ' + getCookie('accessToken') : '' },
       body: JSON.stringify({
         ingredients: ingredients.map(function(i){ return { name:i.name, amount:i.amount, unit:i.unit }; }),
         sauces:      sauces.map(function(s){ return { name:s.name, amount:s.amount, unit:s.unit }; }),
@@ -495,7 +596,7 @@
       });
     }
 
-    document.getElementById('btn-detail').href = '/gacha/recipe/' + recipe.id;
+    document.getElementById('btn-detail').href = '/recipes/' + recipe.id;
     gachaResult.scrollIntoView({ behavior:'smooth', block:'center' });
   }
 
@@ -504,7 +605,11 @@
   // ═══════════════════════════════════════════════════════════════
   document.getElementById('btn-private').addEventListener('click', function(){
     if (!currentRecipeId) return;
-    fetch('/gacha/publish/'+currentRecipeId+'?isPublic=false', { method:'POST' })
+    var token = getCookie('accessToken');
+    fetch('/recipes/'+currentRecipeId+'/visibility?isPublic=false', {
+      method:'PATCH',
+      headers: token ? { 'Authorization': 'Bearer ' + token } : {}
+    })
       .then(function(r){ return r.json(); })
       .then(function(res){
         if (res.success) window.location.href = '/mypage';
@@ -515,11 +620,18 @@
 
   document.getElementById('btn-public').addEventListener('click', function(){
     if (!currentRecipeId) return;
-    fetch('/gacha/publish/'+currentRecipeId+'?isPublic=true', { method:'POST' })
+    var token = getCookie('accessToken');
+    fetch('/recipes/'+currentRecipeId+'/visibility?isPublic=true', {
+      method:'PATCH',
+      headers: token ? { 'Authorization': 'Bearer ' + token } : {}
+    })
       .then(function(r){ return r.json(); })
       .then(function(res){
-        if (res.success) alert('みんなの食卓に登録されました！🎉');
-        else showError(res.message);
+        if (res.success) {
+            alert('みんなの食卓に登録されました！🎉');
+            window.location.href = '/mypage';
+        } else showError(res.message);
+
       })
       .catch(function(){ showError('登録に失敗しました。'); });
   });
@@ -527,8 +639,8 @@
   // ═══════════════════════════════════════════════════════════════
   //  I N I T
   // ═══════════════════════════════════════════════════════════════
-  renderIngredientList();
-  renderSauceList();
+  loadIngredientsFromAPI();
+  loadSaucesFromAPI();
   updateGachaBtn();
   loadDailyCount();
 })();

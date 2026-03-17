@@ -1,4 +1,50 @@
 package com.dailytable.dailytable.domain.user;
 
+import com.dailytable.dailytable.domain.user.dto.response.UserProfileResponse;
+import com.dailytable.dailytable.global.common.ErrorCode;
+import com.dailytable.dailytable.global.response.ApiResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RequiredArgsConstructor
+@RestController
+@RequestMapping("/users")
 public class UserController {
+
+    private final UserService userService;
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getProfile(@AuthenticationPrincipal Long userId) {
+        if (userId == null) {
+            return ResponseEntity
+                    .status(401)
+                    .body(ApiResponse.fail(ErrorCode.UNAUTHORIZED));
+        }
+        UserProfileResponse profile = userService.getProfile(userId);
+        return ResponseEntity.ok(ApiResponse.success("프로필 조회 성공", profile));
+    }
+
+    @GetMapping("/me/recipes")
+    public ResponseEntity<?> getMyOrLikedRecipes(
+            @AuthenticationPrincipal Long userId,
+            @RequestParam String type) {
+        if (userId == null) {
+            return ResponseEntity.status(401).body(ApiResponse.fail(ErrorCode.UNAUTHORIZED));
+        }
+        if (type == null || type.isBlank()) {
+            return ResponseEntity.badRequest().body(ApiResponse.fail(ErrorCode.INVALID_RECIPE_TYPE));
+        }
+        if ("liked".equalsIgnoreCase(type)) {
+            return ResponseEntity.ok(ApiResponse.success("조회 성공", userService.getLikedRecipes(userId)));
+        }
+        if ("my".equalsIgnoreCase(type)) {
+            return ResponseEntity.ok(ApiResponse.success("조회 성공", userService.getMyRecipes(userId)));
+        }
+        return ResponseEntity.badRequest().body(ApiResponse.fail(ErrorCode.INVALID_RECIPE_TYPE));
+    }
 }

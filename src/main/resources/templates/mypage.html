@@ -9,11 +9,12 @@
 </head>
 <body class="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100 pb-8">
   <header class="bg-gradient-to-r from-amber-700 to-amber-800 text-white sticky top-0 z-50 shadow-lg">
-    <div class="max-w-5xl mx-auto px-4 py-4">
+    <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
       <a th:href="@{/}" href="/" class="flex items-center gap-2 hover:text-amber-200 transition-colors">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
         戻る
       </a>
+      <button type="button" id="mypage-logout" class="text-amber-100 hover:text-white text-sm py-1 px-2 rounded transition-colors">ログアウト</button>
     </div>
   </header>
 
@@ -24,8 +25,9 @@
           <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </div>
         <div class="flex-1 text-center sm:text-left">
-          <h1 class="text-2xl font-bold mb-2">一人暮らしの王</h1>
-          <p class="text-gray-600">user@example.com</p>
+          <h1 class="text-2xl font-bold mb-2" id="profile-nickname">—</h1>
+          <p class="text-gray-600" id="profile-email">—</p>
+          <p class="text-sm text-gray-500" id="profile-role"></p>
         </div>
       </div>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -33,21 +35,21 @@
           <div class="flex justify-center mb-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-purple-600"><path d="M6 14c.5.5 1 1 2 1s1.5-.5 2-1"/><path d="M17 20a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-1"/><path d="M6 11V9a2 2 0 0 1 2-2h1"/><path d="M6 20a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1"/><path d="M2 10h20"/></svg>
           </div>
-          <p class="text-2xl font-bold mb-1">1</p>
+          <p class="text-2xl font-bold mb-1" id="profile-my-recipe-count">0</p>
           <p class="text-sm text-gray-600">マイレシピ</p>
         </div>
         <div class="bg-gradient-to-br from-red-50 to-red-100 p-4 rounded-lg text-center">
           <div class="flex justify-center mb-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-red-500"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
           </div>
-          <p class="text-2xl font-bold mb-1">2</p>
+          <p class="text-2xl font-bold mb-1" id="profile-received-like-count">0</p>
           <p class="text-sm text-gray-600">いいね</p>
         </div>
                 <div class="bg-gradient-to-br from-orange-50 via-pink-50 to-purple-50 p-4 rounded-lg text-center border-2 border-purple-200 col-span-2 sm:col-span-1">
           <div class="flex justify-center mb-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-purple-600"><rect width="12" height="12" x="2" y="10" rx="2" ry="2"/><path d="m17.92 14 3.5-3.5a2.24 2.24 0 0 0 0-3l-5-4.92a2.24 2.24 0 0 0-3 0L10 6"/></svg>
           </div>
-          <p class="text-2xl font-bold mb-1">12</p>
+          <p class="text-2xl font-bold mb-1" id="profile-gacha-count">0</p>
           <p class="text-sm text-gray-600">ガチャ回数</p>
         </div>
       </div>
@@ -66,67 +68,14 @@
           </button>
                   </div>
       </div>
-      <div class="border-b border-gray-200 px-6 py-3 flex justify-end">
-        <div class="flex gap-2">
-          <button type="button" data-view="grid" class="view-btn p-2 rounded transition-colors view-active" title="グリッド">▦</button>
-          <button type="button" data-view="list" class="view-btn p-2 rounded transition-colors view-inactive" title="リスト">☰</button>
+      <div class="p-6">
+        <div id="my-recipes-grid" class="grid grid-cols-3 gap-2 sm:gap-4">
+          <!-- JS で GET /users/me/recipes?type=my から描画 -->
+        </div>
+        <div id="liked-recipes-grid" class="grid grid-cols-3 gap-2 sm:gap-4 hidden">
+          <!-- JS で GET /users/me/recipes?type=liked から描画 -->
         </div>
       </div>
-      <div class="p-6">
-        <div id="view-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4">
-          <a th:href="@{/recipe/detail/3}" href="/recipe/detail/3" class="aspect-square bg-gray-100 overflow-hidden hover:opacity-75 transition-opacity block rounded-lg">
-            <img src="https://images.unsplash.com/photo-1653697469316-955d5ebe5994?w=400" alt="激辛ラーメン炒め" class="w-full h-full object-cover"/>
-          </a>
-        </div>
-        <div id="view-liked-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4 hidden">
-          <a th:href="@{/recipe/detail/1}" href="/recipe/detail/1" class="aspect-square bg-gray-100 overflow-hidden hover:opacity-75 transition-opacity block rounded-lg">
-            <img src="https://images.unsplash.com/photo-1600688654899-379ec76aca42?w=400" alt="簡単キムチチャーハン" class="w-full h-full object-cover"/>
-          </a>
-          <a th:href="@{/recipe/detail/2}" href="/recipe/detail/2" class="aspect-square bg-gray-100 overflow-hidden hover:opacity-75 transition-opacity block rounded-lg">
-            <img src="https://images.unsplash.com/photo-1741295017668-c8132acd6fc0?w=400" alt="栄養満点ビビンバ" class="w-full h-full object-cover"/>
-          </a>
-        </div>
-                <div id="view-list" class="space-y-4 hidden">
-          <a th:href="@{/recipe/detail/3}" href="/recipe/detail/3" class="w-full flex gap-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors text-left block">
-            <div class="w-24 h-24 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
-              <img src="https://images.unsplash.com/photo-1653697469316-955d5ebe5994?w=200" alt="激辛ラーメン炒め" class="w-full h-full object-cover"/>
-            </div>
-            <div class="flex-1 min-w-0">
-              <h3 class="font-medium mb-1">激辛ラーメン炒め</h3>
-              <p class="text-sm text-gray-600 mb-2">ラーメンをスープなしで炒めてさらに美味しく！</p>
-              <div class="flex items-center gap-3 text-xs text-gray-500">
-                <span>❤ 312</span><span>難易度: 低</span><span>⏱ 15分</span>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div id="view-liked-list" class="space-y-4 hidden">
-          <a th:href="@{/recipe/detail/1}" href="/recipe/detail/1" class="w-full flex gap-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors text-left block">
-            <div class="w-24 h-24 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
-              <img src="https://images.unsplash.com/photo-1600688654899-379ec76aca42?w=200" alt="簡単キムチチャーハン" class="w-full h-full object-cover"/>
-            </div>
-            <div class="flex-1 min-w-0">
-              <h3 class="font-medium mb-1">簡単キムチチャーハン</h3>
-              <p class="text-sm text-gray-600 mb-2">冷蔵庫のキムチで5分で完成</p>
-              <div class="flex items-center gap-3 text-xs text-gray-500">
-                <span>❤ 245</span><span>難易度: 低</span><span>⏱ 10分</span>
-              </div>
-            </div>
-          </a>
-          <a th:href="@{/recipe/detail/2}" href="/recipe/detail/2" class="w-full flex gap-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors text-left block">
-            <div class="w-24 h-24 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
-              <img src="https://images.unsplash.com/photo-1741295017668-c8132acd6fc0?w=200" alt="栄養満点ビビンバ" class="w-full h-full object-cover"/>
-            </div>
-            <div class="flex-1 min-w-0">
-              <h3 class="font-medium mb-1">栄養満点ビビンバ</h3>
-              <p class="text-sm text-gray-600 mb-2">各種ナムルとコチュジャンで作るヘルシーなビビンバ</p>
-              <div class="flex items-center gap-3 text-xs text-gray-500">
-                <span>❤ 189</span><span>難易度: 中</span><span>⏱ 20分</span>
-              </div>
-            </div>
-          </a>
-        </div>
-              </div>
     </div>
   </div>
   <script th:src="@{/js/mypage.js}"></script>

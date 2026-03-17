@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dailytable.dailytable.domain.user.UserMapper">
+
+    <select id="selectById" resultType="com.dailytable.dailytable.domain.auth.dto.entity.UserEntity">
+        SELECT id, email, password, nickname, role,
+               created_at AS createdAt, updated_at AS updatedAt, deleted_at AS deletedAt
+        FROM users
+        WHERE id = #{id} AND deleted_at IS NULL
+    </select>
+
+    <select id="countMyRecipes" resultType="int">
+        SELECT COUNT(*) FROM recipes
+        WHERE user_id = #{userId} AND deleted_at IS NULL
+    </select>
+
+    <select id="countReceivedLikes" resultType="int">
+        SELECT COALESCE(SUM(like_count), 0) FROM recipes
+        WHERE user_id = #{userId} AND deleted_at IS NULL
+    </select>
+
+    <select id="selectMyRecipes" resultType="com.dailytable.dailytable.domain.user.dto.response.UserMyRecipeResponse">
+        SELECT id, title, title_image AS titleImage, is_public AS isPublic,
+               like_count AS likeCount, comment_count AS commentCount
+        FROM recipes
+        WHERE user_id = #{userId} AND deleted_at IS NULL
+        ORDER BY created_at DESC
+    </select>
+
+    <select id="selectLikedRecipesByUserId" resultType="com.dailytable.dailytable.domain.user.dto.response.UserLikedRecipeResponse">
+        SELECT r.id, r.title, r.title_image AS titleImage, r.cooking_time AS cookingTime,
+               r.like_count AS likeCount, r.comment_count AS commentCount,
+               d.name AS difficultyName
+        FROM recipe_likes rl
+        JOIN recipes r ON rl.recipe_id = r.id
+        JOIN difficulties d ON r.difficulty_id = d.id
+        WHERE rl.user_id = #{userId} AND r.deleted_at IS NULL
+        ORDER BY rl.created_at DESC
+    </select>
+</mapper>
