@@ -18,15 +18,20 @@
 		resultType="com.dailytable.dailytable.domain.comment.dto.CommentResponseDto">
 		SELECT
 		c.id AS commentId,
+		c.user_id AS userId,
 		u.nickname,
 		c.content,
 		c.created_at AS createdAt
 		FROM recipe_comments c
 		JOIN users u ON c.user_id = u.id
-		WHERE c.recipe_id = #{recipeId}
-		AND c.deleted_at IS NULL
+		WHERE c.recipe_id =
+		#{recipeId}
+		AND
+		c.deleted_at IS NULL
 		ORDER BY c.created_at DESC
-		LIMIT #{size} OFFSET #{offset}
+		LIMIT
+		#{size} OFFSET
+		#{offset}
 	</select>
 
 	<update id="increaseCommentCount">
@@ -38,7 +43,8 @@
 	<update id="deleteComment">
 		UPDATE recipe_comments
 		SET deleted_at = NOW()
-		WHERE id =
+		WHERE id
+		=
 		#{commentId}
 		AND user_id = #{userId}
 	</update>
@@ -59,5 +65,10 @@
 		user_id = #{userId}
 		AND deleted_at IS NULL
 	</update>
+
+	<select id="selectCommentCount" resultType="int">
+		SELECT comment_count FROM recipes WHERE id = #{recipeId}
+	</select>
+
 </mapper> 
 
