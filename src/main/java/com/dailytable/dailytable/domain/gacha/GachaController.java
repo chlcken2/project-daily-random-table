@@ -57,19 +57,20 @@ public class GachaController {
         return ResponseEntity.ok(ApiResponse.success(gachaService.getDailyCount(userId)));
     }
 
-//    /**
-//     * 레시피 공개/비공개 저장 -> recipeService 일권이가 만든 함수로 교체
-//     * 성공: ApiResponse { success:true, message:"모두의 식탁에 등록되었습니다!" }
-//     * 실패: GlobalExceptionHandler → ApiResponse { success:false, message:"...", errorCode:"RECIPE_NOT_FOUND" }
-//     */
-
-//    @PostMapping("/publish/{id}")
-//    @ResponseBody
-//    public ResponseEntity<ApiResponse<Void>> publishRecipe(
-//            @PathVariable Long id,
-//            @RequestParam(defaultValue = "true") boolean isPublic) {
-//        recipeService.updatePublicStatus(id, isPublic);
-//        String msg = isPublic ? "みんなの食卓に登録されました!" : "私だけの食卓に登録されました!";
-//        return ResponseEntity.ok(ApiResponse.success(msg, null));
-//    }
+    /**
+     * 가챠 후  바로 보이는 화면에서 레시피 공개 버튼 존재, 누르면 모두의 식탁에 레시피 공개됨,나만의 식탁 누르면 비공개로 전환되며,
+     마이페이지로 이동
+     * 성공: ApiResponse { success:true, message:"모두의 식탁에 등록되었습니다!" }
+     */
+    @PostMapping("/publish/{id}")
+    @ResponseBody
+    public ResponseEntity<ApiResponse<Void>> publishRecipe(
+            @PathVariable Long id,
+            @RequestParam(defaultValue = "true") boolean isPublic,
+            @AuthenticationPrincipal Long userId) {
+        log.info("POST /gacha/publish/{}, isPublic: {}, userId: {}", id, isPublic, userId);
+        recipeService.updateVisibility(id, userId, isPublic);
+        String msg = isPublic ? "みんなの食卓に登録されました!" : "マイページに登録されました!";
+        return ResponseEntity.ok(ApiResponse.success(msg, null));
+    }
 }

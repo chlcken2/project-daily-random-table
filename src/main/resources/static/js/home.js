@@ -28,14 +28,14 @@
   if (logoutBtn) {
     logoutBtn.addEventListener('click', function() {
       fetch('/auth/logout', { method: 'POST', credentials: 'same-origin' })
-        .then(function() {
-          clearTokenCookies();
-          window.location.href = '/login';
-        })
-        .catch(function() {
-          clearTokenCookies();
-          window.location.href = '/login';
-        });
+          .then(function() {
+            clearTokenCookies();
+            window.location.href = '/login';
+          })
+          .catch(function() {
+            clearTokenCookies();
+            window.location.href = '/login';
+          });
     });
   }
 
@@ -45,13 +45,13 @@
     fetch('/api/ranking/today?limit=5', {
       headers: token ? { 'Authorization': 'Bearer ' + token } : {}
     })
-      .then(function(res) { return res.json(); })
-      .then(function(data) {
-        if (data.success && data.data) {
-          renderTodayRanking(data.data);
-        }
-      })
-      .catch(function(err) { console.error('Failed to load today ranking:', err); });
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          if (data.success && data.data) {
+            renderTodayRanking(data.data);
+          }
+        })
+        .catch(function(err) { console.error('Failed to load today ranking:', err); });
   }
 
   function renderTodayRanking(recipes) {
@@ -78,21 +78,21 @@
     fetch('/api/ranking/weekly?limit=5', {
       headers: token ? { 'Authorization': 'Bearer ' + token } : {}
     })
-      .then(function(res) { return res.json(); })
-      .then(function(data) {
-        if (data.success && data.data) {
-          renderWeeklyRanking(data.data);
-        }
-      })
-      .catch(function(err) { console.error('Failed to load weekly ranking:', err); });
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          if (data.success && data.data) {
+            renderWeeklyRanking(data.data);
+          }
+        })
+        .catch(function(err) { console.error('Failed to load weekly ranking:', err); });
   }
 
   function renderWeeklyRanking(recipes) {
     var container = document.getElementById('weekly-ranking-container');
     if (!container || !recipes.length) return;
 
-    var rankColors = ['from-yellow-400 to-yellow-600', 'from-gray-300 to-gray-500', 'from-amber-600 to-amber-800'];
-    container.innerHTML = recipes.slice(0, 3).map(function(r, i) {
+    var rankColors = ['from-yellow-400 to-yellow-600', 'from-gray-300 to-gray-500', 'from-amber-600 to-amber-800', 'from-blue-200 to-blue-500', 'from-blue-200 to-blue-300'];
+    container.innerHTML = recipes.slice(0, 5).map(function(r, i) {
       return `<a href="/recipes/${r.id}" class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-yellow-50 transition-colors text-left block">
         <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br ${rankColors[i]} rounded-lg flex items-center justify-center text-white font-medium">${i+1}</div>
         <div class="flex-1 min-w-0">
@@ -112,13 +112,13 @@
     fetch('/recipes?type=publicAll', {
       headers: token ? { 'Authorization': 'Bearer ' + token } : {}
     })
-      .then(function(res) { return res.json(); })
-      .then(function(data) {
-        if (data.success && data.data) {
-          renderPublicRecipes(data.data);
-        }
-      })
-      .catch(function(err) { console.error('Failed to load public recipes:', err); });
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          if (data.success && data.data) {
+            renderPublicRecipes(data.data);
+          }
+        })
+        .catch(function(err) { console.error('Failed to load public recipes:', err); });
   }
 
   function renderPublicRecipes(recipes) {
@@ -143,7 +143,7 @@
               <span>💬 ${r.commentCount || 0}</span>
               <span>👀 ${r.viewCount || 0}</span>
             </div>
-            <span class="text-xs">${r.createdAt ? r.createdAt.substring(0, 10) : ''}</span>
+            <span class="text-xs">${r.createdAtStr || ''}</span>
           </div>
         </div>
       </a>`;

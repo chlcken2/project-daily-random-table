@@ -30,7 +30,7 @@
 		<div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-6">
 			<div class="aspect-video bg-gray-200 overflow-hidden">
 				<img th:src="${recipe.titleImage}" th:alt="${recipe.title}"
-					onerror="this.src='https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=600'"
+					onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400'"
 					class="w-full h-full object-cover" />
 			</div>
 		</div>
@@ -285,6 +285,16 @@
 				</button>
 			</div>
 			<div class="space-y-4" id="commentList"></div>
+			<!-- 무한스크롤 로딩 인디케이터 -->
+			<div id="commentLoading" class="hidden text-center py-4">
+				<div class="inline-flex items-center gap-2 text-gray-400 text-sm">
+					<svg class="animate-spin w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+						<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+						<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+					</svg>
+					로딩 중...
+				</div>
+			</div>
 		</section>
 
 		<!-- Back to Gacha -->
@@ -302,9 +312,16 @@
     let likeCount = /*[[${recipe.likeCount}]]*/ 0;
     let isPublic = /*[[${recipe.isPublic}]]*/ false;
 
+    /* ── 무한스크롤 상태 변수 ── */
+    let lastCommentId = null;
+    let isLoading = false;
+    let hasMore = true;
+
     /* ── 댓글 수 서버에서 갱신 ── */
     function fetchCommentCount() {
-      fetch(`/recipes/${recipeId}/comments/count`)
+      fetch(`/recipes/${recipeId}/comments/count`, {
+        credentials: 'same-origin'
+      })
         .then(res => res.json())
         .then(count => {
           document.getElementById('commentCount').textContent = `(${count})`;
@@ -316,7 +333,10 @@
       const url = `/recipes/${recipeId}/likes`;
       const method = liked ? 'DELETE' : 'POST';
 
-      fetch(url, { method })
+      fetch(url, {
+        method,
+        credentials: 'same-origin'
+      })
         .then(res => {
           if (!res.ok) throw new Error('failed');
 
@@ -342,34 +362,38 @@
     }
 
     /* ── 공개/비공개 토글 ── */
-function togglePublic() {
-  fetch(`/recipes/${recipeId}/visibility?isPublic=${!isPublic}`, {
-    method: 'PATCH'
-  })
-  .then(res => {
-    if (!res.ok) throw new Error('failed');
+    function togglePublic() {
+      fetch(`/recipes/${recipeId}/visibility?isPublic=${!isPublic}`, {
+        method: 'PATCH',
+        credentials: 'same-origin'
+      })
+      .then(res => {
+        if (!res.ok) throw new Error('failed');
 
-    isPublic = !isPublic;
+        isPublic = !isPublic;
 
-    document.getElementById('iconPublic').classList.toggle('hidden', !isPublic);
-    document.getElementById('iconPrivate').classList.toggle('hidden', isPublic);
-    document.getElementById('publicBtnText').textContent = isPublic ? '공개 중' : '비공개';
+        document.getElementById('iconPublic').classList.toggle('hidden', !isPublic);
+        document.getElementById('iconPrivate').classList.toggle('hidden', isPublic);
+        document.getElementById('publicBtnText').textContent = isPublic ? '공개 중' : '비공개';
 
-    const btn = document.getElementById('publicBtn');
-    if (isPublic) {
-      btn.className = 'flex items-center justify-center gap-2 py-2.5 rounded-lg border text-sm font-medium transition-all duration-200 bg-white border-gray-200 text-gray-600 hover:bg-gray-50';
-    } else {
-      btn.className = 'flex items-center justify-center gap-2 py-2.5 rounded-lg border text-sm font-medium transition-all duration-200 bg-amber-50 border-amber-300 text-amber-700 hover:bg-amber-100';
+        const btn = document.getElementById('publicBtn');
+        if (isPublic) {
+          btn.className = 'flex items-center justify-center gap-2 py-2.5 rounded-lg border text-sm font-medium transition-all duration-200 bg-white border-gray-200 text-gray-600 hover:bg-gray-50';
+        } else {
+          btn.className = 'flex items-center justify-center gap-2 py-2.5 rounded-lg border text-sm font-medium transition-all duration-200 bg-amber-50 border-amber-300 text-amber-700 hover:bg-amber-100';
+        }
+      })
+      .catch(() => alert('로그인이 필요합니다.'));
     }
-  })
-  .catch(() => alert('로그인이 필요합니다.'));
-}
 
     /* ── 레시피 삭제 ── */
     function deleteRecipe() {
       if (!confirm('레시피를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) return;
 
-      fetch(`/recipes/${recipeId}`, { method: 'DELETE' })
+      fetch(`/recipes/${recipeId}`, {
+        method: 'DELETE',
+        credentials: 'same-origin'
+      })
         .then(res => {
           if (!res.ok) throw new Error('failed');
           window.location.href = '/mypage';
@@ -377,13 +401,29 @@ function togglePublic() {
         .catch(() => alert('삭제에 실패했습니다.'));
     }
 
-    /* ── 댓글 로드 ── */
-    function loadComments(page = 1) {
-      fetch(`/recipes/${recipeId}/comments?page=${page}`)
+    /* ── 댓글 로드 (무한스크롤) ── */
+    function loadComments() {
+      if (isLoading || !hasMore) return;
+      isLoading = true;
+
+      document.getElementById('commentLoading').classList.remove('hidden');
+
+      const url = lastCommentId
+        ? `/recipes/${recipeId}/comments?lastCommentId=${lastCommentId}`
+        : `/recipes/${recipeId}/comments`;
+
+      fetch(url, {
+        credentials: 'same-origin'
+      })
         .then(res => res.json())
         .then(comments => {
+          document.getElementById('commentLoading').classList.add('hidden');
+
+          if (comments.length < 10) {
+            hasMore = false;
+          }
+
           const list = document.getElementById('commentList');
-          list.innerHTML = '';
           comments.forEach(c => {
             const isOwner = currentUserId !== null && currentUserId === c.userId;
             const div = document.createElement('div');
@@ -424,7 +464,22 @@ function togglePublic() {
               </div>`;
             list.appendChild(div);
           });
+
+          if (comments.length > 0) {
+            lastCommentId = comments[comments.length - 1].commentId;
+          }
+
+          isLoading = false;
         });
+    }
+
+    /* ── 목록 초기화 후 재로드 ── */
+    function resetAndReload() {
+      lastCommentId = null;
+      hasMore = true;
+      isLoading = false;
+      document.getElementById('commentList').innerHTML = '';
+      loadComments();
     }
 
     /* ── 댓글 작성 ── */
@@ -436,12 +491,13 @@ function togglePublic() {
       fetch(`/recipes/${recipeId}/comments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content })
+        body: JSON.stringify({ content }),
+        credentials: 'same-origin'
       }).then(res => {
         if (!res.ok) throw new Error('failed');
         input.value = '';
         fetchCommentCount();
-        loadComments();
+        resetAndReload();
       }).catch(() => alert('로그인이 필요합니다.'));
     }
 
@@ -465,10 +521,11 @@ function togglePublic() {
       fetch(`/recipes/${recipeId}/comments/${commentId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content })
+        body: JSON.stringify({ content }),
+        credentials: 'same-origin'
       }).then(res => {
         if (!res.ok) throw new Error('failed');
-        loadComments();
+        resetAndReload();
       });
     }
 
@@ -477,19 +534,28 @@ function togglePublic() {
       if (!confirm('댓글을 삭제하시겠습니까?')) return;
 
       fetch(`/recipes/${recipeId}/comments/${commentId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        credentials: 'same-origin'
       }).then(res => {
         if (!res.ok) throw new Error('failed');
         fetchCommentCount();
-        loadComments();
+        resetAndReload();
       });
     }
+
+    /* ── 스크롤 감지 (무한스크롤) ── */
+    window.addEventListener('scroll', () => {
+      const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 300;
+      if (nearBottom) loadComments();
+    });
 
     document.getElementById('commentInput').addEventListener('keydown', e => {
       if (e.key === 'Enter') submitComment();
     });
 
+    /* ── 최초 로드 ── */
     loadComments();
   </script>
 </body>
 </html>
+

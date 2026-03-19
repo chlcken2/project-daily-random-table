@@ -455,17 +455,17 @@ function getCookie(name) {
     fetch('/gacha/count', {
       credentials: 'same-origin'
     })
-      .then(function(r){ return r.json(); })
-      .then(function(res){
-        if (!res.success) return;
-        var d = res.data;
-        gachaCount = d.count;
-        maxDaily   = d.max;
-        gachaCountEl.textContent = gachaCount;
-        if (!d.canGenerate) gachaLimitMsg.classList.remove('hidden');
-        updateGachaBtn();
-      })
-      .catch(function(){});
+        .then(function(r){ return r.json(); })
+        .then(function(res){
+          if (!res.success) return;
+          var d = res.data;
+          gachaCount = d.count;
+          maxDaily   = d.max;
+          gachaCountEl.textContent = gachaCount;
+          if (!d.canGenerate) gachaLimitMsg.classList.remove('hidden');
+          updateGachaBtn();
+        })
+        .catch(function(){});
   }
 
   function showError(msg) {
@@ -481,32 +481,32 @@ function getCookie(name) {
     fetch('/api/ingredients?type=1', {
       credentials: 'same-origin'
     })
-      .then(function(r){ return r.json(); })
-      .then(function(res){
-        if (res.success && res.data) {
-          ingredients = res.data.map(function(item) {
-            return { id: item.id, name: item.name, amount: item.quantity, unit: item.unit };
-          });
-          renderIngredientList(); updateGachaBtn();
-        }
-      })
-      .catch(function(err){ console.error('Failed to load ingredients:', err); });
+        .then(function(r){ return r.json(); })
+        .then(function(res){
+          if (res.success && res.data) {
+            ingredients = res.data.map(function(item) {
+              return { id: item.id, name: item.name, amount: item.quantity, unit: item.unit };
+            });
+            renderIngredientList(); updateGachaBtn();
+          }
+        })
+        .catch(function(err){ console.error('Failed to load ingredients:', err); });
   }
 
   function loadSaucesFromAPI() {
     fetch('/api/ingredients?type=2', {
       credentials: 'same-origin'
     })
-      .then(function(r){ return r.json(); })
-      .then(function(res){
-        if (res.success && res.data) {
-          sauces = res.data.map(function(item) {
-            return { id: item.id, name: item.name, amount: item.quantity, unit: item.unit };
-          });
-          renderSauceList();
-        }
-      })
-      .catch(function(err){ console.error('Failed to load sauces:', err); });
+        .then(function(r){ return r.json(); })
+        .then(function(res){
+          if (res.success && res.data) {
+            sauces = res.data.map(function(item) {
+              return { id: item.id, name: item.name, amount: item.quantity, unit: item.unit };
+            });
+            renderSauceList();
+          }
+        })
+        .catch(function(err){ console.error('Failed to load sauces:', err); });
   }
 
   function addIngredientToAPI(name, amount, unit, type) {
@@ -518,7 +518,7 @@ function getCookie(name) {
       },
       body: JSON.stringify({ name: name, quantity: parseFloat(amount), unit: unit, type: type })
     })
-    .then(function(r){ return r.json(); });
+        .then(function(r){ return r.json(); });
   }
 
   function deleteIngredientFromAPI(id) {
@@ -526,66 +526,82 @@ function getCookie(name) {
       method: 'DELETE',
       credentials: 'same-origin'
     })
-      .then(function(r){ return r.json(); });
+        .then(function(r){ return r.json(); });
   }
 
   // ═══════════════════════════════════════════════════════════════
   //  I N G R E D I E N T  /  S A U C E   R E N D E R I N G
   // ═══════════════════════════════════════════════════════════════
+  // ── 식재료 리스트 렌더링 함수 ──
   function renderIngredientList() {
     if (ingredients.length === 0) {
-      ingredientList.innerHTML = '<p class="text-center text-gray-400 py-8">冷蔵庫が空っぽです 🥲</p>';
+      // 재료가 없을 때의 빈 컨테이너 시각화 (냉장고 내부 아이콘 포함)
+      // [수정점] 일본어만 노출되도록 빈 냉장고 안내 문구를 '冷蔵庫が空っぽです'로 변경했습니다.
+      ingredientList.innerHTML = '<div class="text-center text-blue-300 py-8 opacity-60"><span class="text-4xl block mb-2">🧊</span><p class="text-xs font-bold font-sans">冷蔵庫が空っぽです</p></div>';
     } else {
+      // 재료가 있을 때 각 아이템을 '스티커' 스타일의 div로 생성
       ingredientList.innerHTML = ingredients.map(function(item){
-        return '<div class="flex items-center justify-between bg-amber-50 p-3 rounded-lg">'
-          + '<span>' + esc(item.name) + ' - ' + esc(item.amount) + item.unit + '</span>'
-          + '<button type="button" class="remove-ingredient text-red-500 hover:text-red-700" data-id="'+item.id+'">'
-          + '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
-          + '</button></div>';
+        return '<div class="flex items-center justify-between bg-white/70 p-3 rounded-xl border border-blue-100 shadow-sm animate-fade-in-up">'
+            + '<span class="font-bold text-slate-700">' + esc(item.name) + '</span>'
+            + '<div class="flex items-center gap-2">'
+            // 분량 정보 (스티커 내부의 작은 라벨 스타일)
+            + '<span class="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded-md border border-blue-200">' + esc(item.amount) + item.unit + '</span>'
+            // 삭제 버튼 (X 아이콘)
+            + '<button type="button" class="remove-ingredient text-red-400 hover:text-red-600 p-1 rounded-lg hover:bg-red-50 transition-all" data-id="'+item.id+'">'
+            + '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
+            + '</button></div></div>';
       }).join('');
-  ingredientList.querySelectorAll('.remove-ingredient').forEach(function(btn){
+      ingredientList.querySelectorAll('.remove-ingredient').forEach(function(btn){
         btn.addEventListener('click', function(){
           var id = btn.getAttribute('data-id');
           deleteIngredientFromAPI(id)
-            .then(function(res) {
-              if (res.success) {
-                ingredients = ingredients.filter(function(i){ return i.id != id; });
-                renderIngredientList(); updateGachaBtn();
-              } else {
-                showError(res.message || '食材の削除に失敗しました。');
-              }
-            })
-            .catch(function() { showError('食材削除中にエラーが発生しました。'); });
+              .then(function(res) {
+                if (res.success) {
+                  ingredients = ingredients.filter(function(i){ return i.id != id; });
+                  renderIngredientList(); updateGachaBtn();
+                } else {
+                  showError(res.message || '食材の削除に失敗しました。');
+                }
+              })
+              .catch(function() { showError('食材削除中にエラーが発生しました。'); });
         });
       });
     }
     ingredientCountEl.textContent = ingredients.length + '個';
   }
 
+  // ── 소스/조미료 리스트 렌더링 함수 ──
   function renderSauceList() {
     if (sauces.length === 0) {
-      sauceList.innerHTML = '<p class="text-center text-gray-400 py-8">調味料が空です (任意)</p>';
+      // 소스가 없을 때의 빈 컨테이너 시각화 (소스통 아이콘 포함)
+      // [수정점] 일본어만 노출되도록 빈 소스 안내 문구를 '調味料がありません'으로 변경했습니다.
+      sauceList.innerHTML = '<div class="text-center text-orange-300 py-8 opacity-60"><span class="text-4xl block mb-2">🧴</span><p class="text-xs font-bold font-sans">調味料がありません</p></div>';
     } else {
+      // 소스가 있을 때 각 아이템을 오렌지 테마의 '스티커' 스타일로 생성
       sauceList.innerHTML = sauces.map(function(item){
-        return '<div class="flex items-center justify-between bg-orange-50 p-3 rounded-lg">'
-          + '<span>' + esc(item.name) + ' - ' + esc(item.amount) + item.unit + '</span>'
-          + '<button type="button" class="remove-sauce text-red-500 hover:text-red-700" data-id="'+item.id+'">'
-          + '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
-          + '</button></div>';
+        return '<div class="flex items-center justify-between bg-white/70 p-3 rounded-xl border border-orange-100 shadow-sm animate-fade-in-up">'
+            + '<span class="font-bold text-slate-700">' + esc(item.name) + '</span>'
+            + '<div class="flex items-center gap-2">'
+            // 분량 정보
+            + '<span class="text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded-md border border-orange-200">' + esc(item.amount) + item.unit + '</span>'
+            // 삭제 버튼
+            + '<button type="button" class="remove-sauce text-red-400 hover:text-red-600 p-1 rounded-lg hover:bg-red-50 transition-all" data-id="'+item.id+'">'
+            + '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
+            + '</button></div></div>';
       }).join('');
       sauceList.querySelectorAll('.remove-sauce').forEach(function(btn){
         btn.addEventListener('click', function(){
           var id = btn.getAttribute('data-id');
           deleteIngredientFromAPI(id)
-            .then(function(res) {
-              if (res.success) {
-                sauces = sauces.filter(function(s){ return s.id != id; });
-                renderSauceList();
-              } else {
-                showError(res.message || '調味料の削除に失敗しました。');
-              }
-            })
-            .catch(function() { showError('調味料削除中にエラーが発生しました。'); });
+              .then(function(res) {
+                if (res.success) {
+                  sauces = sauces.filter(function(s){ return s.id != id; });
+                  renderSauceList();
+                } else {
+                  showError(res.message || '調味料の削除に失敗しました。');
+                }
+              })
+              .catch(function() { showError('調味料削除中にエラーが発生しました。'); });
         });
       });
     }
@@ -612,19 +628,28 @@ function getCookie(name) {
     var name   = document.getElementById('ingredient-name').value.trim();
     var amount = document.getElementById('ingredient-amount').value.trim();
     var unit   = document.getElementById('ingredient-unit').value;
+
+    // [동작 방식] 이미 추가된 재료인지 검사(Duplicate check)합니다.
+    // [수정점] 한국어 혼용 경고창을 제거하고 '既に登録されている食材です' 일본어 경고만 띄우도록 변경했습니다.
+    var isDuplicate = ingredients.some(function(i) { return i.name === name; });
+    if (isDuplicate) {
+      showError('既に登録されている食材です');
+      return;
+    }
+
     if (name && amount) {
       addIngredientToAPI(name, amount, unit, 1)
-        .then(function(res) {
-          if (res.success && res.data) {
-            ingredients.push({ id: res.data.id, name: res.data.name, amount: res.data.quantity, unit: res.data.unit });
-            document.getElementById('ingredient-name').value   = '';
-            document.getElementById('ingredient-amount').value = '';
-            renderIngredientList(); updateGachaBtn();
-          } else {
-            showError(res.message || '食材の追加に失敗しました。');
-          }
-        })
-        .catch(function() { showError('食材追加中にエラーが発生しました。'); });
+          .then(function(res) {
+            if (res.success && res.data) {
+              ingredients.push({ id: res.data.id, name: res.data.name, amount: res.data.quantity, unit: res.data.unit });
+              document.getElementById('ingredient-name').value   = '';
+              document.getElementById('ingredient-amount').value = '';
+              renderIngredientList(); updateGachaBtn();
+            } else {
+              showError(res.message || '食材の追加に失敗しました。');
+            }
+          })
+          .catch(function() { showError('食材追加中にエラーが発生しました。'); });
     }
   });
   document.getElementById('ingredient-name').addEventListener('keypress', function(e){
@@ -641,19 +666,28 @@ function getCookie(name) {
     var name   = document.getElementById('sauce-name').value.trim();
     var amount = document.getElementById('sauce-amount').value.trim();
     var unit   = document.getElementById('sauce-unit').value;
+
+    // [동작 방식] 이미 추가된 소스인지 검사(Duplicate check)합니다.
+    // [수정점] 한국어 혼용 경고창을 제거하고 '既に登録されている調味料です' 일본어 경고만 띄우도록 변경했습니다.
+    var isDuplicate = sauces.some(function(s) { return s.name === name; });
+    if (isDuplicate) {
+      showError('既に登録されている調味料です');
+      return;
+    }
+
     if (name && amount) {
       addIngredientToAPI(name, amount, unit, 2)
-        .then(function(res) {
-          if (res.success && res.data) {
-            sauces.push({ id: res.data.id, name: res.data.name, amount: res.data.quantity, unit: res.data.unit });
-            document.getElementById('sauce-name').value   = '';
-            document.getElementById('sauce-amount').value = '';
-            renderSauceList();
-          } else {
-            showError(res.message || '調味料の追加に失敗しました。');
-          }
-        })
-        .catch(function() { showError('調味料追加中にエラーが発生しました。'); });
+          .then(function(res) {
+            if (res.success && res.data) {
+              sauces.push({ id: res.data.id, name: res.data.name, amount: res.data.quantity, unit: res.data.unit });
+              document.getElementById('sauce-name').value   = '';
+              document.getElementById('sauce-amount').value = '';
+              renderSauceList();
+            } else {
+              showError(res.message || '調味料の追加に失敗しました。');
+            }
+          })
+          .catch(function() { showError('調味料追加中にエラーが発生しました。'); });
     }
   });
   document.getElementById('sauce-name').addEventListener('keypress', function(e){
@@ -719,21 +753,21 @@ function getCookie(name) {
         purpose: purpose, cuisine: cuisine, difficulty: difficulty
       })
     })
-    .then(function(r){ return r.json(); })
-    .then(function(res){
-      if (!res.success) {
-        apiErr = res.message || 'レシピ生成に失敗しました。';
-      } else {
-        apiPayload = res.data.recipe;
-      }
-      apiDone = true;
-      tryReveal();
-    })
-    .catch(function(){
-      apiErr = '現在サービスが遅延しております。再読み込みしてからご利用ください。';
-      apiDone = true;
-      tryReveal();
-    });
+        .then(function(r){ return r.json(); })
+        .then(function(res){
+          if (!res.success) {
+            apiErr = res.message || 'レシピ生成に失敗しました。';
+          } else {
+            apiPayload = res.data.recipe;
+          }
+          apiDone = true;
+          tryReveal();
+        })
+        .catch(function(){
+          apiErr = '現在サービスが遅延しております。再読み込みしてからご利用ください。';
+          apiDone = true;
+          tryReveal();
+        });
   });
 
   // ═══════════════════════════════════════════════════════════════
@@ -785,12 +819,12 @@ function getCookie(name) {
       method:'POST',
       credentials: 'same-origin'
     })
-      .then(function(r){ return r.json(); })
-      .then(function(res){
-        if (res.success) window.location.href = '/mypage';
-        else showError(res.message);
-      })
-      .catch(function(){ showError('保存に失敗しました。'); });
+        .then(function(r){ return r.json(); })
+        .then(function(res){
+          if (res.success) window.location.href = '/mypage';
+          else showError(res.message);
+        })
+        .catch(function(){ showError('保存に失敗しました。'); });
   });
 
   document.getElementById('btn-public').addEventListener('click', function(){
@@ -799,12 +833,12 @@ function getCookie(name) {
       method:'POST',
       credentials: 'same-origin'
     })
-      .then(function(r){ return r.json(); })
-      .then(function(res){
-        if (res.success) alert('みんなの食卓に登録されました！🎉');
-        else showError(res.message);
-      })
-      .catch(function(){ showError('登録に失敗しました。'); });
+        .then(function(r){ return r.json(); })
+        .then(function(res){
+          if (res.success) alert('みんなの食卓に登録されました！🎉');
+          else showError(res.message);
+        })
+        .catch(function(){ showError('登録に失敗しました。'); });
   });
 
   // ═══════════════════════════════════════════════════════════════
