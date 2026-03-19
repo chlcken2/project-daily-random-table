@@ -108,6 +108,10 @@
       alert('입력값을 확인해 주세요.');
       return;
     }
+    if (nickname.length < 2 || nickname.length > 10) {
+      alert('닉네임은 2자 이상 10자 이하여야 합니다.');
+      return;
+    }
 
     fetch('/auth/signup', {
       method: 'POST',
