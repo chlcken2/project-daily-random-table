@@ -19,9 +19,9 @@ public interface CommentMapper {
 
 
 	List<CommentResponseDto> selectComments(
-			@Param("recipeId") Long recipeId,
-			@Param("size") int size,
-			@Param("offset") int offset);
+	        @Param("recipeId") Long recipeId,
+	        @Param("lastCommentId") Long lastCommentId,  // offset → lastCommentId
+	        @Param("size") int size);
 
 	void increaseCommentCount(Long recipeId);
 

@@ -29,17 +29,16 @@ public class CommentService {
 		commentMapper.increaseCommentCount(recipeId);
 	}
 
-	public List<CommentResponseDto> getRecipeComments(Long recipeId, int page) {
-		int size = 10;
-		int offset = (page - 1) * size;
+	public List<CommentResponseDto> getRecipeComments(Long recipeId, Long lastCommentId) {
+	    int size = 10;
 
-		List<CommentResponseDto> comments = commentMapper.selectComments(recipeId, size, offset);
+	    List<CommentResponseDto> comments = commentMapper.selectComments(recipeId, lastCommentId, size);
 
-		for (CommentResponseDto comment : comments) {
-			comment.setCreatedAtFormatted(TimeUtil.formatRelativeTime(comment.getCreatedAt()));
-		}
+	    for (CommentResponseDto comment : comments) {
+	        comment.setCreatedAtFormatted(TimeUtil.formatRelativeTime(comment.getCreatedAt()));
+	    }
 
-		return comments;
+	    return comments;
 	}
 
 	@Transactional

@@ -30,10 +30,10 @@ public class CommentController {
 	@GetMapping("/{recipeId}/comments")
 	@ResponseBody
 	public List<CommentResponseDto> getComments(
-			@PathVariable Long recipeId,
-			@RequestParam(defaultValue = "1") int page) {  // page 쿼리 파라미터 받기
+	        @PathVariable Long recipeId,
+	        @RequestParam(required = false) Long lastCommentId) { // lastCommentId로 변경
 
-		return commentService.getRecipeComments(recipeId, page);
+	    return commentService.getRecipeComments(recipeId, lastCommentId);
 	}
 
 	@PostMapping("/{recipeId}/comments")
