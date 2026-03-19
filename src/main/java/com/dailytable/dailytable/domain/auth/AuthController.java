@@ -5,7 +5,6 @@ import com.dailytable.dailytable.domain.auth.dto.request.UserLoginRequest;
 import com.dailytable.dailytable.domain.auth.dto.request.UserSignupRequest;
 import com.dailytable.dailytable.domain.auth.dto.response.AuthResponse;
 import com.dailytable.dailytable.global.response.ApiResponse;
-import com.dailytable.dailytable.global.util.AuthHeaderUtils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -39,11 +38,9 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestHeader(value = "Authorization", required = false) String authHeader,
-                                    @CookieValue(value = "refreshToken", required = false) String refreshToken,
+    public ResponseEntity<?> logout(@CookieValue(value = "refreshToken", required = false) String refreshToken,
                                     HttpServletResponse response) {
-    	String token = refreshToken != null && !refreshToken.isBlank() ? refreshToken : AuthHeaderUtils.extractBearerToken(authHeader);
-        authService.logout(token);
+        authService.logout(refreshToken);
 
         // Clear cookies
         Cookie accessTokenCookie = new Cookie("accessToken", null);

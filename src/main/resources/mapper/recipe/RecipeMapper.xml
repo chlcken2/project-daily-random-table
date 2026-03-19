@@ -281,9 +281,18 @@
 	<!-- ========================= -->
 	<update id="deleteRecipe">
 		UPDATE recipes
-		SET deleted_at = NOW()
+		SET deleted_at = NOW(),
+		    like_count = 0,
+		    comment_count = 0
 		WHERE id = #{id}
 		  AND user_id = #{userId}
+		  AND deleted_at IS NULL
 	</update>
+
+	<delete id="deleteLikesByRecipeId">
+		DELETE FROM recipe_likes
+		WHERE recipe_id = #{recipeId}
+	</delete>
+
 
 </mapper>

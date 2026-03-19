@@ -12,11 +12,17 @@
 
   var authLink = document.getElementById('auth-link');
   var logoutBtn = document.getElementById('logout-btn');
+  var mypageLink = document.getElementById('mypage-link');
   var accessToken = getCookie('accessToken');
 
-  if (accessToken && logoutBtn && authLink) {
+  if (accessToken && logoutBtn && authLink && mypageLink) {
     authLink.classList.add('hidden');
     logoutBtn.classList.remove('hidden');
+    mypageLink.classList.remove('hidden');
+  } else if (logoutBtn && authLink && mypageLink) {
+    authLink.classList.remove('hidden');
+    logoutBtn.classList.add('hidden');
+    mypageLink.classList.add('hidden');
   }
 
   if (logoutBtn) {

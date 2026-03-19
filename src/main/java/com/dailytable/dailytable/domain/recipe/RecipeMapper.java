@@ -45,6 +45,8 @@ public interface RecipeMapper {
 
 	void increaseViewCount(@Param("recipeId") Long recipeId);
 
-	void deleteRecipe(@Param("id") Long id, @Param("userId") Long userId);
+	int deleteRecipe(@Param("id") Long id, @Param("userId") Long userId);
+
+	void deleteLikesByRecipeId(@Param("recipeId") Long recipeId);
 
 }
