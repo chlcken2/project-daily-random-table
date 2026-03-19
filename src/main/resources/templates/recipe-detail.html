@@ -2,242 +2,300 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ja">
 <head>
 <!--recipe-detail.html -->
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title th:text="${recipe.title} + ' - 一人暮らしレシピ'">レシピ詳細</title>  
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" th:href="@{/css/recipe.css}"/>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title th:text="${recipe.title} + ' - 一人暮らしレシピ'">レシピ詳細</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" th:href="@{/css/recipe.css}" />
 </head>
-<body class="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100 pb-8">
-  <header class="bg-gradient-to-r from-amber-700 to-amber-800 text-white sticky top-0 z-50 shadow-lg">
-    <div class="max-w-4xl mx-auto px-4 py-4">
-      <a th:href="@{/gacha/home}" class="flex items-center gap-2 hover:text-amber-200 transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
-        ガチャに戻る
-      </a>
-    </div>
-  </header>
+<body
+	class="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100 pb-8">
+	<header
+		class="bg-gradient-to-r from-amber-700 to-amber-800 text-white sticky top-0 z-50 shadow-lg">
+		<div class="max-w-4xl mx-auto px-4 py-4">
+			<a th:href="@{/gacha/home}"
+				class="flex items-center gap-2 hover:text-amber-200 transition-colors">
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+					viewBox="0 0 24 24" fill="none" stroke="currentColor"
+					stroke-width="2">
+					<path d="m12 19-7-7 7-7" />
+					<path d="M19 12H5" /></svg> ガチャに戻る
+			</a>
+		</div>
+	</header>
 
-  <div class="max-w-4xl mx-auto px-4 py-6">
+	<div class="max-w-4xl mx-auto px-4 py-6">
 
-    <!-- Title Image -->
-    <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-6">
-      <div class="aspect-video bg-gray-200 overflow-hidden">
-        <img th:src="${recipe.titleImage}" th:alt="${recipe.title}"
-             onerror="this.src='https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=600'"
-             class="w-full h-full object-cover"/>
-      </div>
-    </div>
+		<!-- Title Image -->
+		<div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-6">
+			<div class="aspect-video bg-gray-200 overflow-hidden">
+				<img th:src="${recipe.titleImage}" th:alt="${recipe.title}"
+					onerror="this.src='https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=600'"
+					class="w-full h-full object-cover" />
+			</div>
+		</div>
 
-    <!-- Recipe Info -->
-    <section class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+		<!-- Recipe Info -->
+		<section class="bg-white rounded-2xl shadow-lg p-6 mb-6">
 
-      <!-- Title & Description -->
-      <h1 class="text-3xl font-bold mb-2" th:text="${recipe.title}">レシピタイトル</h1>
-      <p class="text-gray-600 mb-2" th:text="${recipe.description}">概要</p>
-      <div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
-        <span th:text="'by ' + ${recipe.nickname}">by シェフ</span>
-        <span>•</span>
-        <span th:text="${recipe.createdAtFormatted}">1日前</span>
-      </div>
+			<!-- Title & Description -->
+			<h1 class="text-3xl font-bold mb-2" th:text="${recipe.title}">レシピタイトル</h1>
+			<p class="text-gray-600 mb-2" th:text="${recipe.description}">概要</p>
+			<div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+				<span th:text="'by ' + ${recipe.nickname}">by シェフ</span> <span>•</span>
+				<span th:text="${recipe.createdAtFormatted}">1日前</span>
+			</div>
 
-      <!-- Stats: 난이도 / 조리시간 / 좋아요 / 조회수 -->
-      <div class="grid grid-cols-4 gap-4 mb-6">
+			<!-- Stats: 난이도 / 조리시간 / 좋아요 / 조회수 -->
+			<div class="grid grid-cols-4 gap-4 mb-6">
 
-        <!-- 난이도 -->
-        <div class="bg-amber-50 p-4 rounded-lg text-center">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-amber-500 mx-auto mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+				<!-- 난이도 -->
+				<div class="bg-amber-50 p-4 rounded-lg text-center">
+					<svg xmlns="http://www.w3.org/2000/svg"
+						class="w-5 h-5 text-amber-500 mx-auto mb-1" viewBox="0 0 24 24"
+						fill="none" stroke="currentColor" stroke-width="2">
+            <polygon
+							points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
           </svg>
-          <p class="text-sm text-gray-600">難易度</p>
-          <p class="font-medium text-lg" th:text="${recipe.difficultyLabel}">中</p>
-        </div>
+					<p class="text-sm text-gray-600">難易度</p>
+					<p class="font-medium text-lg" th:text="${recipe.difficultyLabel}">中</p>
+				</div>
 
-        <!-- 조리시간 -->
-        <div class="bg-blue-50 p-4 rounded-lg text-center">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-500 mx-auto mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+				<!-- 조리시간 -->
+				<div class="bg-blue-50 p-4 rounded-lg text-center">
+					<svg xmlns="http://www.w3.org/2000/svg"
+						class="w-5 h-5 text-blue-500 mx-auto mb-1" viewBox="0 0 24 24"
+						fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+						<polyline points="12 6 12 12 16 14" />
           </svg>
-          <p class="text-sm text-gray-600">調理時間</p>
-          <p class="font-medium text-lg" th:text="${recipe.cookingTime} + '分'">30分</p>
-        </div>
+					<p class="text-sm text-gray-600">調理時間</p>
+					<p class="font-medium text-lg"
+						th:text="${recipe.cookingTime} + '分'">30分</p>
+				</div>
 
-        <!-- 좋아요 -->
-        <div class="bg-pink-50 p-4 rounded-lg text-center">
-          <svg id="heartEmpty" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mx-auto mb-1 text-pink-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-               th:classappend="${recipe.isLiked} ? 'hidden' : ''">
-            <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/>
+				<!-- 좋아요 -->
+				<div class="bg-pink-50 p-4 rounded-lg text-center">
+					<svg id="heartEmpty" xmlns="http://www.w3.org/2000/svg"
+						class="w-5 h-5 mx-auto mb-1 text-pink-400" viewBox="0 0 24 24"
+						fill="none" stroke="currentColor" stroke-width="2"
+						th:classappend="${recipe.isLiked} ? 'hidden' : ''">
+            <path
+							d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z" />
           </svg>
-          <svg id="heartFilled" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mx-auto mb-1 text-red-500" viewBox="0 0 24 24" fill="currentColor"
-               th:classappend="${recipe.isLiked} ? '' : 'hidden'">
-            <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/>
+					<svg id="heartFilled" xmlns="http://www.w3.org/2000/svg"
+						class="w-5 h-5 mx-auto mb-1 text-red-500" viewBox="0 0 24 24"
+						fill="currentColor"
+						th:classappend="${recipe.isLiked} ? '' : 'hidden'">
+            <path
+							d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z" />
           </svg>
-          <p class="text-sm text-gray-600">좋아요</p>
-          <p class="font-medium text-lg" id="likeCount"
-             th:text="${recipe.likeCount}"
-             th:classappend="${recipe.isLiked} ? 'text-red-500' : ''">245</p>
-        </div>
+					<p class="text-sm text-gray-600">좋아요</p>
+					<p class="font-medium text-lg" id="likeCount"
+						th:text="${recipe.likeCount}"
+						th:classappend="${recipe.isLiked} ? 'text-red-500' : ''">245</p>
+				</div>
 
-        <!-- 조회수 -->
-        <div class="bg-green-50 p-4 rounded-lg text-center">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-green-500 mx-auto mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+				<!-- 조회수 -->
+				<div class="bg-green-50 p-4 rounded-lg text-center">
+					<svg xmlns="http://www.w3.org/2000/svg"
+						class="w-5 h-5 text-green-500 mx-auto mb-1" viewBox="0 0 24 24"
+						fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+						<circle cx="12" cy="12" r="3" />
           </svg>
-          <p class="text-sm text-gray-600">조회수</p>
-          <p class="font-medium text-lg" th:text="${recipe.viewCount}">1203</p>
-        </div>
+					<p class="text-sm text-gray-600">조회수</p>
+					<p class="font-medium text-lg" th:text="${recipe.viewCount}">1203</p>
+				</div>
 
-      </div>
+			</div>
 
-      <!-- Tags -->
-      <div class="flex flex-wrap gap-2 mb-6">
-        <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm" th:text="'#' + ${recipe.cuisine}">#韓国料理</span>
-        <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm" th:text="'#' + ${recipe.purpose}">#ガッツリ系</span>
-        <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm" th:text="'#' + ${recipe.difficultyLabel}">#中</span>
-      </div>
+			<!-- Tags -->
+			<div class="flex flex-wrap gap-2 mb-6">
+				<span
+					class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
+					th:text="'#' + ${recipe.cuisine}">#韓国料理</span> <span
+					class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
+					th:text="'#' + ${recipe.purpose}">#ガッツリ系</span> <span
+					class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
+					th:text="'#' + ${recipe.difficultyLabel}">#中</span>
+			</div>
 
-      <!-- ── 본인 레시피: 좋아요 / 공개·비공개 / 삭제 (3개) ── -->
-      <div th:if="${recipe.userId == #authentication.principal}" class="grid grid-cols-3 gap-3">
+			<!-- ── 본인 레시피: 좋아요 / 공개·비공개 / 삭제 (3개) ── -->
+			<div th:if="${recipe.userId == #authentication.principal}"
+				class="grid grid-cols-3 gap-3">
 
-        <!-- 좋아요 버튼 -->
-        <button type="button" id="likeBtn" onclick="toggleLike()"
-                class="flex items-center justify-center gap-2 py-2.5 rounded-lg border text-sm font-medium transition-all duration-200"
-                th:classappend="${recipe.isLiked} ? 'bg-red-500 border-red-500 text-white' : 'bg-white border-gray-200 text-gray-600 hover:bg-red-50'">
-          <svg id="btnHeartEmpty" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-               th:classappend="${recipe.isLiked} ? 'hidden' : ''">
-            <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/>
+				<!-- 좋아요 버튼 -->
+				<button type="button" id="likeBtn" onclick="toggleLike()"
+					class="flex items-center justify-center gap-2 py-2.5 rounded-lg border text-sm font-medium transition-all duration-200"
+					th:classappend="${recipe.isLiked} ? 'bg-red-500 border-red-500 text-white' : 'bg-white border-gray-200 text-gray-600 hover:bg-red-50'">
+					<svg id="btnHeartEmpty" xmlns="http://www.w3.org/2000/svg"
+						class="w-4 h-4" viewBox="0 0 24 24" fill="none"
+						stroke="currentColor" stroke-width="2"
+						th:classappend="${recipe.isLiked} ? 'hidden' : ''">
+            <path
+							d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z" />
           </svg>
-          <svg id="btnHeartFilled" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"
-               th:classappend="${recipe.isLiked} ? '' : 'hidden'">
-            <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/>
+					<svg id="btnHeartFilled" xmlns="http://www.w3.org/2000/svg"
+						class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"
+						th:classappend="${recipe.isLiked} ? '' : 'hidden'">
+            <path
+							d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z" />
           </svg>
-          좋아요
-        </button>
+					좋아요
+				</button>
 
-        <!-- 공개/비공개 버튼 -->
-        <button type="button" id="publicBtn" onclick="togglePublic()"
-                class="flex items-center justify-center gap-2 py-2.5 rounded-lg border text-sm font-medium transition-all duration-200"
-                th:classappend="${recipe.isPublic} ? 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50' : 'bg-amber-50 border-amber-300 text-amber-700 hover:bg-amber-100'">
-          <svg id="iconPublic" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-               th:classappend="${recipe.isPublic} ? '' : 'hidden'">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+				<!-- 공개/비공개 버튼 -->
+				<button type="button" id="publicBtn" onclick="togglePublic()"
+					class="flex items-center justify-center gap-2 py-2.5 rounded-lg border text-sm font-medium transition-all duration-200"
+					th:classappend="${recipe.isPublic} ? 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50' : 'bg-amber-50 border-amber-300 text-amber-700 hover:bg-amber-100'">
+					<svg id="iconPublic" xmlns="http://www.w3.org/2000/svg"
+						class="w-4 h-4" viewBox="0 0 24 24" fill="none"
+						stroke="currentColor" stroke-width="2"
+						th:classappend="${recipe.isPublic} ? '' : 'hidden'">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+						<circle cx="12" cy="12" r="3" />
           </svg>
-          <svg id="iconPrivate" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-               th:classappend="${recipe.isPublic} ? 'hidden' : ''">
-            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
-            <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
-            <line x1="1" y1="1" x2="23" y2="23"/>
+					<svg id="iconPrivate" xmlns="http://www.w3.org/2000/svg"
+						class="w-4 h-4" viewBox="0 0 24 24" fill="none"
+						stroke="currentColor" stroke-width="2"
+						th:classappend="${recipe.isPublic} ? 'hidden' : ''">
+            <path
+							d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
+            <path
+							d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+            <line x1="1" y1="1" x2="23" y2="23" />
           </svg>
-          <span id="publicBtnText" th:text="${recipe.isPublic} ? '공개 중' : '비공개'">공개 중</span>
-        </button>
+					<span id="publicBtnText"
+						th:text="${recipe.isPublic} ? '공개 중' : '비공개'">공개 중</span>
+				</button>
 
-        <!-- 레시피 삭제 버튼 -->
-        <button type="button" onclick="deleteRecipe()"
-                class="flex items-center justify-center gap-2 py-2.5 rounded-lg border border-red-200 bg-white text-sm font-medium text-red-500 hover:bg-red-50 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="3 6 5 6 21 6"/>
-            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-            <path d="M10 11v6"/><path d="M14 11v6"/>
-            <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+				<!-- 레시피 삭제 버튼 -->
+				<button type="button" onclick="deleteRecipe()"
+					class="flex items-center justify-center gap-2 py-2.5 rounded-lg border border-red-200 bg-white text-sm font-medium text-red-500 hover:bg-red-50 transition-colors">
+					<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4"
+						viewBox="0 0 24 24" fill="none" stroke="currentColor"
+						stroke-width="2">
+            <polyline points="3 6 5 6 21 6" />
+            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+            <path d="M10 11v6" />
+						<path d="M14 11v6" />
+            <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
           </svg>
-          레시피 삭제
-        </button>
+					레시피 삭제
+				</button>
 
-      </div>
+			</div>
 
-      <!-- ── 다른 사람 레시피: 좋아요 버튼만 (전체 너비) ── -->
-      <div th:unless="${recipe.userId == #authentication.principal}">
-        <button type="button" id="likeBtn" onclick="toggleLike()"
-                class="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg border text-sm font-medium transition-all duration-200"
-                th:classappend="${recipe.isLiked} ? 'bg-red-500 border-red-500 text-white' : 'bg-white border-gray-200 text-gray-600 hover:bg-red-50'">
-          <svg id="btnHeartEmpty" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-               th:classappend="${recipe.isLiked} ? 'hidden' : ''">
-            <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/>
+			<!-- ── 다른 사람 레시피: 좋아요 버튼만 (전체 너비) ── -->
+			<div th:unless="${recipe.userId == #authentication.principal}">
+				<button type="button" id="likeBtn" onclick="toggleLike()"
+					class="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg border text-sm font-medium transition-all duration-200"
+					th:classappend="${recipe.isLiked} ? 'bg-red-500 border-red-500 text-white' : 'bg-white border-gray-200 text-gray-600 hover:bg-red-50'">
+					<svg id="btnHeartEmpty" xmlns="http://www.w3.org/2000/svg"
+						class="w-4 h-4" viewBox="0 0 24 24" fill="none"
+						stroke="currentColor" stroke-width="2"
+						th:classappend="${recipe.isLiked} ? 'hidden' : ''">
+            <path
+							d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z" />
           </svg>
-          <svg id="btnHeartFilled" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"
-               th:classappend="${recipe.isLiked} ? '' : 'hidden'">
-            <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/>
+					<svg id="btnHeartFilled" xmlns="http://www.w3.org/2000/svg"
+						class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"
+						th:classappend="${recipe.isLiked} ? '' : 'hidden'">
+            <path
+							d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z" />
           </svg>
-          좋아요
-        </button>
-      </div>
+					좋아요
+				</button>
+			</div>
 
-    </section>
+		</section>
 
-    <!-- Nutrients -->
-    <section class="bg-white rounded-2xl shadow-lg p-6 mb-6" th:if="${recipe.nutrients != null and !recipe.nutrients.isEmpty()}">
-      <h2 class="text-2xl font-bold mb-4">📊 栄養情報</h2>
-      <div class="grid grid-cols-4 gap-4">
-        <div th:each="nutrient : ${recipe.nutrients}" class="p-4 rounded-lg text-center"
-             th:classappend="${nutrient.nutrientName == 'calories' ? 'bg-red-50' : (nutrient.nutrientName == 'protein' ? 'bg-blue-50' : (nutrient.nutrientName == 'fat' ? 'bg-yellow-50' : 'bg-green-50'))}">
-          <p class="text-sm text-gray-600"
-             th:text="${nutrient.nutrientName == 'calories' ? 'カロリー' : (nutrient.nutrientName == 'protein' ? 'タンパク質' : (nutrient.nutrientName == 'fat' ? '脂質' : '炭水化物'))}">栄養素</p>
-          <p class="font-bold text-lg" th:text="${nutrient.amount} + ${nutrient.unit}">0g</p>
-        </div>
-      </div>
-    </section>
+		<!-- Nutrients -->
+		<section class="bg-white rounded-2xl shadow-lg p-6 mb-6"
+			th:if="${recipe.nutrients != null and !recipe.nutrients.isEmpty()}">
+			<h2 class="text-2xl font-bold mb-4">📊 栄養情報</h2>
+			<div class="grid grid-cols-4 gap-4">
+				<div th:each="nutrient : ${recipe.nutrients}"
+					class="p-4 rounded-lg text-center"
+					th:classappend="${nutrient.nutrientName == 'calories' ? 'bg-red-50' : (nutrient.nutrientName == 'protein' ? 'bg-blue-50' : (nutrient.nutrientName == 'fat' ? 'bg-yellow-50' : 'bg-green-50'))}">
+					<p class="text-sm text-gray-600"
+						th:text="${nutrient.nutrientName == 'calories' ? 'カロリー' : (nutrient.nutrientName == 'protein' ? 'タンパク質' : (nutrient.nutrientName == 'fat' ? '脂質' : '炭水化物'))}">栄養素</p>
+					<p class="font-bold text-lg"
+						th:text="${nutrient.amount} + ${nutrient.unit}">0g</p>
+				</div>
+			</div>
+		</section>
 
-    <!-- Ingredients -->
-    <section class="bg-white rounded-2xl shadow-lg p-6 mb-6" th:if="${recipe.ingredients != null and !recipe.ingredients.isEmpty()}">
-      <h2 class="text-2xl font-bold mb-4">🍃 재료</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div th:each="ingredient : ${recipe.ingredients}" class="flex items-center justify-between bg-amber-50 p-3 rounded-lg shadow-sm">
-          <div class="flex items-center gap-3">
-            <span class="inline-block w-10 h-10 bg-white rounded-md flex items-center justify-center text-xl">🌿</span>
-            <div class="font-medium" th:text="${ingredient.name}">밥</div>
-          </div>
-          <div class="text-gray-700 font-medium" th:text="${ingredient.quantity} + ' ' + ${ingredient.unit}">1공기</div>
-        </div>
-      </div>
-    </section>
+		<!-- Ingredients -->
+		<section class="bg-white rounded-2xl shadow-lg p-6 mb-6"
+			th:if="${recipe.ingredients != null and !recipe.ingredients.isEmpty()}">
+			<h2 class="text-2xl font-bold mb-4">🍃 재료</h2>
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+				<div th:each="ingredient : ${recipe.ingredients}"
+					class="flex items-center justify-between bg-amber-50 p-3 rounded-lg shadow-sm">
+					<div class="flex items-center gap-3">
+						<span
+							class="inline-block w-10 h-10 bg-white rounded-md flex items-center justify-center text-xl">🌿</span>
+						<div class="font-medium" th:text="${ingredient.name}">밥</div>
+					</div>
+					<div class="text-gray-700 font-medium"
+						th:text="${ingredient.quantity} + ' ' + ${ingredient.unit}">1공기</div>
+				</div>
+			</div>
+		</section>
 
-    <!-- Steps -->
-    <section class="bg-white rounded-2xl shadow-lg p-6 mb-6" th:if="${recipe.steps != null and !recipe.steps.isEmpty()}">
-      <h2 class="text-2xl font-bold mb-4">👨‍🍳 調理方法</h2>
-      <div class="space-y-3">
-        <div th:each="step : ${recipe.steps}" class="flex gap-4 items-start">
-          <div class="flex-shrink-0">
-            <div class="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-600 text-white rounded-full flex items-center justify-center font-medium">
-              <span th:text="${step.stepOrder}">1</span>
-            </div>
-          </div>
-          <div class="flex-1 bg-gray-50 p-4 rounded-lg">
-            <p th:text="${step.content}">調理ステップ</p>
-          </div>
-        </div>
-      </div>
-    </section>
+		<!-- Steps -->
+		<section class="bg-white rounded-2xl shadow-lg p-6 mb-6"
+			th:if="${recipe.steps != null and !recipe.steps.isEmpty()}">
+			<h2 class="text-2xl font-bold mb-4">👨‍🍳 調理方法</h2>
+			<div class="space-y-3">
+				<div th:each="step : ${recipe.steps}" class="flex gap-4 items-start">
+					<div class="flex-shrink-0">
+						<div
+							class="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-600 text-white rounded-full flex items-center justify-center font-medium">
+							<span th:text="${step.stepOrder}">1</span>
+						</div>
+					</div>
+					<div class="flex-1 bg-gray-50 p-4 rounded-lg">
+						<p th:text="${step.content}">調理ステップ</p>
+					</div>
+				</div>
+			</div>
+		</section>
 
-    <!-- Comments -->
-    <section class="bg-white rounded-2xl shadow-lg p-6 mb-6">
-      <h2 class="text-2xl font-bold mb-4">
-        💬 コメント
-        <span class="text-sm text-gray-500" id="commentCount"
-              th:text="'(' + ${recipe.commentCount} + ')'"></span>
-      </h2>
-      <div class="flex gap-2 mb-4">
-        <input type="text" id="commentInput" placeholder="コメントを入力してください..."
-               class="flex-1 border rounded-full px-4 py-2 focus:outline-none focus:ring"/>
-        <button onclick="submitComment()"
-                class="flex items-center gap-1.5 bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+		<!-- Comments -->
+		<section class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+			<h2 class="text-2xl font-bold mb-4">
+				💬 コメント <span class="text-sm text-gray-500" id="commentCount"
+					th:text="'(' + ${recipe.commentCount} + ')'"></span>
+			</h2>
+			<div class="flex gap-2 mb-4">
+				<input type="text" id="commentInput" placeholder="コメントを入力してください..."
+					class="flex-1 border rounded-full px-4 py-2 focus:outline-none focus:ring" />
+				<button onclick="submitComment()"
+					class="flex items-center gap-1.5 bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors">
+					<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4"
+						viewBox="0 0 24 24" fill="none" stroke="currentColor"
+						stroke-width="2">
+            <line x1="22" y1="2" x2="11" y2="13" />
+						<polygon points="22 2 15 22 11 13 2 9 22 2" />
           </svg>
-          작성
-        </button>
-      </div>
-      <div class="space-y-4" id="commentList"></div>
-    </section>
+					작성
+				</button>
+			</div>
+			<div class="space-y-4" id="commentList"></div>
+		</section>
 
-    <!-- Back to Gacha -->
-    <div class="text-center">
-      <a th:href="@{/gacha/home}" class="inline-block bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-xl font-medium shadow-lg transition-colors">
-        🎲 もう一度ガチャを回す
-      </a>
-    </div>
-  </div>
+		<!-- Back to Gacha -->
+		<div class="text-center">
+			<a th:href="@{/gacha/home}"
+				class="inline-block bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-xl font-medium shadow-lg transition-colors">
+				🎲 もう一度ガチャを回す </a>
+		</div>
+	</div>
 
-  <script th:inline="javascript">
+	<script th:inline="javascript">
     const recipeId = /*[[${recipe.id}]]*/ 0;
     const currentUserId = /*[[${loginUserId}]]*/ null;
     let liked = /*[[${recipe.isLiked}]]*/ false;
@@ -284,26 +342,28 @@
     }
 
     /* ── 공개/비공개 토글 ── */
-    function togglePublic() {
-      fetch(`/recipes/${recipeId}/public`, { method: 'PUT' })
-        .then(res => {
-          if (!res.ok) throw new Error('failed');
+function togglePublic() {
+  fetch(`/recipes/${recipeId}/visibility?isPublic=${!isPublic}`, {
+    method: 'PATCH'
+  })
+  .then(res => {
+    if (!res.ok) throw new Error('failed');
 
-          isPublic = !isPublic;
+    isPublic = !isPublic;
 
-          document.getElementById('iconPublic').classList.toggle('hidden', !isPublic);
-          document.getElementById('iconPrivate').classList.toggle('hidden', isPublic);
-          document.getElementById('publicBtnText').textContent = isPublic ? '공개 중' : '비공개';
+    document.getElementById('iconPublic').classList.toggle('hidden', !isPublic);
+    document.getElementById('iconPrivate').classList.toggle('hidden', isPublic);
+    document.getElementById('publicBtnText').textContent = isPublic ? '공개 중' : '비공개';
 
-          const btn = document.getElementById('publicBtn');
-          if (isPublic) {
-            btn.className = 'flex items-center justify-center gap-2 py-2.5 rounded-lg border text-sm font-medium transition-all duration-200 bg-white border-gray-200 text-gray-600 hover:bg-gray-50';
-          } else {
-            btn.className = 'flex items-center justify-center gap-2 py-2.5 rounded-lg border text-sm font-medium transition-all duration-200 bg-amber-50 border-amber-300 text-amber-700 hover:bg-amber-100';
-          }
-        })
-        .catch(() => alert('로그인이 필요합니다.'));
+    const btn = document.getElementById('publicBtn');
+    if (isPublic) {
+      btn.className = 'flex items-center justify-center gap-2 py-2.5 rounded-lg border text-sm font-medium transition-all duration-200 bg-white border-gray-200 text-gray-600 hover:bg-gray-50';
+    } else {
+      btn.className = 'flex items-center justify-center gap-2 py-2.5 rounded-lg border text-sm font-medium transition-all duration-200 bg-amber-50 border-amber-300 text-amber-700 hover:bg-amber-100';
     }
+  })
+  .catch(() => alert('로그인이 필요합니다.'));
+}
 
     /* ── 레시피 삭제 ── */
     function deleteRecipe() {
