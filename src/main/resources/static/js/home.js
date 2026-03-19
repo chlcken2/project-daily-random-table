@@ -85,8 +85,8 @@
     var container = document.getElementById('weekly-ranking-container');
     if (!container || !recipes.length) return;
 
-    var rankColors = ['from-yellow-400 to-yellow-600', 'from-gray-300 to-gray-500', 'from-amber-600 to-amber-800'];
-    container.innerHTML = recipes.slice(0, 3).map(function(r, i) {
+    var rankColors = ['from-yellow-400 to-yellow-600', 'from-gray-300 to-gray-500', 'from-amber-600 to-amber-800', 'from-blue-200 to-blue-500', 'from-blue-200 to-blue-300'];
+    container.innerHTML = recipes.slice(0, 5).map(function(r, i) {
       return `<a href="/recipes/${r.id}" class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-yellow-50 transition-colors text-left block">
         <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br ${rankColors[i]} rounded-lg flex items-center justify-center text-white font-medium">${i+1}</div>
         <div class="flex-1 min-w-0">
