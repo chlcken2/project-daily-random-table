@@ -1,3 +1,15 @@
+// 쿠키 조회 유틸리티
+function getCookie(name) {
+  var nameEQ = name + "=";
+  var ca = document.cookie.split(';');
+  for(var i=0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+  }
+  return null;
+}
+
 (function() {
   var ingredients = [];
   var sauces = [];
@@ -25,7 +37,167 @@
   }
 
   // ═══════════════════════════════════════════════════════════════
-  //  G A C H A   M A C H I N E   M O D U L E
+  //  입력 검증 모듈
+  // ═══════════════════════════════════════════════════════════════
+  // 한국어/영어/일본어/한자 및 공백만 허용 (숫자/특수문자/기호 차단)
+  var VALID_NAME_REGEX = /^[가-힣ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z\u3040-\u30FF\\u4E00-\\u9FAF\\s]+$/;
+  // 숫자만 허용 (분량 필드)
+  var VALID_AMOUNT_REGEX = /^[0-9]*$/;
+
+  // 마지막 오류 표시 시간 (중복 토스트 방지용)
+  var lastErrorTime = 0;
+  var ERROR_COOLDOWN = 2000; // 2초 쿨다운
+
+  function showInputError(message) {
+    var now = Date.now();
+    if (now - lastErrorTime < ERROR_COOLDOWN) return; // 쿨다운 중이면 무시
+    lastErrorTime = now;
+    showError(message);
+  }
+
+  function blockInvalidKeys(input, regex, errorMessage) {
+    // beforeinput: 최신 브라우저에서 입력 직전 차단
+    input.addEventListener('beforeinput', function(e) {
+      // 삭제, 실행 취소 등 데이터가 없는 입력 타입은 허용
+      if (e.data === null || e.inputType === 'deleteContentBackward' || e.inputType === 'deleteContentForward') return;
+
+      if (!regex.test(e.data)) {
+        e.preventDefault();
+        if (errorMessage) showInputError(errorMessage);
+      }
+    });
+
+    // keydown: 모든 브라우저 호환용 (백스페이스/삭제/화살표 등 허용)
+    input.addEventListener('keydown', function(e) {
+      // 허용: 기능키 (백스페이스, 삭제, 화살표, 탭, 엔터, ESC)
+      var allowedKeys = ['Backspace','Delete','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Tab','Enter','Escape'];
+      // 허용: 단축키 (Ctrl, Alt, Meta 조합)
+      if (e.ctrlKey || e.altKey || e.metaKey) return;
+      // 허용: 기능키 - 조용히 허용 (오류 메시지 없음)
+      if (allowedKeys.indexOf(e.key) !== -1) {
+        return;
+      }
+
+      // 차단: 숫자만 허용하는 경우 숫자가 아니면 차단
+      if (regex.source === '^[0-9]*$') {
+        if (e.key < '0' || e.key > '9') {
+          e.preventDefault();
+          if (errorMessage) showInputError(errorMessage);
+          return false;
+        }
+        return;
+      }
+
+      // 차단: 숫자 (0-9) - 이름 필드용
+      if (e.key >= '0' && e.key <= '9') {
+        e.preventDefault();
+        if (errorMessage) showInputError(errorMessage);
+        return false;
+      }
+
+      // 차단: 특수문자 (한글/영어/일본어/한자/공백 외 모든 문자)
+      // @, #, $, % 등 모든 특수문자 차단
+      if (!regex.test(e.key)) {
+        e.preventDefault();
+        if (errorMessage) showInputError(errorMessage);
+        return false;
+      }
+    });
+
+    input.addEventListener('paste', function(e) {
+      e.preventDefault();
+      if (errorMessage) showInputError(errorMessage);
+    });
+  }
+
+  function setupValidation() {
+    var ingredientName = document.getElementById('ingredient-name');
+    var sauceName = document.getElementById('sauce-name');
+    var ingredientAmount = document.getElementById('ingredient-amount');
+    var sauceAmount = document.getElementById('sauce-amount');
+
+    if (ingredientName) blockInvalidKeys(ingredientName, VALID_NAME_REGEX, '特殊文字と数字は入力できません');
+    if (sauceName) blockInvalidKeys(sauceName, VALID_NAME_REGEX, '特殊文字と数字は入力できません');
+
+    // 분량 필드: 숫자만 허용
+    if (ingredientAmount) {
+      // 조합 입력 차단 (한글/일본어/한자 입력기)
+      ingredientAmount.addEventListener('compositionstart', function(e) {
+        e.preventDefault();
+        return false;
+      });
+
+      // keydown: 키 누르는 순간 차단 (가장 빠른 차단)
+      ingredientAmount.addEventListener('keydown', function(e) {
+        // 허용: 숫자(0-9), 백스페이스, 삭제, 화살표, 탭, 엔터
+        var allowedKeys = ['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Enter'];
+        var isNumber = (e.key >= '0' && e.key <= '9');
+        var isAllowedKey = allowedKeys.indexOf(e.key) !== -1;
+
+        if (!isNumber && !isAllowedKey) {
+          e.preventDefault();
+          showInputError('数字のみ入力可能です');
+          return false;
+        }
+      });
+
+      // input: 혹시라도 통과한 경우 최종 필터링
+      ingredientAmount.addEventListener('input', function(e) {
+        var value = ingredientAmount.value;
+        // 숫자가 아닌 것 모두 제거
+        var filtered = value.replace(/[^0-9]/g, '');
+        if (value !== filtered) {
+          ingredientAmount.value = filtered;
+        }
+      });
+
+      // 붙여넣기 완전 차단
+      ingredientAmount.addEventListener('paste', function(e) {
+        e.preventDefault();
+        showInputError('数字のみ入力可能です');
+        return false;
+      });
+    }
+
+    if (sauceAmount) {
+      // 조합 입력 차단 (한글/일본어/한자 입력기)
+      sauceAmount.addEventListener('compositionstart', function(e) {
+        e.preventDefault();
+        return false;
+      });
+
+      // keydown: 키 누르는 순간 차단
+      sauceAmount.addEventListener('keydown', function(e) {
+        var allowedKeys = ['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Enter'];
+        var isNumber = (e.key >= '0' && e.key <= '9');
+        var isAllowedKey = allowedKeys.indexOf(e.key) !== -1;
+
+        if (!isNumber && !isAllowedKey) {
+          e.preventDefault();
+          showInputError('数字のみ入力可能です');
+          return false;
+        }
+      });
+
+      // input: 최종 필터링
+      sauceAmount.addEventListener('input', function(e) {
+        var value = sauceAmount.value;
+        var filtered = value.replace(/[^0-9]/g, '');
+        if (value !== filtered) {
+          sauceAmount.value = filtered;
+        }
+      });
+
+      sauceAmount.addEventListener('paste', function(e) {
+        e.preventDefault();
+        showInputError('数字のみ入力可能です');
+        return false;
+      });
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  //  가챠 머신 모듈
   // ═══════════════════════════════════════════════════════════════
   var GachaMachine = (function() {
     var overlay      = document.getElementById('gacha-overlay');
@@ -76,7 +248,7 @@
         function scheduleLoop(t0) {
           if (!looping) return;
           var t = t0;
-          mel.forEach(function(note) {
+          mel.forEach(function(음표) {
             var dur = note[1] * beat;
             var osc = ctx.createOscillator();
             osc.type = 'square';
@@ -280,7 +452,9 @@
   //  D A I L Y   C O U N T
   // ═══════════════════════════════════════════════════════════════
   function loadDailyCount() {
-    fetch('/gacha/count')
+    fetch('/gacha/count', {
+      credentials: 'same-origin'
+    })
       .then(function(r){ return r.json(); })
       .then(function(res){
         if (!res.success) return;
@@ -303,17 +477,9 @@
   // ═══════════════════════════════════════════════════════════════
   //  I N G R E D I E N T   A P I   I N T E G R A T I O N
   // ═══════════════════════════════════════════════════════════════
-
-  function getCookie(name) {
-    var value = "; " + document.cookie;
-    var parts = value.split("; " + name + "=");
-    if (parts.length == 2) return parts.pop().split(";").shift();
-  }
-
   function loadIngredientsFromAPI() {
-    var token = getCookie('accessToken');
     fetch('/api/ingredients?type=1', {
-      headers: token ? { 'Authorization': 'Bearer ' + token } : {}
+      credentials: 'same-origin'
     })
       .then(function(r){ return r.json(); })
       .then(function(res){
@@ -328,9 +494,8 @@
   }
 
   function loadSaucesFromAPI() {
-    var token = getCookie('accessToken');
     fetch('/api/ingredients?type=2', {
-      headers: token ? { 'Authorization': 'Bearer ' + token } : {}
+      credentials: 'same-origin'
     })
       .then(function(r){ return r.json(); })
       .then(function(res){
@@ -345,12 +510,11 @@
   }
 
   function addIngredientToAPI(name, amount, unit, type) {
-    var token = getCookie('accessToken');
     return fetch('/api/ingredients', {
       method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json',
-        'Authorization': token ? 'Bearer ' + token : ''
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({ name: name, quantity: parseFloat(amount), unit: unit, type: type })
     })
@@ -358,10 +522,9 @@
   }
 
   function deleteIngredientFromAPI(id) {
-    var token = getCookie('accessToken');
-    return fetch('/api/ingredients/' + id, { 
+    return fetch('/api/ingredients/' + id, {
       method: 'DELETE',
-      headers: token ? { 'Authorization': 'Bearer ' + token } : {}
+      credentials: 'same-origin'
     })
       .then(function(r){ return r.json(); });
   }
@@ -440,6 +603,12 @@
   //  A D D   I N G R E D I E N T  /  S A U C E
   // ═══════════════════════════════════════════════════════════════
   document.getElementById('add-ingredient').addEventListener('click', function(){
+    // 로그인 체크
+    var token = getCookie('accessToken');
+    if (!token) {
+      showError('ログインが必要です');
+      return;
+    }
     var name   = document.getElementById('ingredient-name').value.trim();
     var amount = document.getElementById('ingredient-amount').value.trim();
     var unit   = document.getElementById('ingredient-unit').value;
@@ -463,6 +632,12 @@
   });
 
   document.getElementById('add-sauce').addEventListener('click', function(){
+    // 로그인 체크
+    var token = getCookie('accessToken');
+    if (!token) {
+      showError('ログインが必要です');
+      return;
+    }
     var name   = document.getElementById('sauce-name').value.trim();
     var amount = document.getElementById('sauce-amount').value.trim();
     var unit   = document.getElementById('sauce-unit').value;
@@ -536,7 +711,8 @@
 
     fetch('/gacha/generate', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': getCookie('accessToken') ? 'Bearer ' + getCookie('accessToken') : '' },
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         ingredients: ingredients.map(function(i){ return { name:i.name, amount:i.amount, unit:i.unit }; }),
         sauces:      sauces.map(function(s){ return { name:s.name, amount:s.amount, unit:s.unit }; }),
@@ -605,10 +781,9 @@
   // ═══════════════════════════════════════════════════════════════
   document.getElementById('btn-private').addEventListener('click', function(){
     if (!currentRecipeId) return;
-    var token = getCookie('accessToken');
-    fetch('/recipes/'+currentRecipeId+'/visibility?isPublic=false', {
-      method:'PATCH',
-      headers: token ? { 'Authorization': 'Bearer ' + token } : {}
+    fetch('/gacha/publish/'+currentRecipeId+'?isPublic=false', {
+      method:'POST',
+      credentials: 'same-origin'
     })
       .then(function(r){ return r.json(); })
       .then(function(res){
@@ -620,18 +795,14 @@
 
   document.getElementById('btn-public').addEventListener('click', function(){
     if (!currentRecipeId) return;
-    var token = getCookie('accessToken');
-    fetch('/recipes/'+currentRecipeId+'/visibility?isPublic=true', {
-      method:'PATCH',
-      headers: token ? { 'Authorization': 'Bearer ' + token } : {}
+    fetch('/gacha/publish/'+currentRecipeId+'?isPublic=true', {
+      method:'POST',
+      credentials: 'same-origin'
     })
       .then(function(r){ return r.json(); })
       .then(function(res){
-        if (res.success) {
-            alert('みんなの食卓に登録されました！🎉');
-            window.location.href = '/mypage';
-        } else showError(res.message);
-
+        if (res.success) alert('みんなの食卓に登録されました！🎉');
+        else showError(res.message);
       })
       .catch(function(){ showError('登録に失敗しました。'); });
   });
@@ -639,6 +810,7 @@
   // ═══════════════════════════════════════════════════════════════
   //  I N I T
   // ═══════════════════════════════════════════════════════════════
+  setupValidation();  // 입력 검증 초기화
   loadIngredientsFromAPI();
   loadSaucesFromAPI();
   updateGachaBtn();

@@ -76,7 +76,7 @@
       ? '<img src="' + escapeHtml(img) + '" alt="" class="w-full h-full object-cover" onerror="this.parentElement.classList.add(\'bg-gray-200\');this.remove()"/>'
       : '';
     return '<div class="rounded-lg overflow-hidden bg-gray-100 hover:opacity-95 transition-opacity">' +
-      '<a href="/gacha/recipe/' + item.id + '" class="block">' +
+      '<a href="/recipes/' + item.id + '" class="block">' +
       '<div class="aspect-square overflow-hidden">' + imgHtml + '</div>' +
       '<div class="p-2 text-sm font-medium text-gray-700 truncate">' + title + '</div>' +
       '</a>' +
@@ -97,7 +97,7 @@
     if (item.difficultyName) sub.push(escapeHtml(item.difficultyName));
     if (item.likeCount != null) sub.push('❤ ' + item.likeCount);
     var subText = sub.length ? sub.join(' · ') : '';
-    return '<a href="/gacha/recipe/' + item.id + '" class="block rounded-lg overflow-hidden bg-gray-50 hover:bg-gray-100 transition-colors">' +
+    return '<a href="/recipes/' + item.id + '" class="block rounded-lg overflow-hidden bg-gray-50 hover:bg-gray-100 transition-colors">' +
       '<div class="aspect-square bg-gray-200 overflow-hidden">' + imgHtml + '</div>' +
       '<div class="p-2">' +
       '<h3 class="font-medium text-sm text-gray-800 truncate">' + title + '</h3>' +
