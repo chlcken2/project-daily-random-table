@@ -110,11 +110,6 @@ public class RecipeService {
 		return recipeMapper.findPublicRecipes();
 	}
 
-	public void togglePublicStatus(Long recipeId, Long userId) {
-		RecipeDetailDto recipe = recipeMapper.findById(recipeId);
-		recipeMapper.updatePublicStatus(recipeId, !recipe.isPublic());
-	}
-
 	public void deleteRecipe(Long recipeId, Long userId) {
 		recipeMapper.deleteRecipe(recipeId, userId);
 	}
