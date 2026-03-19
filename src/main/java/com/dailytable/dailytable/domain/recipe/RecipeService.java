@@ -110,7 +110,12 @@ public class RecipeService {
 		return recipeMapper.findPublicRecipes();
 	}
 
+	@Transactional
 	public void deleteRecipe(Long recipeId, Long userId) {
-		recipeMapper.deleteRecipe(recipeId, userId);
+		int updated = recipeMapper.deleteRecipe(recipeId, userId);
+		if (updated == 0) {
+			throw new BaseException(ErrorCode.RECIPE_NOT_FOUND);
+		}
+		recipeMapper.deleteLikesByRecipeId(recipeId);
 	}
 }
