@@ -11,7 +11,7 @@ import com.dailytable.dailytable.domain.recipe.dto.RecipeStepDto;
 
 import java.util.List;
 
-@Mapper
+@Mapper 
 public interface RecipeMapper {
 
 	void insertRecipe(RecipeEntity recipe);
@@ -27,7 +27,7 @@ public interface RecipeMapper {
 	List<IngredientDto> findIngredientsByRecipeId(@Param("recipeId") Long recipeId);
 
 	List<RecipeStepDto> findStepsByRecipeId(@Param("recipeId") Long recipeId);
-	
+
 	List<RecipeNutrientDto> findNutrientsByRecipeId(Long recipeId);
 
 	List<RecipeRankingDto> findPublicRecipes();
@@ -45,5 +45,6 @@ public interface RecipeMapper {
 
 	void increaseViewCount(@Param("recipeId") Long recipeId);
 
-	
+	void deleteRecipe(@Param("id") Long id, @Param("userId") Long userId);
+
 }
