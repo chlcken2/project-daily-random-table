@@ -13,10 +13,10 @@
       width: 44px; height: 44px;
       border-radius: 50%;
       box-shadow:
-        3px 3px 8px rgba(0,0,0,0.6),
-        inset -3px -3px 6px rgba(0,0,0,0.35),
-        inset 3px 3px 7px rgba(255,255,255,0.55),
-        0 0 10px rgba(236,72,153,0.35);
+              3px 3px 8px rgba(0,0,0,0.6),
+              inset -3px -3px 6px rgba(0,0,0,0.35),
+              inset 3px 3px 7px rgba(255,255,255,0.55),
+              0 0 10px rgba(236,72,153,0.35);
     }
     @keyframes gachaSpin {
       from { transform: rotate(0deg); }
@@ -78,266 +78,349 @@
       100% { opacity:0; }
     }
     /* ── CHEER TEXT ── */
-    @keyframes cheerFloat {
-      0%   { transform:translate(0,0)    scale(0.7);  opacity:0; }
-      16%  { transform:translate(0,-6px) scale(1.08); opacity:1; }
-      65%  { transform:translate(0,-28px) scale(1);   opacity:1; }
-      100% { transform:translate(0,-56px) scale(0.9); opacity:0; }
+    /* ── 반찬통 및 소스통 디자인 스타일 (CONTAINER STYLE) ── */
+    .container-box {
+      /* 반투명 유리 질감(Glassmorphism) 설정 */
+      background: rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(12px);
+      border-radius: 2.5rem;
+      /* 통의 두꺼운 테두리 - 플라스틱 용기 표현 */
+      border: 8px solid rgba(255, 255, 255, 0.9);
+      /* 입체감을 위한 그림자 효과 */
+      box-shadow:
+              0 20px 40px rgba(0, 0, 0, 0.08),
+              inset 0 0 30px rgba(255, 255, 255, 0.6),
+              0 0 0 1px rgba(0, 0, 0, 0.03);
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    /* 마우스 호버 시 떠오르는 효과 */
+    .container-box:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12);
+    }
+    /* 반찬통 옆면의 고정 장치(Latch) 구현 */
+    .container-latch {
+      position: absolute;
+      width: 14px;
+      height: 48px;
+      background: #f8fafc;
+      border: 2px solid rgba(0, 0, 0, 0.05);
+      border-radius: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      box-shadow: 3px 3px 8px rgba(0,0,0,0.1), inset -1px -1px 3px rgba(0,0,0,0.05);
+      z-index: 10;
+    }
+    .latch-left { left: -11px; }
+    .latch-right { right: -11px; }
+
+    /* 냉장고 테마: 푸른색 계통의 그라데이션 적용 */
+    .refrigerator-theme {
+      border-color: #f0f9ff;
+      background: linear-gradient(135deg, rgba(240, 249, 255, 0.6) 0%, rgba(224, 242, 254, 0.5) 100%);
+    }
+    .refrigerator-theme .container-latch { background: #e0f2fe; }
+
+    /* 소스통 테마: 오렌지색 계통의 그라데이션 적용 */
+    .sauce-theme {
+      border-color: #fffaf5;
+      background: linear-gradient(135deg, rgba(255, 250, 245, 0.7) 0%, rgba(255, 237, 213, 0.6) 100%);
+    }
+    .sauce-theme .container-latch { background: #ffedd5; }
+
+    /* 용기 상단의 이름표 라벨(Label) 디자인 */
+    .container-label {
+      background: #fff;
+      padding: 4px 16px;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      font-weight: 800;
+      display: inline-block;
+      border: 1px solid rgba(0,0,0,0.05);
+      border-top: none;
     }
   </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100 pb-8">
-  <header class="bg-gradient-to-r from-amber-700 to-amber-800 text-white sticky top-0 z-50 shadow-lg">
-    <div class="max-w-4xl mx-auto px-4 py-4">
-      <div class="flex items-center justify-between">
-        <a th:href="@{/}" href="/" class="flex items-center gap-2 hover:text-amber-200 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
-          戻る
-        </a>
-        <h1 class="text-xl font-bold">🎰 食事ガチャ</h1>
-        <div class="w-20"></div>
-      </div>
+<header class="bg-gradient-to-r from-amber-700 to-amber-800 text-white sticky top-0 z-50 shadow-lg">
+  <div class="max-w-4xl mx-auto px-4 py-4">
+    <div class="flex items-center justify-between">
+      <a th:href="@{/}" href="/" class="flex items-center gap-2 hover:text-amber-200 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+        戻る
+      </a>
+      <h1 class="text-xl font-bold">🎰 食事ガチャ</h1>
+      <div class="w-20"></div>
     </div>
-  </header>
+  </div>
+</header>
 
-  <div class="max-w-4xl mx-auto px-4 py-6">
-    <!-- Gacha Banner -->
-    <div class="mb-6 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 rounded-2xl p-6 text-white shadow-2xl relative overflow-hidden">
-      <div class="relative z-10">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
-          <div class="flex items-center gap-3">
-            <span class="text-3xl">🎁</span>
-            <div>
-              <h2 class="text-2xl font-bold">🎲 食事ガチャシステム</h2>
-              <p class="text-sm text-pink-100">食材を入れてランダムレシピを引いてみよう！</p>
-            </div>
-          </div>
-          <div class="text-left sm:text-right">
-            <div class="text-3xl font-bold"><span id="gacha-count">0</span>/3</div>
-            <div class="text-xs text-pink-100">今日使ったガチャ回数</div>
+<div class="max-w-4xl mx-auto px-4 py-6">
+  <!-- 가챠 안내 배너 -->
+  <div class="mb-6 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 rounded-2xl p-6 text-white shadow-2xl relative overflow-hidden">
+    <div class="relative z-10">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
+        <div class="flex items-center gap-3">
+          <span class="text-3xl">🎁</span>
+          <div>
+            <h2 class="text-2xl font-bold">🎲 食事ガチャシステム</h2>
+            <p class="text-sm text-pink-100">食材を入れてランダムレシピを引いてみよう！</p>
           </div>
         </div>
-        <div id="gacha-limit-msg" class="hidden bg-red-500/30 border border-red-300 rounded-lg p-3 flex items-center gap-2 mt-3">
-          <span>⚠</span>
-          <span>本日のガチャチャンスをすべて使いました！また明日チャレンジしてね</span>
+        <div class="text-left sm:text-right">
+          <div class="text-3xl font-bold"><span id="gacha-count">0</span>/3</div>
+          <!-- [수정점] 기존 '回수' 라고 적혀있던 오타를 일본어 표기에 맞춰 '回数'로 정확히 수정했습니다. -->
+          <div class="text-xs text-pink-100">今日使ったガチャ回数</div>
         </div>
       </div>
+      <div id="gacha-limit-msg" class="hidden bg-red-500/30 border border-red-300 rounded-lg p-3 flex items-center gap-2 mt-3">
+        <span>⚠</span>
+        <span>本日のガチャチャンスをすべて使いました！また明日チャレンジしてね</span>
+      </div>
     </div>
+  </div>
 
-    <!-- Ingredient & Sauce Input -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <!-- Ingredients -->
-      <section class="bg-white rounded-2xl shadow-lg p-6">
-        <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
-          🧊 冷蔵庫の食材
-          <span class="text-sm text-gray-500 ml-auto font-normal" id="ingredient-count">0個</span>
-        </h2>
-        <div class="mb-4">
-          <div class="grid grid-cols-3 gap-2 mb-2">
-            <input type="text" id="ingredient-name" placeholder="食材名"
-                   class="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"/>
-            <input type="text" id="ingredient-amount" placeholder="分量"
-                   class="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"/>
-            <select id="ingredient-unit" class="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
-              <option value="g">g</option>
-              <option value="ml">ml</option>
-              <option value="個">個</option>
-              <option value="カップ">カップ</option>
-              <option value="スプーン">スプーン</option>
-            </select>
-          </div>
-          <button type="button" id="add-ingredient" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-2 rounded-lg flex items-center justify-center gap-2 transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            冷蔵庫に入れる
-          </button>
-        </div>
-        <div id="ingredient-list" class="space-y-2 max-h-64 overflow-y-auto">
-          <p class="text-center text-gray-400 py-8">冷蔵庫が空っぽです 🥲</p>
-        </div>
-      </section>
+  <!-- 식재료 및 소스 입력 섹션 (컨테이너 디자인 적용 구역) -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- 식재료 관리 (냉장고 반찬통 스타일) -->
+    <section class="container-box refrigerator-theme p-6">
+      <!-- 측면 잠금 장치 시각화 -->
+      <div class="container-latch latch-left"></div>
+      <div class="container-latch latch-right"></div>
+      <!-- 상단 이름표 라벨 -->
+      <!-- [수정점] 라벨의 top 위치를 -top-2 에서 -top-4로 올려서 제목 글자와 겹치지 않게 수정했고, 한국어 텍스트를 지우고 '🧊 冷蔵庫'로 변경했습니다. -->
+      <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+        <div class="container-label text-blue-600">🧊 冷蔵庫</div>
+      </div>
 
-      <!-- Sauces -->
-      <section class="bg-white rounded-2xl shadow-lg p-6">
-        <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
-          🧴 調味料 (ソース)
-          <span class="text-sm text-gray-500 ml-auto font-normal" id="sauce-count">0個</span>
-        </h2>
-        <div class="mb-4">
-          <div class="grid grid-cols-3 gap-2 mb-2">
-            <input type="text" id="sauce-name" placeholder="ソース名"
-                   class="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"/>
-            <input type="text" id="sauce-amount" placeholder="分量"
-                   class="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"/>
-            <select id="sauce-unit" class="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
-              <option value="ml">ml</option>
-              <option value="g">g</option>
-              <option value="スプーン">スプーン</option>
-              <option value="ティースプーン">ティースプーン</option>
-            </select>
-          </div>
-          <button type="button" id="add-sauce" class="w-full bg-orange-600 hover:bg-orange-700 text-white py-2 rounded-lg flex items-center justify-center gap-2 transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            調味料入れに追加
-          </button>
-        </div>
-        <div id="sauce-list" class="space-y-2 max-h-64 overflow-y-auto">
-          <p class="text-center text-gray-400 py-8">調味料が空です (任意)</p>
-        </div>
-      </section>
-    </div>
+      <!-- [수정점] mt-4였던 위쪽 여백을 mt-6으로 늘려서 라벨과 제목 사이의 간격을 넓혔습니다. -->
+      <h2 class="text-xl font-black mt-6 mb-4 flex items-center gap-2 text-slate-700">
+        🥗 残り物・食材
+        <span class="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded-full ml-auto font-bold" id="ingredient-count">0個</span>
+      </h2>
 
-    <!-- Options -->
-    <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
-      <h2 class="text-xl font-bold mb-6">🎯 料理設定</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div>
-          <label class="block text-sm font-medium mb-3 text-gray-700">どんな料理？</label>
-          <div class="space-y-2">
-            <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-purple-50 transition-colors">
-              <input type="radio" name="purpose" value="속세의맛" checked class="accent-purple-600"/>
-              <span>🔥 ガッツリ系</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-purple-50 transition-colors">
-              <input type="radio" name="purpose" value="다이어트" class="accent-purple-600"/>
-              <span>🥗 ダイエット</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-purple-50 transition-colors">
-              <input type="radio" name="purpose" value="건강식" class="accent-purple-600"/>
-              <span>💪 ヘルシー</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-purple-50 transition-colors">
-              <input type="radio" name="purpose" value="술안주" class="accent-purple-600"/>
-              <span>🍺 おつまみ</span>
-            </label>
-          </div>
+      <div class="mb-4 bg-white/40 p-3 rounded-xl border border-white/60">
+        <div class="grid grid-cols-3 gap-2 mb-2">
+          <input type="text" id="ingredient-name" placeholder="食材名"
+                 class="px-3 py-2 bg-white/80 border border-blue-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 placeholder-blue-300 text-sm"/>
+          <input type="text" id="ingredient-amount" placeholder="分量"
+                 class="px-3 py-2 bg-white/80 border border-blue-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 placeholder-blue-300 text-sm"/>
+          <select id="ingredient-unit" class="px-3 py-2 bg-white/80 border border-blue-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm text-blue-600">
+            <option value="g">g</option>
+            <option value="ml">ml</option>
+            <option value="個">個</option>
+            <option value="カップ">カップ</option>
+            <option value="スプーン">スプーン</option>
+          </select>
         </div>
-        <div>
-          <label class="block text-sm font-medium mb-3 text-gray-700">どの国の料理？</label>
-          <div class="space-y-2">
-            <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-blue-50 transition-colors">
-              <input type="radio" name="cuisine" value="상관없음" checked class="accent-blue-600"/>
-              <span>🌍 なんでも <span class="text-xs text-gray-400">(何でもOK！)</span></span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-blue-50 transition-colors">
-              <input type="radio" name="cuisine" value="일식" class="accent-blue-600"/>
-              <span>🇯🇵 日本料理</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-blue-50 transition-colors">
-              <input type="radio" name="cuisine" value="한식" class="accent-blue-600"/>
-              <span>🇰🇷 韓国料理</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-blue-50 transition-colors">
-              <input type="radio" name="cuisine" value="중식" class="accent-blue-600"/>
-              <span>🇨🇳 中華料理</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-blue-50 transition-colors">
-              <input type="radio" name="cuisine" value="양식" class="accent-blue-600"/>
-              <span>🇺🇸 洋食</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-blue-50 transition-colors">
-              <input type="radio" name="cuisine" value="동남아" class="accent-blue-600"/>
-              <span>🇹🇭 東南アジア料理</span>
-            </label>
-          </div>
-        </div>
-        <div>
-          <label class="block text-sm font-medium mb-3 text-gray-700">私の料理レベルは？</label>
-          <div class="space-y-2">
-            <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-green-50 transition-colors">
-              <input type="radio" name="difficulty" value="상관없음" checked class="accent-green-600"/>
-              <span>🎲 なんでも <span class="text-xs text-gray-400">(運に任せる！)</span></span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-green-50 transition-colors">
-              <input type="radio" name="difficulty" value="하" class="accent-green-600"/>
-              <span>⭐ 低</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-green-50 transition-colors">
-              <input type="radio" name="difficulty" value="중" class="accent-green-600"/>
-              <span>⭐⭐ 中</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-green-50 transition-colors">
-              <input type="radio" name="difficulty" value="상" class="accent-green-600"/>
-              <span>⭐⭐⭐ 高</span>
-            </label>
-          </div>
+        <button type="button" id="add-ingredient" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 rounded-lg flex items-center justify-center gap-2 transition-all shadow-md active:scale-95">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          詰める
+        </button>
+      </div>
+      <div id="ingredient-list" class="space-y-2 max-h-64 overflow-y-auto pr-1 custom-scrollbar">
+        <div class="text-center text-blue-300 py-8 opacity-60">
+          <span class="text-4xl block mb-2">🧊</span>
+          <p class="text-xs font-bold">冷蔵庫が空っぽです</p>
         </div>
       </div>
     </section>
 
-    <!-- Generate Button -->
-    <button type="button" id="gacha-btn" disabled
-            class="mt-6 w-full bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 hover:from-purple-700 hover:via-pink-700 hover:to-orange-600 text-white py-6 rounded-2xl flex items-center justify-center gap-3 transition-all shadow-2xl text-xl font-bold disabled:opacity-60 disabled:cursor-not-allowed">
-      <span id="gacha-btn-text">🎲 食事ガチャを回す！</span>
-    </button>
-    <p id="gacha-warning" class="hidden text-center text-red-500 mt-3 text-sm font-medium">食材を1つ以上追加してください！</p>
-
-    <!-- Error Toast -->
-    <div id="error-toast" class="hidden fixed top-20 left-1/2 transform -translate-x-1/2 z-50 bg-red-500 text-white px-6 py-4 rounded-xl shadow-2xl max-w-md text-center animate-fade-in-up">
-      <p id="error-toast-msg">エラーが発生しました</p>
-      <button type="button" onclick="document.getElementById('error-toast').classList.add('hidden')" class="mt-2 text-sm underline">閉じる</button>
-    </div>
-
-    <!-- ╔══════════════════════════════════════╗ -->
-    <!-- ║  GACHA MACHINE OVERLAY  CYBER IDOL  ║ -->
-    <!-- ╚══════════════════════════════════════╝ -->
-    <div id="gacha-overlay" class="hidden fixed inset-0 z-[100] flex items-center justify-center overflow-hidden">
-
-      <!-- ① 漆黒 + 紫ネオン放射背景 -->
-      <div class="absolute inset-0" style="background:radial-gradient(ellipse at 50% 38%,#2a0550 0%,#0d0018 55%,#000 100%);"></div>
-
-      <!-- ② スキャンライン -->
-      <div class="absolute inset-0 pointer-events-none" style="background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.13) 3px,rgba(0,0,0,0.13) 4px);"></div>
-
-      <!-- ③ スポットライト (アイドルステージ感) -->
-      <div class="absolute pointer-events-none" style="width:520px;height:480px;top:50%;left:50%;transform:translate(-50%,-52%);background:radial-gradient(ellipse,rgba(168,85,247,0.16) 0%,rgba(236,72,153,0.06) 45%,transparent 70%);border-radius:50%;"></div>
-
-      <!-- ④ パーティクルレイヤー -->
-      <div id="gacha-particles" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
-
-      <!-- ④-b WOW VFX (hidden; JS-controlled) -->
-      <div id="wow-vfx" style="display:none;position:absolute;inset:0;pointer-events:none;z-index:7;">
-        <!-- All rings anchored to visual center via zero-size pivot -->
-        <div style="position:absolute;top:50%;left:50%;width:0;height:0;">
-          <div id="wow-ring-a" style="position:absolute;top:-55px;left:-55px;width:110px;height:110px;border:2px solid rgba(236,72,153,0.95);border-radius:50%;opacity:0;"></div>
-          <div id="wow-ring-b" style="position:absolute;top:-55px;left:-55px;width:110px;height:110px;border:2px solid rgba(168,85,247,0.85);border-radius:50%;opacity:0;"></div>
-          <div id="wow-ring-c" style="position:absolute;top:-65px;left:-65px;width:130px;height:130px;border:3px solid rgba(255,255,255,0.72);border-radius:50%;opacity:0;"></div>
-          <!-- Gather orb: starts large+transparent, contracts to bright point -->
-          <div id="wow-gather-orb"
-               style="position:absolute;top:-140px;left:-140px;width:280px;height:280px;
-                      border-radius:50%;opacity:0;transform:scale(3.8);
-                      background:radial-gradient(circle,#fff 0%,rgba(240,171,252,0.95) 22%,rgba(236,72,153,0.7) 50%,rgba(168,85,247,0.25) 78%,transparent 100%);"></div>
-        </div>
-        <!-- Full-screen flash -->
-        <div id="wow-flash-layer"
-             style="position:absolute;inset:0;opacity:0;
-                    background:radial-gradient(ellipse at center,#fff 0%,rgba(240,171,252,0.92) 38%,rgba(168,85,247,0.35) 75%,transparent 100%);"></div>
+    <!-- Sauces (Sauce Tray) -->
+    <section class="container-box sauce-theme p-6">
+      <div class="container-latch latch-left"></div>
+      <div class="container-latch latch-right"></div>
+      <!-- [수정점] 이곳 역시 -top-4로 올려서 간섭을 피하고 '🧴 調味料箱'로 텍스트를 수정했습니다. -->
+      <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+        <div class="container-label text-orange-600">🧴 調味料箱</div>
       </div>
 
-      <!-- ⑤ コンテンツ -->
-      <div class="relative z-10 flex flex-col items-center gap-5 px-4">
+      <!-- [수정점] 라벨 겹침 방지를 위해 mt-6으로 수정했습니다. -->
+      <h2 class="text-xl font-black mt-6 mb-4 flex items-center gap-2 text-slate-700">
+        🍯 ソース・スパイス
+        <span class="text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded-full ml-auto font-bold" id="sauce-count">0個</span>
+      </h2>
 
-        <!-- フェーズテキスト pill -->
-        <div id="gacha-phase-msg"
-             style="color:#f0abfc;font-size:15px;font-weight:700;
+      <div class="mb-4 bg-white/40 p-3 rounded-xl border border-white/60">
+        <div class="grid grid-cols-3 gap-2 mb-2">
+          <input type="text" id="sauce-name" placeholder="ソース名"
+                 class="px-3 py-2 bg-white/80 border border-orange-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 placeholder-orange-300 text-sm"/>
+          <input type="text" id="sauce-amount" placeholder="分量"
+                 class="px-3 py-2 bg-white/80 border border-orange-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 placeholder-orange-300 text-sm"/>
+          <select id="sauce-unit" class="px-3 py-2 bg-white/80 border border-orange-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm text-orange-600">
+            <option value="ml">ml</option>
+            <option value="g">g</option>
+            <option value="スプーン">スプーン</option>
+            <option value="ティースプーン">ティースプーン</option>
+          </select>
+        </div>
+        <button type="button" id="add-sauce" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded-lg flex items-center justify-center gap-2 transition-all shadow-md active:scale-95">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          追加する
+        </button>
+      </div>
+      <div id="sauce-list" class="space-y-2 max-h-64 overflow-y-auto pr-1 custom-scrollbar">
+        <div class="text-center text-orange-300 py-8 opacity-60">
+          <span class="text-4xl block mb-2">🧴</span>
+          <p class="text-xs font-bold">調味料がありません</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Options -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-8 border border-gray-100">
+    <h2 class="text-xl font-bold mb-6">🎯 料理設定</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div>
+        <label class="block text-sm font-medium mb-3 text-gray-700">どんな料理？</label>
+        <div class="space-y-2">
+          <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-purple-50 transition-colors">
+            <input type="radio" name="purpose" value="속세의맛" checked class="accent-purple-600"/>
+            <span>🔥 ガッツリ系</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-purple-50 transition-colors">
+            <input type="radio" name="purpose" value="다이어트" class="accent-purple-600"/>
+            <span>🥗 ダイエット</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-purple-50 transition-colors">
+            <input type="radio" name="purpose" value="건강식" class="accent-purple-600"/>
+            <span>💪 ヘルシー</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-purple-50 transition-colors">
+            <input type="radio" name="purpose" value="술안주" class="accent-purple-600"/>
+            <span>🍺 おつまみ</span>
+          </label>
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-3 text-gray-700">どの国の料理？</label>
+        <div class="space-y-2">
+          <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-blue-50 transition-colors">
+            <input type="radio" name="cuisine" value="상관없음" checked class="accent-blue-600"/>
+            <span>🌍 なんでも <span class="text-xs text-gray-400">(何でもOK！)</span></span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-blue-50 transition-colors">
+            <input type="radio" name="cuisine" value="일식" class="accent-blue-600"/>
+            <span>🇯🇵 日本料理</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-blue-50 transition-colors">
+            <input type="radio" name="cuisine" value="한식" class="accent-blue-600"/>
+            <span>🇰🇷 韓国料理</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-blue-50 transition-colors">
+            <input type="radio" name="cuisine" value="중식" class="accent-blue-600"/>
+            <span>🇨🇳 中華料理</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-blue-50 transition-colors">
+            <input type="radio" name="cuisine" value="양식" class="accent-blue-600"/>
+            <span>🇺🇸 洋食</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-blue-50 transition-colors">
+            <input type="radio" name="cuisine" value="동남아" class="accent-blue-600"/>
+            <span>🇹🇭 東南アジア料理</span>
+          </label>
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-3 text-gray-700">私の料理レベルは？</label>
+        <div class="space-y-2">
+          <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-green-50 transition-colors">
+            <input type="radio" name="difficulty" value="상관없음" checked class="accent-green-600"/>
+            <span>🎲 なんでも <span class="text-xs text-gray-400">(運に任せる！)</span></span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-green-50 transition-colors">
+            <input type="radio" name="difficulty" value="하" class="accent-green-600"/>
+            <span>⭐ 低</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-green-50 transition-colors">
+            <input type="radio" name="difficulty" value="중" class="accent-green-600"/>
+            <span>⭐⭐ 中</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-green-50 transition-colors">
+            <input type="radio" name="difficulty" value="상" class="accent-green-600"/>
+            <span>⭐⭐⭐ 高</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Generate Button -->
+  <button type="button" id="gacha-btn" disabled
+          class="mt-6 w-full bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 hover:from-purple-700 hover:via-pink-700 hover:to-orange-600 text-white py-6 rounded-2xl flex items-center justify-center gap-3 transition-all shadow-2xl text-xl font-bold disabled:opacity-60 disabled:cursor-not-allowed">
+    <span id="gacha-btn-text">🎲 食事ガチャを回す！</span>
+  </button>
+  <p id="gacha-warning" class="hidden text-center text-red-500 mt-3 text-sm font-medium">食材を1つ以上追加してください！</p>
+
+  <!-- Error Toast -->
+  <div id="error-toast" class="hidden fixed top-20 left-1/2 transform -translate-x-1/2 z-50 bg-red-500 text-white px-6 py-4 rounded-xl shadow-2xl max-w-md text-center animate-fade-in-up">
+    <p id="error-toast-msg">エラーが発生しました</p>
+    <button type="button" onclick="document.getElementById('error-toast').classList.add('hidden')" class="mt-2 text-sm underline">閉じる</button>
+  </div>
+
+  <!-- ╔══════════════════════════════════════╗ -->
+  <!-- ║  GACHA MACHINE OVERLAY  CYBER IDOL  ║ -->
+  <!-- ╚══════════════════════════════════════╝ -->
+  <div id="gacha-overlay" class="hidden fixed inset-0 z-[100] flex items-center justify-center overflow-hidden">
+
+    <!-- ① 漆黒 + 紫ネオン放射背景 -->
+    <div class="absolute inset-0" style="background:radial-gradient(ellipse at 50% 38%,#2a0550 0%,#0d0018 55%,#000 100%);"></div>
+
+    <!-- ② スキャンライン -->
+    <div class="absolute inset-0 pointer-events-none" style="background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.13) 3px,rgba(0,0,0,0.13) 4px);"></div>
+
+    <!-- ③ スポットライト (アイドルステージ感) -->
+    <div class="absolute pointer-events-none" style="width:520px;height:480px;top:50%;left:50%;transform:translate(-50%,-52%);background:radial-gradient(ellipse,rgba(168,85,247,0.16) 0%,rgba(236,72,153,0.06) 45%,transparent 70%);border-radius:50%;"></div>
+
+    <!-- ④ パーティクルレイヤー -->
+    <div id="gacha-particles" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
+
+    <!-- ④-b WOW VFX (hidden; JS-controlled) -->
+    <div id="wow-vfx" style="display:none;position:absolute;inset:0;pointer-events:none;z-index:7;">
+      <!-- All rings anchored to visual center via zero-size pivot -->
+      <div style="position:absolute;top:50%;left:50%;width:0;height:0;">
+        <div id="wow-ring-a" style="position:absolute;top:-55px;left:-55px;width:110px;height:110px;border:2px solid rgba(236,72,153,0.95);border-radius:50%;opacity:0;"></div>
+        <div id="wow-ring-b" style="position:absolute;top:-55px;left:-55px;width:110px;height:110px;border:2px solid rgba(168,85,247,0.85);border-radius:50%;opacity:0;"></div>
+        <div id="wow-ring-c" style="position:absolute;top:-65px;left:-65px;width:130px;height:130px;border:3px solid rgba(255,255,255,0.72);border-radius:50%;opacity:0;"></div>
+        <!-- Gather orb: starts large+transparent, contracts to bright point -->
+        <div id="wow-gather-orb"
+             style="position:absolute;top:-140px;left:-140px;width:280px;height:280px;
+                      border-radius:50%;opacity:0;transform:scale(3.8);
+                      background:radial-gradient(circle,#fff 0%,rgba(240,171,252,0.95) 22%,rgba(236,72,153,0.7) 50%,rgba(168,85,247,0.25) 78%,transparent 100%);"></div>
+      </div>
+      <!-- Full-screen flash -->
+      <div id="wow-flash-layer"
+           style="position:absolute;inset:0;opacity:0;
+                    background:radial-gradient(ellipse at center,#fff 0%,rgba(240,171,252,0.92) 38%,rgba(168,85,247,0.35) 75%,transparent 100%);"></div>
+    </div>
+
+    <!-- ⑤ コンテンツ -->
+    <div class="relative z-10 flex flex-col items-center gap-5 px-4">
+
+      <!-- フェーズテキスト pill -->
+      <div id="gacha-phase-msg"
+           style="color:#f0abfc;font-size:15px;font-weight:700;
                     padding:8px 24px;border-radius:9999px;text-align:center;
                     background:rgba(88,28,135,0.55);
                     border:1px solid rgba(168,85,247,0.7);
                     backdrop-filter:blur(10px);
                     text-shadow:0 0 14px rgba(240,171,252,0.9);
                     box-shadow:0 0 22px rgba(168,85,247,0.35),inset 0 0 12px rgba(168,85,247,0.08);">
-          🎰 マシン起動中...
-        </div>
+        🎰 マシン起動中...
+      </div>
 
-        <!-- マシン本体ラッパー -->
-        <div id="gacha-machine-body"
-             style="width:296px;
+      <!-- マシン本体ラッパー -->
+      <div id="gacha-machine-body"
+           style="width:296px;
                     filter:drop-shadow(0 0 28px rgba(168,85,247,0.65)) drop-shadow(0 22px 44px rgba(0,0,0,0.95));">
 
-          <!-- ══ DOME ══ -->
-          <div style="width:258px;height:204px;margin:0 auto;position:relative;">
+        <!-- ══ DOME ══ -->
+        <div style="width:258px;height:204px;margin:0 auto;position:relative;">
 
-            <div id="gacha-dome"
-                 style="width:258px;height:204px;
+          <div id="gacha-dome"
+               style="width:258px;height:204px;
                         background:radial-gradient(ellipse at 35% 28%,rgba(255,255,255,0.12) 0%,rgba(168,85,247,0.22) 42%,rgba(76,29,149,0.6) 100%);
                         border:5px solid #7c3aed;border-bottom:none;
                         border-radius:129px 129px 0 0;
@@ -347,44 +430,44 @@
                                    0 0 42px rgba(168,85,247,0.55),
                                    0 0 80px rgba(236,72,153,0.18);">
 
-              <!-- 回転カプセル群 -->
-              <div id="capsule-spinner"
-                   style="width:100%;height:100%;position:absolute;
+            <!-- 回転カプセル群 -->
+            <div id="capsule-spinner"
+                 style="width:100%;height:100%;position:absolute;
                           animation:gachaSpin 4s linear infinite;transform-origin:center center;">
-                <div class="gcball" style="background:linear-gradient(135deg,#f9a8d4,#ec4899);top:9%;left:3%;"></div>
-                <div class="gcball" style="background:linear-gradient(135deg,#c4b5fd,#7c3aed);top:6%;left:24%;"></div>
-                <div class="gcball" style="background:linear-gradient(135deg,#a5f3fc,#06b6d4);top:11%;left:46%;"></div>
-                <div class="gcball" style="background:linear-gradient(135deg,#fde68a,#f59e0b);top:7%;left:67%;"></div>
-                <div class="gcball" style="background:linear-gradient(135deg,#e9d5ff,#9333ea);top:5%;left:83%;"></div>
-                <div class="gcball" style="background:linear-gradient(135deg,#fbcfe8,#db2777);top:38%;left:2%;"></div>
-                <div class="gcball" style="background:linear-gradient(135deg,#ddd6fe,#a855f7);top:41%;left:22%;"></div>
-                <div class="gcball" style="background:linear-gradient(135deg,#bfdbfe,#6366f1);top:36%;left:43%;"></div>
-                <div class="gcball" style="background:linear-gradient(135deg,#fda4af,#f43f5e);top:40%;left:63%;"></div>
-                <div class="gcball" style="background:linear-gradient(135deg,#a5f3fc,#0891b2);top:37%;left:81%;"></div>
-                <div class="gcball" style="background:linear-gradient(135deg,#d8b4fe,#6d28d9);top:65%;left:8%;"></div>
-                <div class="gcball" style="background:linear-gradient(135deg,#fce7f3,#f472b6);top:68%;left:28%;"></div>
-                <div class="gcball" style="background:linear-gradient(135deg,#c7d2fe,#4f46e5);top:63%;left:51%;"></div>
-                <div class="gcball" style="background:linear-gradient(135deg,#f9a8d4,#be185d);top:70%;left:71%;"></div>
-              </div>
+              <div class="gcball" style="background:linear-gradient(135deg,#f9a8d4,#ec4899);top:9%;left:3%;"></div>
+              <div class="gcball" style="background:linear-gradient(135deg,#c4b5fd,#7c3aed);top:6%;left:24%;"></div>
+              <div class="gcball" style="background:linear-gradient(135deg,#a5f3fc,#06b6d4);top:11%;left:46%;"></div>
+              <div class="gcball" style="background:linear-gradient(135deg,#fde68a,#f59e0b);top:7%;left:67%;"></div>
+              <div class="gcball" style="background:linear-gradient(135deg,#e9d5ff,#9333ea);top:5%;left:83%;"></div>
+              <div class="gcball" style="background:linear-gradient(135deg,#fbcfe8,#db2777);top:38%;left:2%;"></div>
+              <div class="gcball" style="background:linear-gradient(135deg,#ddd6fe,#a855f7);top:41%;left:22%;"></div>
+              <div class="gcball" style="background:linear-gradient(135deg,#bfdbfe,#6366f1);top:36%;left:43%;"></div>
+              <div class="gcball" style="background:linear-gradient(135deg,#fda4af,#f43f5e);top:40%;left:63%;"></div>
+              <div class="gcball" style="background:linear-gradient(135deg,#a5f3fc,#0891b2);top:37%;left:81%;"></div>
+              <div class="gcball" style="background:linear-gradient(135deg,#d8b4fe,#6d28d9);top:65%;left:8%;"></div>
+              <div class="gcball" style="background:linear-gradient(135deg,#fce7f3,#f472b6);top:68%;left:28%;"></div>
+              <div class="gcball" style="background:linear-gradient(135deg,#c7d2fe,#4f46e5);top:63%;left:51%;"></div>
+              <div class="gcball" style="background:linear-gradient(135deg,#f9a8d4,#be185d);top:70%;left:71%;"></div>
+            </div>
 
-              <!-- ガラス反射 -->
-              <div style="position:absolute;inset:0;
+            <!-- ガラス反射 -->
+            <div style="position:absolute;inset:0;
                           background:linear-gradient(145deg,rgba(255,255,255,0.18) 0%,rgba(255,255,255,0.04) 38%,transparent 62%);
                           border-radius:124px 124px 0 0;pointer-events:none;"></div>
 
-              <!-- domeGlow (既存アニメ流用) -->
-              <div style="position:absolute;inset:0;border-radius:124px 124px 0 0;animation:domeGlow 1.8s ease-in-out infinite;pointer-events:none;"></div>
-            </div>
+            <!-- domeGlow (既存アニメ流用) -->
+            <div style="position:absolute;inset:0;border-radius:124px 124px 0 0;animation:domeGlow 1.8s ease-in-out infinite;pointer-events:none;"></div>
+          </div>
 
-            <!-- コネクションリング -->
-            <div style="position:absolute;bottom:0;left:-5px;right:-5px;height:18px;
+          <!-- コネクションリング -->
+          <div style="position:absolute;bottom:0;left:-5px;right:-5px;height:18px;
                         background:linear-gradient(to bottom,#6d28d9,#4c1d95);
                         border:3px solid #3b0764;border-top:none;
                         box-shadow:0 4px 16px rgba(109,40,217,0.7);"></div>
-          </div>
+        </div>
 
-          <!-- ══ MACHINE BODY ══ -->
-          <div style="background:linear-gradient(160deg,#1e0938 0%,#130522 50%,#0a0014 100%);
+        <!-- ══ MACHINE BODY ══ -->
+        <div style="background:linear-gradient(160deg,#1e0938 0%,#130522 50%,#0a0014 100%);
                       border:4px solid #6d28d9;border-top:none;
                       border-radius:0 0 22px 22px;
                       padding:14px 16px 18px;position:relative;
@@ -394,55 +477,55 @@
                                  -5px 0 18px rgba(236,72,153,0.12),
                                  5px 0 18px rgba(236,72,153,0.12);">
 
-            <!-- 上部ネオンライン -->
-            <div style="position:absolute;top:0;left:12px;right:12px;height:1px;
+          <!-- 上部ネオンライン -->
+          <div style="position:absolute;top:0;left:12px;right:12px;height:1px;
                         background:linear-gradient(to right,transparent,#a855f7,#ec4899,#a855f7,transparent);
                         opacity:0.9;"></div>
 
-            <!-- ── LCD スクリーン ── -->
-            <div style="background:#04000d;border:2px solid #4c1d95;border-radius:8px;
+          <!-- ── LCD スクリーン ── -->
+          <div style="background:#04000d;border:2px solid #4c1d95;border-radius:8px;
                         padding:10px 14px;margin-bottom:12px;min-height:50px;
                         display:flex;align-items:center;justify-content:center;
                         position:relative;overflow:hidden;
                         box-shadow:inset 0 2px 10px rgba(0,0,0,0.95),
                                    0 0 18px rgba(236,72,153,0.28),
                                    inset 0 0 18px rgba(168,85,247,0.06);">
-              <!-- LCD スキャンライン -->
-              <div style="position:absolute;inset:0;pointer-events:none;border-radius:6px;
+            <!-- LCD スキャンライン -->
+            <div style="position:absolute;inset:0;pointer-events:none;border-radius:6px;
                           background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.22) 2px,rgba(0,0,0,0.22) 3px);"></div>
-              <div id="gacha-lcd"
-                   style="color:#f0abfc;font-family:'Courier New',monospace;
+            <div id="gacha-lcd"
+                 style="color:#f0abfc;font-family:'Courier New',monospace;
                           font-size:12px;font-weight:700;letter-spacing:2px;
                           text-align:center;position:relative;z-index:1;
                           text-shadow:0 0 10px rgba(240,171,252,1),0 0 22px rgba(236,72,153,0.7);
                           animation:lcdPulse 3s ease-in-out infinite;">▶ READY TO GACHA ◀</div>
-            </div>
+          </div>
 
-            <!-- ── コイン + ダイヤル ── -->
-            <div style="display:flex;align-items:center;justify-content:space-around;margin-bottom:12px;gap:8px;">
+          <!-- ── コイン + ダイヤル ── -->
+          <div style="display:flex;align-items:center;justify-content:space-around;margin-bottom:12px;gap:8px;">
 
-              <!-- コイン投入口 -->
-              <div style="background:linear-gradient(to bottom,#1a0533,#0a0014);
+            <!-- コイン投入口 -->
+            <div style="background:linear-gradient(to bottom,#1a0533,#0a0014);
                           border:2px solid #4c1d95;border-radius:10px;
                           padding:10px;width:82px;text-align:center;
                           box-shadow:inset 0 2px 8px rgba(0,0,0,0.75),0 0 12px rgba(168,85,247,0.2);">
-                <div id="coin-display" style="font-size:26px;line-height:1;">💰</div>
-                <div style="height:4px;background:#04000d;border-radius:2px;margin-top:8px;
+              <div id="coin-display" style="font-size:26px;line-height:1;">💰</div>
+              <div style="height:4px;background:#04000d;border-radius:2px;margin-top:8px;
                             border:1px solid #4c1d95;box-shadow:0 0 6px rgba(168,85,247,0.5);"></div>
-                <div style="font-size:9px;color:#c084fc;margin-top:4px;font-weight:700;
+              <div style="font-size:9px;color:#c084fc;margin-top:4px;font-weight:700;
                             letter-spacing:2px;text-shadow:0 0 6px rgba(192,132,252,0.75);">COIN</div>
-              </div>
+            </div>
 
-              <div style="color:rgba(240,171,252,0.4);font-size:14px;">→</div>
+            <div style="color:rgba(240,171,252,0.4);font-size:14px;">→</div>
 
-              <!-- ダイヤル -->
-              <div style="position:relative;text-align:center;">
-                <div id="dial-arrow"
-                     style="font-size:14px;display:block;margin-bottom:3px;
+            <!-- ダイヤル -->
+            <div style="position:relative;text-align:center;">
+              <div id="dial-arrow"
+                   style="font-size:14px;display:block;margin-bottom:3px;
                             color:#e879f9;animation:arrowBounce 0.45s ease-in-out infinite alternate;
                             text-shadow:0 0 10px #e879f9;">⬇</div>
-                <div id="gacha-dial"
-                     style="width:72px;height:72px;border-radius:50%;
+              <div id="gacha-dial"
+                   style="width:72px;height:72px;border-radius:50%;
                             background:radial-gradient(circle at 38% 33%,#f5d0fe,#a855f7 50%,#6d28d9);
                             border:4px solid #7c3aed;
                             display:flex;align-items:center;justify-content:center;
@@ -453,89 +536,89 @@
                                        0 6px 18px rgba(0,0,0,0.6),
                                        inset 0 3px 8px rgba(255,255,255,0.28),
                                        inset 0 -3px 8px rgba(0,0,0,0.45);">
-                  <div style="position:absolute;width:4px;height:28px;
+                <div style="position:absolute;width:4px;height:28px;
                               background:rgba(255,255,255,0.28);border-radius:2px;top:5px;"></div>
-                  <span style="position:relative;z-index:1;">TURN</span>
-                </div>
+                <span style="position:relative;z-index:1;">TURN</span>
               </div>
             </div>
+          </div>
 
-            <!-- ── アウトプットトレイ ── -->
-            <div style="background:#04000d;border:2px solid #4c1d95;border-radius:12px;
+          <!-- ── アウトプットトレイ ── -->
+          <div style="background:#04000d;border:2px solid #4c1d95;border-radius:12px;
                         min-height:68px;display:flex;align-items:center;justify-content:center;
                         overflow:hidden;position:relative;
                         box-shadow:inset 0 3px 12px rgba(0,0,0,0.95),0 0 16px rgba(236,72,153,0.2);">
-              <!-- 底部ネオンライン -->
-              <div style="position:absolute;bottom:0;left:0;right:0;height:2px;
+            <!-- 底部ネオンライン -->
+            <div style="position:absolute;bottom:0;left:0;right:0;height:2px;
                           background:linear-gradient(to right,transparent,#ec4899,#a855f7,#ec4899,transparent);
                           opacity:0.65;"></div>
-              <div id="output-idle"
-                   style="color:rgba(240,171,252,0.28);font-size:10px;
+            <div id="output-idle"
+                 style="color:rgba(240,171,252,0.28);font-size:10px;
                           font-family:monospace;letter-spacing:3px;">▼ 出口 ▼</div>
-              <div id="capsule-result"
-                   style="display:none;font-size:52px;position:absolute;
+            <div id="capsule-result"
+                 style="display:none;font-size:52px;position:absolute;
                           animation:capsuleReveal 0.9s cubic-bezier(0.175,0.885,0.32,1.275) forwards;">🎁</div>
-            </div>
-
-            <!-- 下部ネオンライン -->
-            <div style="position:absolute;bottom:8px;left:12px;right:12px;height:1px;
-                        background:linear-gradient(to right,transparent,#ec4899,transparent);opacity:0.45;"></div>
           </div>
 
-        </div><!-- /gacha-machine-body -->
-      </div><!-- /コンテンツ -->
-    </div><!-- /gacha-overlay -->
-
-    <!-- Result Card -->
-    <section id="gacha-result" class="hidden bg-white rounded-2xl shadow-2xl p-6 mt-6 border-4 border-yellow-400 relative overflow-hidden animate-fade-in-up">
-      <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600"></div>
-      <div class="flex items-center gap-2 mb-4 pt-2">
-        <span class="text-2xl">✨</span>
-        <h2 class="text-2xl font-bold">ガチャ結果！</h2>
-      </div>
-      <div class="bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 rounded-xl p-6 relative">
-        <div class="aspect-video bg-gray-200 rounded-lg mb-4 overflow-hidden">
-          <img id="result-image" src="" alt="レシピ画像" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400'"/>
+          <!-- 下部ネオンライン -->
+          <div style="position:absolute;bottom:8px;left:12px;right:12px;height:1px;
+                        background:linear-gradient(to right,transparent,#ec4899,transparent);opacity:0.45;"></div>
         </div>
-        <h3 id="result-title" class="text-2xl font-bold mb-2"></h3>
-        <p id="result-summary" class="text-gray-600 mb-4"></p>
-        <div class="flex items-center gap-3 mb-4">
-          <span id="result-difficulty" class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium"></span>
-          <span id="result-time" class="text-sm text-gray-600 font-medium flex items-center gap-1">
+
+      </div><!-- /gacha-machine-body -->
+    </div><!-- /コンテンツ -->
+  </div><!-- /gacha-overlay -->
+
+  <!-- Result Card -->
+  <section id="gacha-result" class="hidden bg-white rounded-2xl shadow-2xl p-6 mt-6 border-4 border-yellow-400 relative overflow-hidden animate-fade-in-up">
+    <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600"></div>
+    <div class="flex items-center gap-2 mb-4 pt-2">
+      <span class="text-2xl">✨</span>
+      <h2 class="text-2xl font-bold">ガチャ結果！</h2>
+    </div>
+    <div class="bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 rounded-xl p-6 relative">
+      <div class="aspect-video bg-gray-200 rounded-lg mb-4 overflow-hidden">
+        <img id="result-image" src="" alt="レシピ画像" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400'"/>
+      </div>
+      <h3 id="result-title" class="text-2xl font-bold mb-2"></h3>
+      <p id="result-summary" class="text-gray-600 mb-4"></p>
+      <div class="flex items-center gap-3 mb-4">
+        <span id="result-difficulty" class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium"></span>
+        <span id="result-time" class="text-sm text-gray-600 font-medium flex items-center gap-1">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             <span id="result-time-text"></span>
           </span>
-        </div>
-
-        <!-- Nutrients -->
-        <div id="result-nutrients" class="grid grid-cols-4 gap-2 mb-4">
-        </div>
-
-        <!-- Ingredients preview -->
-        <div id="result-ingredients" class="mb-4">
-          <h4 class="font-bold text-sm text-gray-700 mb-2">📦 食材</h4>
-          <div id="result-ingredients-list" class="flex flex-wrap gap-2"></div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
-          <button type="button" id="btn-private" class="bg-white hover:bg-gray-50 border-2 border-purple-400 text-purple-700 py-3 rounded-lg font-medium shadow-md transition-colors flex items-center justify-center gap-2">
-            🔒 私だけの食卓登録
-          </button>
-          <a id="btn-detail" href="#" class="bg-white hover:bg-gray-50 border-2 border-amber-400 text-amber-700 py-3 rounded-lg font-medium shadow-md transition-colors flex items-center justify-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-            詳細を見る
-          </a>
-          <button type="button" id="btn-public" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-3 rounded-lg font-medium shadow-md text-center transition-colors flex items-center justify-center gap-2">
-            🌍 みんなの食卓登録
-          </button>
-        </div>
       </div>
-    </section>
-  </div>
-  <script th:src="@{/js/sound-manager.js}"></script>
-  <script th:src="@{/js/cheer-fx.js}"></script>
-  <script th:src="@{/js/wow-sequence.js}"></script>
-  <script th:src="@{/js/recipe-create.js}"></script>
+
+      <!-- Nutrients -->
+      <div id="result-nutrients" class="grid grid-cols-4 gap-2 mb-4">
+      </div>
+
+      <!-- Ingredients preview -->
+      <div id="result-ingredients" class="mb-4">
+        <h4 class="font-bold text-sm text-gray-700 mb-2">📦 食材</h4>
+        <div id="result-ingredients-list" class="flex flex-wrap gap-2"></div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
+        <button type="button" id="btn-private" class="bg-white hover:bg-gray-50 border-2 border-purple-400 text-purple-700 py-3 rounded-lg font-medium shadow-md transition-colors flex items-center justify-center gap-2">
+          🔒 私だけの食卓登録
+        </button>
+        <a id="btn-detail" href="#" class="bg-white hover:bg-gray-50 border-2 border-amber-400 text-amber-700 py-3 rounded-lg font-medium shadow-md transition-colors flex items-center justify-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          詳細を見る
+        </a>
+        <button type="button" id="btn-public" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-3 rounded-lg font-medium shadow-md text-center transition-colors flex items-center justify-center gap-2">
+          🌍 みんなの食卓登録
+        </button>
+      </div>
+    </div>
+  </section>
+</div>
+<script th:src="@{/js/sound-manager.js}"></script>
+<script th:src="@{/js/cheer-fx.js}"></script>
+<script th:src="@{/js/wow-sequence.js}"></script>
+<script th:src="@{/js/recipe-create.js}"></script>
 </body>
 </html>
