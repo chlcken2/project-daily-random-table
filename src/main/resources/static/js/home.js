@@ -137,7 +137,7 @@
               <span>💬 ${r.commentCount || 0}</span>
               <span>👀 ${r.viewCount || 0}</span>
             </div>
-            <span class="text-xs">${r.createdAt ? r.createdAt.substring(0, 10) : ''}</span>
+            <span class="text-xs">${r.createdAtStr || ''}</span>
           </div>
         </div>
       </a>`;
