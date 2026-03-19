@@ -73,8 +73,8 @@
     var title = escapeHtml((item.title && item.title.trim()) ? item.title : '無題');
     var isPublic = item.isPublic === true;
     var imgHtml = img
-      ? '<img src="' + escapeHtml(img) + '" alt="" class="w-full h-full object-cover" onerror="this.parentElement.classList.add(\'bg-gray-200\');this.remove()"/>'
-      : '';
+      ? '<img src="' + escapeHtml(img) + '" alt="" class="w-full h-full object-cover" onerror="this.src=\'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400\';this.onerror=null;"/>'
+      : '<img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400" alt="" class="w-full h-full object-cover"/>';
     return '<div class="rounded-lg overflow-hidden bg-gray-100 hover:opacity-95 transition-opacity">' +
       '<a href="/recipes/' + item.id + '" class="block">' +
       '<div class="aspect-square overflow-hidden">' + imgHtml + '</div>' +
@@ -90,8 +90,8 @@
     var img = (item.titleImage && item.titleImage.trim()) ? item.titleImage : null;
     var title = escapeHtml((item.title && item.title.trim()) ? item.title : '無題');
     var imgHtml = img
-      ? '<img src="' + escapeHtml(img) + '" alt="" class="w-full h-full object-cover" onerror="this.parentElement.classList.add(\'bg-gray-200\');this.remove()"/>'
-      : '';
+      ? '<img src="' + escapeHtml(img) + '" alt="" class="w-full h-full object-cover" onerror="this.src=\'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400\';this.onerror=null;"/>'
+      : '<img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400" alt="" class="w-full h-full object-cover"/>';
     var sub = [];
     if (item.cookingTime != null) sub.push(item.cookingTime + '分');
     if (item.difficultyName) sub.push(escapeHtml(item.difficultyName));

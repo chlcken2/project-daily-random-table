@@ -372,7 +372,7 @@ function togglePublic() {
       fetch(`/recipes/${recipeId}`, { method: 'DELETE' })
         .then(res => {
           if (!res.ok) throw new Error('failed');
-          window.location.href = '/gacha/home';
+          window.location.href = '/mypage';
         })
         .catch(() => alert('삭제에 실패했습니다.'));
     }
