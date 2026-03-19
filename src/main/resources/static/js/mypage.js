@@ -21,10 +21,8 @@
     window.location.href = '/login?redirect=' + encodeURIComponent(target || '/mypage');
     return;
   }
-
-  var headers = { 'Authorization': 'Bearer ' + accessToken };
-
-  fetch('/users/me', { headers: headers })
+  
+  fetch('/users/me', { credentials: 'same-origin' })
     .then(function(res) {
       if (res.status === 401) {
         clearTokenCookies();
@@ -127,7 +125,7 @@
         var id = btn.getAttribute('data-recipe-id');
         var isPublic = btn.getAttribute('data-is-public') === 'true';
         var nextPublic = !isPublic;
-        fetch('/gacha/publish/' + id + '?isPublic=' + nextPublic, { method: 'POST', headers: headers })
+        fetch('/gacha/publish/' + id + '?isPublic=' + nextPublic, { method: 'POST', credentials: 'same-origin' })
           .then(function(res) { return res.json(); })
           .then(function(result) {
             if (result && result.success) {
@@ -142,7 +140,7 @@
   }
 
   function loadRecipes() {
-    fetch('/users/me/recipes?type=my', { headers: headers })
+    fetch('/users/me/recipes?type=my', { credentials: 'same-origin' })
       .then(function(res) { return res.status === 401 ? null : res.json(); })
       .then(function(result) {
         if (result && result.success && Array.isArray(result.data)) {
@@ -156,7 +154,7 @@
         renderGrid('my-recipes-grid', [], renderMyRecipeCard, 'マイレシピはまだありません');
       });
 
-    fetch('/users/me/recipes?type=liked', { headers: headers })
+    fetch('/users/me/recipes?type=liked', { credentials: 'same-origin' })
       .then(function(res) { return res.status === 401 ? null : res.json(); })
       .then(function(result) {
         if (result && result.success && Array.isArray(result.data)) {
