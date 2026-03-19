@@ -1,6 +1,5 @@
 package com.dailytable.dailytable.global.jwt;
 
-import com.dailytable.dailytable.global.util.AuthHeaderUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -26,21 +25,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        String token = AuthHeaderUtils.extractBearerToken(request.getHeader("Authorization"));
 
-        if (token == null) {
-            // Try to get from cookie
-            Cookie[] cookies = request.getCookies();
-            if (cookies != null) {
-                for (Cookie cookie : cookies) {
-                    if ("accessToken".equals(cookie.getName())) {
-                        token = cookie.getValue();
-                        break;
-                    }
+        String token = null;
+        // 쿠키에서만 accessToken 읽기!
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("accessToken".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                    break;
                 }
             }
         }
-
         if (token != null) {
             Long userId = jwtProvider.getUserIdFromToken(token);
             if (userId != null) {
@@ -49,6 +45,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
+
 
         filterChain.doFilter(request, response);
     }
