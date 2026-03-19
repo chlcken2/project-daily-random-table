@@ -24,14 +24,13 @@
 		c.created_at AS createdAt
 		FROM recipe_comments c
 		JOIN users u ON c.user_id = u.id
-		WHERE c.recipe_id =
-		#{recipeId}
-		AND
-		c.deleted_at IS NULL
-		ORDER BY c.created_at DESC
-		LIMIT
-		#{size} OFFSET
-		#{offset}
+		WHERE c.recipe_id = #{recipeId}
+		AND c.deleted_at IS NULL
+		<if test="lastCommentId != null">
+			AND c.id &lt; #{lastCommentId}
+		</if>
+		ORDER BY c.id DESC
+		LIMIT #{size}
 	</select>
 
 	<update id="increaseCommentCount">
@@ -67,7 +66,8 @@
 	</update>
 
 	<select id="selectCommentCount" resultType="int">
-		SELECT comment_count FROM recipes WHERE id = #{recipeId}
+		SELECT comment_count
+		FROM recipes WHERE id = #{recipeId}
 	</select>
 
 </mapper> 
