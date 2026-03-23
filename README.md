@@ -1,8 +1,8 @@
 # 🎮 うまくじ (UMAI KUJIBIKI) - AI Recipe Gacha Project
 
-### 🎥 Demo Video
+### 🎥 プロジェクトのテスト動画 (クリック）
 [![Demo Video](https://img.youtube.com/vi/I2_jVE4L-bg/0.jpg)](https://www.youtube.com/watch?v=I2_jVE4L-bg)
-*Click the image above to watch the demo video.*
+
 
 <br>
 
