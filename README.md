@@ -1,1 +1,169 @@
-ㄴㄴㄴㄴ
+# 🎮 うまくじ (UMAI KUJIBIKI) - AI Recipe Gacha Project
+
+### 🎥 Demo Video
+[![Demo Video](https://img.youtube.com/vi/I2_jVE4L-bg/0.jpg)](https://www.youtube.com/watch?v=I2_jVE4L-bg)
+*Click the image above to watch the demo video.*
+
+<br>
+
+---
+
+# 🇯🇵 日本語 (Japanese)
+
+## 🍽️ [うまくじ](https://github.com/chlcken2/project-gacha-recipe) 紹介
+**「冷蔵庫にある残りの食材をどうすれば美味しく組み合わせられるか？」**  
+そんな悩みからスタートし、「AIガチャシステムを通じて毎日新しく、楽しい料理を提案しよう！」というモットーで開発されたサービスです。
+
+<br>
+
+## ⚡ 技術スタック
+- **Web Backend:** Java 17, Gradle, Spring Boot (3.2.5), Spring Security, MyBatis, JWT
+- **AI Integration:** Google GenAI
+- **Web Frontend:** Thymeleaf, HTML5, CSS3, JavaScript
+- **Database:** MySQL
+- **Versioning:** Git, GitHub
+
+<br>
+
+## 👥 チームメンバーと役割
+- **クンチャン (Kun-chan)**: 会員登録、ログイン、マイページ
+- **チャンヒョン (Chang-hyeon)**: 食事ガチャ (AI レシピ生成)
+- **イルグォン (Il-gwon)**: 食材管理、ランキング、レシピ全体照会
+- **ソンビン (Seong-bin)**: 詳細ページ、コメント機能
+
+<br>
+
+## 🌠 主要機能
+- **会員管理 (JWT & Spring Security)**: 安全なトークンベースの認証システム。
+- **AI レシピガチャ (Google GenAI)**: 保有食材をベースにAIがレシピを生成。ガチャ形式のUIで楽しさを提供。
+- **マイページ & レシピ保存**: お気に入りのレシピを保存・閲覧。
+- **食材管理 & ランキング**: 人気の食材やレシピをランキング形式で表示。
+- **多言語対応**: 日本語・韓国語の完全対応とエンコーディング問題の解決。
+
+<br>
+
+## 📁 プロジェクト構造
+```bash
+src/
+├── main/
+│   ├── java/com/dailytable/    # ビジネスロジック
+│   └── resources/              # 設定、MyBatis XML、Thymeleafテンプレート
+└── test/                       # ユニットテスト
+```
+
+<br>
+
+## ⚙️ 実行方法
+```bash
+# 1. ビルド
+./gradlew build
+
+# 2. 実行
+./gradlew bootRun
+```
+> ※ `application.yml` に MySQL と Google GenAI API キーの設定が必要です。
+
+<br>
+
+## ✍️ Git の運用
+- **main**: 本番サーバー用
+- **develop**: コード統合とテスト用
+- **feature**: 新機能開発（規約: `feature/名前/機能名` 例: `feature/kunchan/login`）
+
+<br>
+
+## 🚀 改善方向 (Improvement Direction)
+
+### 🤖 AIのさらなる精度向上
+詳細なユーザーの好みや健康状態を学習し、パーソナライズされたレシピ提案を実現。アレルギー情報への対応も追加予定。
+
+### 📱 モバイルアプリ化
+React Nativeを活用したスマートフォンアプリへの展開。カメラで食材を認識して自動登録するAR機能の導入も検討中。
+
+### 🛒 買い物リスト自動生成
+レシピに必要な食材を自動でリスト化し、ネットスーパーとの連携で一括注文ができる機能の実装を計画中。
+
+### 🏅 ゲーミフィケーション強化
+料理達成バッジ、チャレンジ機能、友達とのレシピバトルなど、よりゲーム要素を強化してエンゲージメントを高める。
+
+### 📊 食事管理ダッシュボード
+週間・月間の食事履歴と栄養バランスをグラフで可視化。健康目標に合わせたレシピ推薦機能も追加予定。
+
+### 🌏 多言語・海外展開
+韓国語・英語・中国語への多言語対応。一人暮らしが多い海外の大都市ユーザーへのサービス展開を目指す。
+
+<br>
+<br>
+
+---
+
+# 🇰🇷 한국어 (Korean)
+
+## 🍽️ [우마쿠지 (UMAI KUJIBIKI)](https://github.com/chlcken2/project-gacha-recipe) 소개
+**“냉장고에 남은 재료들을 어떻게 하면 맛있게 조합할 수 있을까?”**  
+라는 고민에서 시작하여, “AI 가챠 시스템을 통해 매일매일 새롭고 재밌는 요리를 추천받자!” 라는 모토로 개발된 서비스입니다.
+
+<br>
+
+## ⚡ 기술 스택
+- **Web Backend:** Java 17, Gradle, Spring Boot (3.2.5), Spring Security, MyBatis, JWT
+- **AI Integration:** Google GenAI
+- **Web Frontend:** Thymeleaf, HTML5, CSS3, JavaScript
+- **Database:** MySQL
+- **Versioning:** Git, GitHub
+
+<br>
+
+## 👥 팀원 및 역할
+- **근찬**: 회원가입, 로그인, 마이페이지
+- **창현**: 식사 가챠 (AI 레시피 생성)
+- **일권**: 식재료 관리, 랭킹, 레시피 전체 조회
+- **선빈**: 상세 페이지, 댓글 기능
+
+<br>
+
+## 🌠 주요 기능
+- **회원 관리 (JWT & Spring Security)**: 안전한 토큰 기반 인증 시스템 구축.
+- **AI 레시피 가챠 (Google GenAI)**: 보유 재료를 기반으로 AI가 레시피를 생성하며, 가챠 형식의 UI로 재미 요소 제공.
+- **마이페이지 및 레시피 저장**: 나만의 레시피 스크랩 및 열람 기능.
+- **식재료 관리 및 랭킹**: 인기 식재료와 레시피를 랭킹 시스템을 통해 확인.
+- **다국어 지원**: 일본어 및 한국어 UI 완벽 대응 및 인코딩 이슈 해결.
+
+<br>
+
+## 📁 프로젝트 구조
+- 위 Japanese 섹션의 구조와 동일합니다.
+
+<br>
+
+## ⚙️ 실행 방법
+- 위 Japanese 섹션의 실행 방법과 동일합니다.
+
+<br>
+
+## ✍️ 깃 사용 방법
+- **main**: 운영 서버용
+- **develop**: 코드 병합 및 테스트용
+- **feature**: 새로운 기능 개발 브랜치 (규칙: `feature/이름/기능이름` 예: `feature/ch/login`)
+
+<br>
+
+## 🚀 개선 방향 (Improvement Direction)
+
+### 🤖 AI 정밀도 향상
+상세한 사용자 선호도 및 건강 상태를 학습하여 개인화된 레시피 제안 구현. 알레르기 정보 대응 기능 추가 예정.
+
+### 📱 모바일 앱 개발
+React Native를 활용한 스마트폰 앱 전개. 카메라로 식재료를 인식해 자동 등록하는 AR 기능 도입 검토 중.
+
+### 🛒 장바구니 리스트 자동 생성
+레시피에 필요한 식재료를 자동으로 목록화하고, 온라인 마트와의 연동을 통한 일괄 주문 기능 실장 계획 중.
+
+### 🏅 게이미피케이션 강화
+요리 달성 배지, 챌린지 기능, 친구와의 레시피 배틀 등 게임 요소를 강화하여 참여도 향상.
+
+### 📊 식단 관리 대시보드
+주간·월간 식사 기록 및 영양 밸런스를 그래프로 시각화. 건강 목표에 따른 레시피 추천 기능 추가 예정.
+
+### 🌏 다국어 및 해외 진출 확대
+한국어·영어·중국어 다국어 대응. 1인 가구가 많은 해외 대도시 사용자를 대상으로 서비스 전개 목표.
