@@ -10,7 +10,7 @@
 
 # 🇯🇵 日本語 (Japanese)
 
-## 🍽️ [うまくじ]([https://github.com/chlcken2/project-gacha-recipe](https://an-ilgwon.github.io/Team-Project-Portfolio/])) 紹介
+## 🍽️ [うまくじ]([https://an-ilgwon.github.io/Team-Project-Portfolio/]) 紹介
 **「冷蔵庫にある残りの食材をどうすれば美味しく組み合わせられるか？」**  
 そんな悩みからスタートし、「AIガチャシステムを通じて毎日新しく、楽しい料理を提案しよう！」というモットーで開発されたサービスです。
 
@@ -52,7 +52,6 @@ src/
 ├── main/
 │   ├── java/com/dailytable/    # ビジネスロジック
 │   └── resources/              # 設定、MyBatis XML、Thymeleafテンプレート
-└── test/                       # ユニットテスト
 ```
 
 <br>
