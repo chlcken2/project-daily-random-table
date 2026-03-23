@@ -23,9 +23,10 @@
 - **Database:** MySQL
 - **Versioning:** Git, GitHub
 
-<br>
+<br
+  >
 ## DB ER図
-<a href="https://ibb.co/RkN4Vq3B"><img src="https://i.ibb.co/sdCJMZK6/db-erd.jpg" alt="db-erd" border="0"></a><br /><a target='_blank' href='https://ko.imgbb.com/'>포트폴리오 이미지 업로드</a><br />
+<a href="https://ibb.co/RkN4Vq3B"><img src="https://i.ibb.co/sdCJMZK6/db-erd.jpg" alt="db-erd" border="0"></a><br /><a target='_blank' href='https://ko.imgbb.com/'></a>
 <br>
 
 ## 👥 チームメンバーと役割
